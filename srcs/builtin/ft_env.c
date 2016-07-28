@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:42 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/28 20:28:30 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/28 21:30:33 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	get_args(char **input, t_shell *s)
 	char	*tmp;
 	char	*ch;
 
-	j = -1;
+	j = 0;
 	while (input[++j])
 	{
 		i = 0;
