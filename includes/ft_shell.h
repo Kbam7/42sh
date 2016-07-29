@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/07/28 20:48:29 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/29 14:59:02 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define ERR_NO_READ			1007
 # define ERR_NO_WRITE			1008
 # define ERR_NO_EXEC			1009
+# define ERR_FORK_FAILED		1010
 
 typedef struct		s_env_func
 {
@@ -119,7 +120,7 @@ char			*check_shell_variables(char *name, t_shell *s);
 */
 int				execute_cmd(t_shell *s);
 int				try_builtin(t_shell *s);
-void			try_system(t_shell *s);
+int			try_system(t_shell *s);
 
 /*
 **	tab_funcs.c

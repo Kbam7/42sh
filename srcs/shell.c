@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/28 20:35:34 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/29 14:59:16 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,7 @@ int			run_shell(t_shell *s)
 	status = EXIT_FAILURE;
 	pid = fork();
 	if (pid < 0)
-	{
-		ft_putstr_fd("Error! fork failed\n", 2);
-		return (status);
-	}
+		return (err(ERR_FORK_FAILED, ""));
 	if (pid == 0)
 		launch_shell(s);
 	wait(&status);

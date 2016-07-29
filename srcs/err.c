@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:50 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/27 13:12:32 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/29 14:39:57 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static void	check_errno(char **tmp, int errno, char *msg)
 		*tmp = ft_nstrjoin("Invalid arguments for '", msg, "'");
 	else if (errno == ERR_NOTFOUND)
 		*tmp = ft_nstrjoin("Command '", msg, "' not found");
+	else if (errno == ERR_FORK_FAILED)
+		*tmp = ft_nstrjoin("Fork failed! '", msg, "'");
 	else if (errno == ERR_CHDIR)
 		*tmp = ft_nstrjoin("Cannot change to directory '", msg, "'");
 	else if (errno == ERR_MAX_PATHLEN)

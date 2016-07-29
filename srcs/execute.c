@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/29 10:29:13 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/29 15:03:34 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,36 +38,25 @@ int	try_builtin(t_shell *s)
 		return (ft_strcmp(s->input[0], "exit") == 0 ? EXIT_SH : ERR_NOTFOUND);
 }
 
-void	try_system(t_shell *s)
+int		try_system(t_shell *s)
 {
 	int		i;
 	char	*path;
 	char	**var;
 
 	i = 0;
+	var = (ft_strcmp(s->input[0], "printenv") == 0) ?
+													s->env_var : s->shell_var;
 	while (s->paths[i] != NULL)
 	{
 		path = ft_nstrjoin(s->paths[i], "/", s->input[0]);
 		if (access(path, F_OK) == 0)
-		{
-
-ft_printf("File exists --- path >%s\n", path);
-
-			var = (ft_strcmp(s->input[0], "printenv") == 0) ?
-													s->env_var : s->shell_var;
 			if (check_rights(path, 'r', 0, 'x') == EXIT_SUCCESS)
 			{
-
-ft_printf("has rights --- path >%s\n", path);
-
 				if (execve(path, s->input, var) != -1)
 					ft_strdel(&path);
 				exit(EXIT_SUCCESS);
 			}
-		}
-
-ft_printf("end of check File exists --- path >%s\n", path);
-
 		ft_strdel(&path);
 		++i;
 	}
@@ -86,10 +75,7 @@ int		execute_cmd(t_shell *s)
 	{
 		pid = fork();
 		if (pid < 0)
-		{
-			ft_putstr_fd("Error! fork failed\n", 2);
-			return (status);
-		}
+			return (err(ERR_FORK_FAILED, ""));
 		if (pid == 0)
 			try_system(s);
 		wait(&status);
