@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:47 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/28 20:42:10 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/29 21:16:07 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,36 +84,16 @@ int			ft_set(int env_type, char *name, char *val, t_shell *s)
 	char			***env;
 
 	status = EXIT_FAILURE;
-	if (!name && !val)
-		return (err(ERR_INVALID_ARG, "set"));
 	env = check_env_type(env_type, s);
-	if (ft_strchr(name, '='))
+	if (!name && !val)
+		print_variables(*env);
+	else if (name && ft_strchr(name, '='))
 	{
 		status = get_and_set_values(name, env);
-/*	
-		args = ft_nstrsplit(name, '=');
-		if (args.words > 2)
-			return (err(ERR_INVALID_ARG, "set"));
-		if (args.words == 1)
-			status = ft_set_env(args.strings[0], "", env);
-		else
-			status = ft_set_env(args.strings[0], args.strings[1], env);
-		free_tab(args.strings, args.words);
-*/
 	}
-	else if (ft_strchr(val, '='))
+	else if (val && ft_strchr(val, '='))
 	{
 		status = get_and_set_values(val, env);
-/*	
-		args = ft_nstrsplit(val, '=');
-		if (args.words > 2)
-			return (err(ERR_INVALID_ARG, "set"));
-		if (args.words == 1)
-			status = ft_set_env(args.strings[0], "", env);
-		else
-			status = ft_set_env(args.strings[0], args.strings[1], env);
-		free_tab(args.strings, args.words);
-*/
 	}
 	else if (name && val)
 		status = ft_set_env(name, val, env);
@@ -125,7 +105,7 @@ int			ft_set(int env_type, char *name, char *val, t_shell *s)
 		return (err(ERR_INVALID_ARG, "set"));
 	if (env_type == 1)
 		status = ft_set(2, name, val, s);
-	if (status == EXIT_FAILURE && env_type == 2)
-		print_variables(*env);
+//	if (status == EXIT_FAILURE && env_type == 2)
+//		print_variables(*env);
 	return (status);
 }
