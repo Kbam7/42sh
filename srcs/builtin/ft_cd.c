@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/10 13:29:59 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/29 03:31:57 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/29 03:52:25 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,14 @@
 static int	change_dir(char *path, t_shell *s)
 {
 // check if path exists, then check rights if it exists. --  access(path, F_OK) . .. .
+	if (access(path, F_OK) != 0)
+		return (err(ERR_NO_FILE, path));
 	if ((check_rights(path, 'r', 0, 'x') != EXIT_SUCCESS) || chdir(path) != 0)
 		return (err(ERR_CHDIR, path));
 // Update current working directory and OLDPWD. OLDPWD is a shell variable, not environment var
 	ft_set(2, "OLDPWD", ft_getenv("PWD", s), s);
-	ft_set(1, "PWD", path, s);
+	s->cwd = getcwd(NULL, 4096);
+	ft_set(1, "PWD", s->cwd, s);
 	return (EXIT_SUCCESS);
 }
 
@@ -87,32 +90,14 @@ int			ft_cd(char **input, t_shell *s)
 	while (input[++j] && j < 2)
 	{
 		tmp = input[j];
-
-ft_printf("--------- HERE --1 ----------\n");
-
 		if (ft_strcmp(tmp, "-") == 0)
-		{
-ft_printf("--------- HERE -- 2 ----------\n");
-
 			return (change_to_oldpwd(s));
-		}
 		else if (ft_strcmp(tmp, "--")  == 0 || ft_strcmp(tmp, "~") == 0)
-		{
-ft_printf("--------- HERE -- 3 ----------\n");
-
 				 return (change_to_home_dir(s));
-		}
 		else if (tmp[0] == '~' && ft_isprint(tmp[1]))
-		{
-ft_printf("--------- HERE -- 4 ----------\n");
 			return (cd_change_to_fullpath(tmp, s));
-		}
 		else if (tmp[0] == '-' && ft_strchr("pPlL", tmp[1]) != 0)
-		{
-ft_printf("--------- HERE -- 5 ---------- >%s\n", ft_strchr("pPlL", tmp[1]));
-
 			set_arg(tmp[1], s);
-		}
 		else if (change_dir(tmp, s) != EXIT_SUCCESS)
 			return (cd_invalid_input(tmp));
 	}
