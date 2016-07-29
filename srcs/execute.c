@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/28 19:42:04 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/29 10:29:13 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	try_builtin(t_shell *s)
 		return (ft_echo(s->input, s));
 	else if (ft_strcmp(s->input[0], "21sh") == 0)
 		return (run_shell(s));
-//	else if (ft_strcmp(s->input[0], "env") == 0)
-//		return (ft_env(s->input, s));
+	else if (ft_strcmp(s->input[0], "env") == 0)
+		return (ft_env(s->input, s));
 //	else if (ft_strcmp(s->input[0], "printenv") == 0)
 //		return (ft_env(s));
 	else if (ft_strcmp(s->input[0], "set") == 0)
@@ -50,16 +50,24 @@ void	try_system(t_shell *s)
 		path = ft_nstrjoin(s->paths[i], "/", s->input[0]);
 		if (access(path, F_OK) == 0)
 		{
-			var = s->shell_var;
-			var = (ft_strcmp(s->input[0], "printenv") == 0) ? s->env_var : var;
-			var = (ft_strcmp(s->input[0], "set") == 0) ? s->shell_var : var;
+
+ft_printf("File exists --- path >%s\n", path);
+
+			var = (ft_strcmp(s->input[0], "printenv") == 0) ?
+													s->env_var : s->shell_var;
 			if (check_rights(path, 'r', 0, 'x') == EXIT_SUCCESS)
+			{
+
+ft_printf("has rights --- path >%s\n", path);
+
 				if (execve(path, s->input, var) != -1)
-				{
 					ft_strdel(&path);
-					exit(EXIT_SUCCESS);
-				}
+				exit(EXIT_SUCCESS);
+			}
 		}
+
+ft_printf("end of check File exists --- path >%s\n", path);
+
 		ft_strdel(&path);
 		++i;
 	}

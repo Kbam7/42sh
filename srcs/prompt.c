@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/28 20:37:25 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/29 10:35:56 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ void	set_prompt(t_shell *s)
 		free(s->prompt);
 		if (s->arg_p && s->arg_u)
 		{
-			tmp = ft_strjoin(":", s->cwd);
+			tmp = ft_strstr(s->cwd, ft_getenv("HOME", s)) + ft_strlen(ft_getenv("HOME", s));
+			tmp = ft_strjoin(": ", tmp);
 			s->prompt = ft_strjoin(ft_getenv("USER", s), tmp);
 			ft_strdel(&tmp);
 		}

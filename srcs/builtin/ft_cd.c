@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/10 13:29:59 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/29 03:52:25 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/29 09:46:51 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	change_dir(char *path, t_shell *s)
 	if ((check_rights(path, 'r', 0, 'x') != EXIT_SUCCESS) || chdir(path) != 0)
 		return (err(ERR_CHDIR, path));
 // Update current working directory and OLDPWD. OLDPWD is a shell variable, not environment var
-	ft_set(2, "OLDPWD", ft_getenv("PWD", s), s);
+	ft_set(1, "OLDPWD", s->cwd, s);
 	s->cwd = getcwd(NULL, 4096);
 	ft_set(1, "PWD", s->cwd, s);
 	return (EXIT_SUCCESS);
