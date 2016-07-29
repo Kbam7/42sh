@@ -6,11 +6,22 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/10 13:29:59 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/28 21:51:56 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/29 03:31:57 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
+
+static int	change_dir(char *path, t_shell *s)
+{
+// check if path exists, then check rights if it exists. --  access(path, F_OK) . .. .
+	if ((check_rights(path, 'r', 0, 'x') != EXIT_SUCCESS) || chdir(path) != 0)
+		return (err(ERR_CHDIR, path));
+// Update current working directory and OLDPWD. OLDPWD is a shell variable, not environment var
+	ft_set(2, "OLDPWD", ft_getenv("PWD", s), s);
+	ft_set(1, "PWD", path, s);
+	return (EXIT_SUCCESS);
+}
 
 static void	set_arg(char c, t_shell *s)
 {
@@ -20,62 +31,92 @@ static void	set_arg(char c, t_shell *s)
 		s->func_opt.cd.p = 0;
 }
 
-static int	get_args(char **input, t_shell *s)
+int	cd_invalid_input(char *input)
 {
-	int		i;
-	int		j;
 	char	*tmp;
-	char	*ch;
 
-	j = 0;
-	while (input[++j])
-	{
-		i = 0;
-		while (input[j][i++])
-			if (ft_strchr("-lL", input[j][i]))
-				set_arg(input[j][i], s);
-			else
-			{
-				ch = ft_ctostr(input[j][i]);
-				tmp = ft_nstrjoin("env: Invalid option -- '", ch,"'");
-				i = err(ERR_INVALID_ARG, tmp);
-				ft_strdel(&ch);
-				ft_strdel(&tmp);
-				return (i);
-			}
-	}
-	return (EXIT_SUCCESS);
+	tmp = ft_nstrjoin("cd: Invalid option/path -- '", input,"'");
+	err(ERR_INVALID_ARG, tmp);
+	ft_strdel(&tmp);
+	return (ERR_INVALID_ARG);
 }
 
-static int	change_dir(char *path, t_shell *s)
+int	cd_change_to_fullpath(char *input, t_shell *s)
 {
-	if (chdir(path) != 0)
-		return (err(ERR_CHDIR, path));
-// Update current working directory and OLDPWD. OLDPWD is a shell variable, not environment var
-	ft_set(2, "OLDPWD", ft_getenv("PWD", s), s);
-	ft_set(1, "PWD", path, s);
-	return (EXIT_SUCCESS);
+	char	*tmp;
+	char	*path;
+	int		ret;
+
+	path = ft_getenv("HOME", s);
+	tmp = ft_strsub(input, 1, ft_strlen(input) - 1);
+	path = ft_strjoin(path, tmp);
+	ret = change_dir(path, s);
+	ft_strdel(&tmp);
+	ft_strdel(&path);
+	return (ret);
+}
+
+int	change_to_home_dir(t_shell *s)
+{
+	char	*tmp;
+
+	if ((tmp = ft_getenv("HOME", s)) == NULL)
+		ft_putstr("cd: HOME variable not set.");
+	else
+		return (change_dir(tmp, s));
+	return (EXIT_FAILURE);
+}
+
+int	change_to_oldpwd(t_shell *s)
+{
+	char	*tmp;
+
+	if ((tmp = ft_getenv("OLDPWD", s)) == NULL)
+		ft_putstr("cd: OLDPWD variable not set.\n");
+	else
+		return (change_dir(tmp, s));
+	return (EXIT_FAILURE);
 }
 
 int			ft_cd(char **input, t_shell *s)
 {
-	char	*last_dir;
+	int		j;
+	char	*tmp;
 
-	get_args(input, s);
-//	if (s->func_opt.cd.l)
-//		follow links
-//	else	// default -- opt 'p'
-//		dont follow links
-	if (input[1] && input[1][0] != '~')
-		if (input[1][0] == '-')
-			if ((last_dir = ft_getenv("OLDPWD", s)) == NULL)
-				err("cd: OLDPWD not set");
-			else
-				change_dir(last_dir);
-		else
-			change_dir(input[1]);
-	else if (input[1][0] == '~')
-		if ((change_dir(ft_getenv("HOME", s))) != EXIT_SUCCESS)
-			return (err(ERR_CHDIR, ft_getenv("HOME", s)));
+	j = 0;
+	while (input[++j] && j < 2)
+	{
+		tmp = input[j];
+
+ft_printf("--------- HERE --1 ----------\n");
+
+		if (ft_strcmp(tmp, "-") == 0)
+		{
+ft_printf("--------- HERE -- 2 ----------\n");
+
+			return (change_to_oldpwd(s));
+		}
+		else if (ft_strcmp(tmp, "--")  == 0 || ft_strcmp(tmp, "~") == 0)
+		{
+ft_printf("--------- HERE -- 3 ----------\n");
+
+				 return (change_to_home_dir(s));
+		}
+		else if (tmp[0] == '~' && ft_isprint(tmp[1]))
+		{
+ft_printf("--------- HERE -- 4 ----------\n");
+			return (cd_change_to_fullpath(tmp, s));
+		}
+		else if (tmp[0] == '-' && ft_strchr("pPlL", tmp[1]) != 0)
+		{
+ft_printf("--------- HERE -- 5 ---------- >%s\n", ft_strchr("pPlL", tmp[1]));
+
+			set_arg(tmp[1], s);
+		}
+		else if (change_dir(tmp, s) != EXIT_SUCCESS)
+			return (cd_invalid_input(tmp));
+	}
+	if (ft_strcmp(input[0], "cd") == 0 && input[1] == NULL)
+		return (change_to_home_dir(s));
 	return (EXIT_SUCCESS);
 }
