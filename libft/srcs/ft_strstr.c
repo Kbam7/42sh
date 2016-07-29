@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/15 11:13:39 by kbamping          #+#    #+#             */
-/*   Updated: 2016/05/15 11:13:55 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/29 19:57:03 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,5 @@ char	*ft_strstr(const char *haystack, const char *needle)
 		}
 		i++;
 	}
-	return (0);
+	return (NULL);
 }
