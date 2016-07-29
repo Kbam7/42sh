@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:47 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/29 21:16:07 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 00:09:04 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,9 @@ int			ft_set(int env_type, char *name, char *val, t_shell *s)
 	if (!name && !val)
 		print_variables(*env);
 	else if (name && ft_strchr(name, '='))
-	{
 		status = get_and_set_values(name, env);
-	}
 	else if (val && ft_strchr(val, '='))
-	{
 		status = get_and_set_values(val, env);
-	}
 	else if (name && val)
 		status = ft_set_env(name, val, env);
 	else if (name && !val)

@@ -65,6 +65,14 @@ typedef struct			s_func_opt
 	t_cd_func	cd;
 }				t_func_opt;
 
+typedef struct			s_cmd_list
+{
+	char 				*cmd;
+	struct s_cmd_list	*pipes;
+	struct s_cmd_list	*redir;
+	struct s_cmd_list	*next;
+}				t_cmd_list;
+
 typedef struct			s_shell
 {
 	char		**env_var;	// copy to child
@@ -78,6 +86,7 @@ typedef struct			s_shell
 	char		**input;
 	int			arg_p;
 	int			arg_u;
+	t_cmd_list	*commands;
 }				t_shell;
 
 /*
