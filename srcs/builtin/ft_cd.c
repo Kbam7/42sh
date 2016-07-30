@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/10 13:29:59 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/29 09:46:51 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 00:25:00 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	cd_invalid_input(char *input)
 {
 	char	*tmp;
 
-	tmp = ft_nstrjoin("cd: Invalid option/path -- '", input,"'");
+	tmp = ft_strjoinstr("cd: Invalid option/path -- '", input,"'");
 	err(ERR_INVALID_ARG, tmp);
 	ft_strdel(&tmp);
 	return (ERR_INVALID_ARG);

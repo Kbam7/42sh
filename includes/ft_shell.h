@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/07/29 14:59:02 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 00:35:10 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ char			*check_shell_variables(char *name, t_shell *s);
 */
 int				execute_cmd(t_shell *s);
 int				try_builtin(t_shell *s);
-int			try_system(t_shell *s);
+int				try_system(t_shell *s);
 
 /*
 **	tab_funcs.c
@@ -149,11 +149,6 @@ void			print_variables(char **env);
 **	err.c
 */
 int				err(int errno, char *msg);
-
-/*
-**	ft_nstrjoin.c
-*/
-char			*ft_nstrjoin(char *s1, char *s2, char *s3);
 
 /*
 **	###=----[ BUILTIN FUNCTIONS ]-----=###

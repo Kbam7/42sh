@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:42 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/28 21:30:33 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 00:25:00 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	get_args(char **input, t_shell *s)
 			else
 			{
 				ch = ft_ctostr(input[j][i]);
-				tmp = ft_nstrjoin("env: Invalid option -- '", ch,"'");
+				tmp = ft_strjoinstr("env: Invalid option -- '", ch,"'");
 				i = err(ERR_INVALID_ARG, tmp);
 				ft_strdel(&ch);
 				ft_strdel(&tmp);

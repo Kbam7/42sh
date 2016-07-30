@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_nstrjoin.c                                      :+:      :+:    :+:   */
+/*   ft_strjoinstr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 15:07:59 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/09 15:08:06 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 00:29:21 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_shell.h"
+#include "libft.h"
 
-char	*ft_nstrjoin(char *s1, char *s2, char *s3)
+char	*ft_strjoinstr(char *s1, char *s2, char *s3)
 {
 	char	*tmp;
 	char	*str;

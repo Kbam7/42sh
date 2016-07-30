@@ -8,13 +8,15 @@ int	check_colon(char *str, t_shell *s)
 
 	i = 0;
 	ret = EXIT_FAILURE;
-	if (s->command == NULL && ft_strchr(str, ';')) // is first command;
+	if (ft_strchr(str, ';'))
 	{
 		cmds = ft_nstrsplit(str, ';');
 		while (i++ < cmds.words)
-			ret = add_cmd_list(&s->commands, cmds.strings[i]);
+			ret = add_cmd(&s->commands, cmds.strings[i]);
 		free_tab(cmds.strings, cmds.words);
 	}
+	else
+		ret = add_cmd(&s->commands, str);
 	return (ret);
 }
 

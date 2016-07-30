@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:50 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/29 14:39:57 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 00:25:00 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,23 @@
 static void	check_errno(char **tmp, int errno, char *msg)
 {
 	if (errno == ERR_INVALID_ARG)
-		*tmp = ft_nstrjoin("Invalid arguments for '", msg, "'");
+		*tmp = ft_strjoinstr("Invalid arguments for '", msg, "'");
 	else if (errno == ERR_NOTFOUND)
-		*tmp = ft_nstrjoin("Command '", msg, "' not found");
+		*tmp = ft_strjoinstr("Command '", msg, "' not found");
 	else if (errno == ERR_FORK_FAILED)
-		*tmp = ft_nstrjoin("Fork failed! '", msg, "'");
+		*tmp = ft_strjoinstr("Fork failed! '", msg, "'");
 	else if (errno == ERR_CHDIR)
-		*tmp = ft_nstrjoin("Cannot change to directory '", msg, "'");
+		*tmp = ft_strjoinstr("Cannot change to directory '", msg, "'");
 	else if (errno == ERR_MAX_PATHLEN)
-		*tmp = ft_nstrjoin("Maximum path length reached.\n'", msg, "'");
+		*tmp = ft_strjoinstr("Maximum path length reached.\n'", msg, "'");
 	else if (errno == ERR_NO_FILE)
-		*tmp = ft_nstrjoin("File/Directory does not exist '", msg, "'");
+		*tmp = ft_strjoinstr("File/Directory does not exist '", msg, "'");
 	else if (errno == ERR_NO_READ)
-		*tmp = ft_nstrjoin("User does not have read rights for '", msg, "'");
+		*tmp = ft_strjoinstr("User does not have read rights for '", msg, "'");
 	else if (errno == ERR_NO_WRITE)
-		*tmp = ft_nstrjoin("User does not have write rights for '", msg, "'");
+		*tmp = ft_strjoinstr("User does not have write rights for '", msg, "'");
 	else if (errno == ERR_NO_EXEC)
-		*tmp = ft_nstrjoin("User does not have execute rights for '", msg, "'");
+		*tmp = ft_strjoinstr("User does not have execute rights for '", msg, "'");
 	else
 		*tmp = ft_strdup("No further details");
 }

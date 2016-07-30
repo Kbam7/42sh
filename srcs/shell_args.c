@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 16:51:31 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/28 01:34:50 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 00:25:00 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	get_arg(int ac, char **argv, t_shell *s)
 		}
 		else
 		{	
-			tmp = ft_nstrjoin(argv[0], ": ", argv[ac]);
+			tmp = ft_strjoinstr(argv[0], ": ", argv[ac]);
 			err(ERR_INVALID_ARG, tmp);
 			ft_strdel(&tmp);
 		}

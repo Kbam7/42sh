@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/29 20:24:03 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 00:25:00 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	set_prompt(t_shell *s)
 		if (s->arg_p && s->arg_u)
 		{
 			tmp = get_path(s);
-			s->prompt = ft_nstrjoin(ft_getenv("USER", s), ":",tmp);
+			s->prompt = ft_strjoinstr(ft_getenv("USER", s), ":",tmp);
 			ft_strdel(&tmp);
 		}
 		else if (s->arg_p)

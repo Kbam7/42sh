@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/09 12:37:20 by kbamping          #+#    #+#             */
-/*   Updated: 2016/06/19 14:43:02 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 00:29:36 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ int				ft_atoi_hex(const char *nptr);
 t_split_string	ft_nstrsplit(const char *s, char c);
 char			*ft_strtoupper(char *str);
 int				ft_isint(char *str);
+char			*ft_strjoinstr(char *s1, char *s2, char *s3);
 
 /*
 ** GET_NEXT_LINE

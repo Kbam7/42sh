@@ -17,3 +17,20 @@ t_cmd_list	*add_node(t_cmd_list *cmd_list, char *cmd)
 	}
 	return (cmd_list);
 }
+
+void	free_cmd_list(t_cmd_list **list)
+{
+	t_cmd_list	*cmd;
+
+	while (*list)
+	{
+		cmd = *list;
+		*list = (*list)->next;
+		if (cmd->pipes)
+			free_cmd_list(&cmd->pipes);
+		if (cmd->redir)
+			free_cmd_list(&cmd->redir);
+		ft_strdel(cmd->cmd);
+		free(cmd);
+	}
+}
