@@ -1,6 +1,6 @@
 #include "ft_shell.h"
 
-int	store_colon(char *str, t_shell *s)
+int	store_commands(char *str, t_shell *s)
 {
 	size_t			i;
 	int				ret;
@@ -22,7 +22,7 @@ int	store_colon(char *str, t_shell *s)
 		ret = add_cmd(&s->commands, str);
 	return (ret);
 }
-
+/*
 int	store_pipe(t_cmd_list **cmd)
 {
 	size_t			i;
@@ -44,6 +44,7 @@ int	store_pipe(t_cmd_list **cmd)
 	else
 		return (err(ERR_INVALID_PIPE, "--- store_pipe()---"));
 }
+*/
 /*
 int	store_redirect(t_cmd_list *cmd, t_shell *s)
 {

@@ -6,13 +6,13 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 02:28:26 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 02:17:41 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 20:14:13 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-static void	init_func_options(t_shell *s)
+static void	init_builtin_func_options(t_shell *s)
 {
 	s->func_opt.env.u = 0;
 	s->func_opt.env.i = 0;
@@ -28,7 +28,8 @@ void	init_env(t_shell *s, int argc, char **argv, char **envp)
 	t_split_string	tmp;
 	char			*tmpstr;
 
-	init_func_options(s);
+	get_arg(argc, argv, s);
+	init_builtin_func_options(s);
 	s->env_var = ft_tabdup(envp, ft_tablen(envp));
 	s->shell_var = ft_tabdup(envp, ft_tablen(envp));
 	tmpstr = ft_getenv("PATH", s);
@@ -43,6 +44,5 @@ void	init_env(t_shell *s, int argc, char **argv, char **envp)
 	}
 	s->prompt = ft_strnew(1);
 	s->cwd = ft_getenv("PWD", s);
-	get_arg(argc, argv, s);
 	s->commands = NULL;
 }

@@ -6,26 +6,26 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 18:03:53 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 18:53:31 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 20:57:40 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 /*
-static int	save_input(char *line, t_shell *s)
+static int	save_input(char *cmd, t_shell *s)
 {
 	char			*tmp;
 	t_split_string	data;
 
-	tmp = ft_strtrim(line);
+	tmp = ft_strtrim(cmd);
 	data = ft_nstrsplit(tmp, ' ');
-	ft_strdel(&line);
+	ft_strdel(&cmd);
 	ft_strdel(&tmp);
 	s->input = ft_tabdup(data.strings, data.words);
 	free_tab(data.strings, data.words);
 }
 */
-static int	process_input(char *line, t_shell *s)
+static int	process_input(char *cmd, t_shell *s)
 {
 	int			error;
 	t_cmd_list	*cmd;
@@ -37,14 +37,35 @@ static int	process_input(char *line, t_shell *s)
 //					execute_redir(cmd_list->redir);
 */			
 	error = EXIT_FAILURE;
-	if (s->commands == NULL)
-		return (/*store_commands()*/store_colon(line, s)
-	if (ft_strchr(line, '|'))
-	// execute_pipe()
-					// split and use split[n - 1] as stdin for split[n] so that each pipe/cmd gets stdin from the pipe/cmd before it.
-					// cycle through split[] and process_input() each argument to check for redirs(< , >).
-	else if (ft_strchr(line, '<') /*or '>'*/) // there will be no '|' in line
-	//	// execute_redir()
+	if (ft_strchr(cmd, '|'))
+	// return (process_pipes(cmd, s));
+	else if (ft_strchr(cmd, '<') /*or '>'*/) // there will be no '|' in cmd
+	// return (process_redirs(cmd, s));
+	else
+	// cmd contains no operators, try and execute
+	// check if is a file or a cmd
+	// and execute, return output to s->output_fd
+}
+
+int		process_pipe(char *cmd, t_shell *s)
+{
+	t_split_string	pipes;
+	size_t			i;
+
+	i = 0;
+	// split and use split[n - 1] as stdin for split[n] so that each pipe/cmd gets stdin from the pipe/cmd before it.
+	pipes = ft_nstrsplit(cmd, '|');
+	// cycle through split[] and process_input() each argument to check for redirs(< , >) or if can execute.
+	while (pipes.strings[i] && i < pipes.words)
+	{
+		process_input(pipes.strings[i]);
+		++i;
+	}
+	free_tab(pipes.strings[i], pipes.words);
+}
+
+int		process_redir(char *cmd, t_shell *s)
+{
 					// split. can separate by space ' '. All redirs will be separated by space, else error.
 					// if is a redirect, found out which way it going and execute it with redir_input() or redir_output()
 
@@ -55,16 +76,6 @@ static int	process_input(char *line, t_shell *s)
 					//	if '>',
 					//		split[n] is stdin for split[n + 1].
 					// 		set_redirect(); // sets input and output fd.
-
-	else // line contains no operators.
-				// check if is a file or a cmd
-				// and execute, return output to s->output_fd
-/*
-	if (ft_strchr(cmd->cmd, '|'))
-		error = store_pipe(&cmd);
-//	else if (ft_strchr(cmd->cmd:, '<') || ft_strchr(cmd->cmd, '>'))
-//		error = store_redirect(&cmd, s);
-*/
 }
 
 int		get_commands(t_shell *s)
@@ -77,17 +88,20 @@ int		get_commands(t_shell *s)
 	{
 		line = ft_strtrim(tmp);
 		ft_strdel(&tmp);
-		process_input(line, s);
-
+		if (store_commands(cmd, s) != EXIT_SUCCESS)
+		{
+			ft_strdel(&line);
+			return (0);
+		}
 //print_cmd_list(s->commands); // debug
-
 		ft_strdel(&line);
 	}
 	if (ret < 0)
-		ft_putstr_fd("ft_gnl Error!\n", 2);
+		return (err(ERR_GNL, "ft_gnl Error!");
 	return (ret);
 }
 
+// This will get the string of the command and make it into input[](argv for executing commands)
 void	get_input(t_cmd_list *command, t_shell *s)
 {
 	char			*tmp;

@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 18:57:54 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 20:55:53 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void		shell_loop(t_shell *s)
 	t_cmd_list	*cmd_list;
 	t_cmd_list	*command;
 
-	while (42)
+	while (ret != EXIT_SH)
 	{
 		set_prompt(s);
 		ft_putstr(s->prompt);
@@ -58,14 +58,16 @@ void		shell_loop(t_shell *s)
 			cmd_list = s->commands;
 			while (cmd_list != NULL) // ! end of cmd_list
 			{
-				process_input(cmd_list->cmd, s);
+				ret = process_input(cmd_list->cmd, s); // this will run until all commands have been executed, "exit" was input, or there was an error.
+				if (ret == EXIT_SH)
+					break ;
 				cmd_list = cmd_list->next;
 			}
-printf("shell_loop() -- free_cmd_list()\n"); // debug
+//printf("shell_loop() -- free_cmd_list()\n"); // debug
 			free_cmd_list(&s->commands);
-			if (ret == EXIT_SH)
-				break ;
 		}
+//		if ret == 0, nothin input
+//		if ret < 0, gnl error gets printed, prompt is reprinted
 	}
 }
 

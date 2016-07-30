@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/07/30 14:54:55 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 20:21:19 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,13 @@ typedef struct			s_cmd_list
 	struct s_cmd_list	*next;
 }				t_cmd_list;
 
+typedef struct			s_fd
+{
+	int		read_fd;
+	int		write_fd;
+	int		pipe_fd[2];
+}						t_fd;
+
 typedef struct			s_shell
 {
 	char		**env_var;	// copy to child
@@ -90,6 +97,7 @@ typedef struct			s_shell
 	int			arg_p;
 	int			arg_u;
 	t_cmd_list	*commands;
+	t_fd		fd;
 }				t_shell;
 
 /*
@@ -119,7 +127,7 @@ void			get_input(t_cmd_list *command, t_shell *s);
 /*
 **	input_utils.c
 */
-int				store_colon(char *str, t_shell *s);
+int				store_command(char *str, t_shell *s);
 int				store_pipe(t_cmd_list **cmd);
 //int				store_redirect(t_cmd_list *cmd, t_shell *s);
 
