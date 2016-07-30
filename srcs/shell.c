@@ -6,31 +6,70 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 13:13:17 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 17:45:38 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
+execute_pipes(t_cmd_list *pipe_list, t_shell *s)
+{
+		while (pipe_list)
+		{
+//		printf("shell_loop() - pipe -- get_input(%s)\n", command->cmd); // debug
+			get_input(pipe_list, s);
+
+			if (s->input)
+
+//		printf("shell_loop() - pipe -- execute_cmd(%s)\n", s->input[0]); // debug
+			ret = execute_cmd(s, command->cmd);
+			free_tab(s->input, ft_tablen(s->input));
+			if (ret == EXIT_SH)
+				break ;
+			pipe_list = pipe_list->next;
+		}
+}
+
+execute_redir(t_cmd_list *redir_list, t_shell *s)
+{
+		while (redir_list)
+		{
+			get_input()
+//	printf("shell_loop() - pipe -- get_input(%s)\n", command->cmd); // debug
+			get_input(command, s);
+//	printf("shell_loop() - pipe -- execute_cmd(%s)\n", s->input[0]); // debug
+			ret = execute_cmd(s, command->cmd);
+			free_tab(s->input, ft_tablen(s->input));
+		}
+}
+
 void		shell_loop(t_shell *s)
 {
 	int			ret;
+	t_cmd_list	*cmd_list;
 	t_cmd_list	*command;
 
 	while (42)
 	{
 		set_prompt(s);
 		ft_putstr(s->prompt);
-		if ((ret = get_commands(s) > 0))
+		if ((ret = get_commands(s) > 0)) // THIS MUST ONLY GET THE COMMANDS> It must not save any other list of pipes or redir. 
 		{
-			command = s->commands;
-			while (command != NULL) // ! end of cmd_list
+			cmd_list = s->commands;
+			while (cmd_list != NULL) // ! end of cmd_list
 			{
-				get_input(command, s);
-				ret = execute_cmd(s);
-				command = command->next;
+				if (cmd_list->pipes)	// if there is '|' in cmd
+										// split and use split[n - 1] as stdin for split[n] so that each pipe/cmd gets stdin from the pipe/cmd before it.
+//					execute_pipes(cmd_list->pipes);
+				else if (cmd_list->redir) // if there is '>' or '<' in cmd. there will not be pipes in cmd.
+										// split. can separate by space ' '. All redirs will be separated by space, else error.
+										//	if "<&-" or  ">&-"
+										//	if '<', split[n] is stdin for split[n - 1]. 
+										//	if '>', split[n - 1] is stdin for split[n].
+//					execute_redir(cmd_list->redir);
+				cmd_list = cmd_list->next;
 			}
-//			free_tab(s->input, ft_tablen(s->input));
+printf("shell_loop() -- free_cmd_list()\n"); // debug
 			free_cmd_list(&s->commands);
 			if (ret == EXIT_SH)
 				break ;

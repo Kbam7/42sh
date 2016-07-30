@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 18:03:53 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 13:26:34 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 17:45:36 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,19 @@ static int	process_input(char *line, t_shell *s)
 	while (cmd != NULL)
 	{
 		if (ft_strchr(cmd->cmd, '|'))
-			error = check_pipe(&cmd);
+		// split and use split[n - 1] as stdin for split[n] so that each pipe/cmd gets stdin from the pipe/cmd before it.
+
+/*
+		if (ft_strchr(cmd->cmd, '|'))
+			error = store_pipe(&cmd);
 //		else if (ft_strchr(cmd->cmd:, '<') || ft_strchr(cmd->cmd, '>'))
-//			error = check_redirect(&cmd, s);
+//			error = store_redirect(&cmd, s);
+*/
 		cmd = cmd->next;
 	}
 	if (s->commands == NULL)
 	{
-		if ((error = check_colon(line, s)) != EXIT_SUCCESS)
+		if ((error = /*store_commands()*/store_colon(line, s)) != EXIT_SUCCESS)
 			return (error);
 		return (process_input(line, s));
 	}
@@ -60,6 +65,9 @@ int		get_commands(t_shell *s)
 		line = ft_strtrim(tmp);
 		ft_strdel(&tmp);
 		process_input(line, s);
+
+print_cmd_list(s->commands); // debug
+
 		ft_strdel(&line);
 	}
 	if (ret < 0)

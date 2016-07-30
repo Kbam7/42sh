@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/07/30 13:25:59 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 14:54:55 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 
 # include "libft.h"
 # include <sys/wait.h>
+
+#include <stdio.h> // debug
 
 /*
 **	Max pathname and filename macros
@@ -117,9 +119,9 @@ void			get_input(t_cmd_list *command, t_shell *s);
 /*
 **	input_utils.c
 */
-int				check_colon(char *str, t_shell *s);
-int				check_pipe(t_cmd_list **cmd);
-int				check_redirect(t_cmd_list *cmd, t_shell *s);
+int				store_colon(char *str, t_shell *s);
+int				store_pipe(t_cmd_list **cmd);
+//int				store_redirect(t_cmd_list *cmd, t_shell *s);
 
 /*
 **	shell_args.c
@@ -164,6 +166,7 @@ int				err(int errno, char *msg);
 */
 int				add_cmd(t_cmd_list **cmd_list, char *cmd);
 void			free_cmd_list(t_cmd_list **list);
+void			print_cmd_list(t_cmd_list *list); // debug
 
 /*
 **	###=----[ BUILTIN FUNCTIONS ]-----=###

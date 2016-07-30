@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 13:27:10 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 16:57:46 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,21 @@ int		execute_cmd(t_shell *s)
 	status = EXIT_FAILURE;
 	if ((status = try_builtin(s)) == ERR_NOTFOUND)
 	{
+
+//	output_fd will be stdout(1) as default. 
+
+//	If a left redir(<) is found, read from arg defined after (<). i.e execute arg, and read its output into cmd. e.g	cmd < file.txt
+//																														open file.txt
+//																														read file.txt into stdin for cmd.
+
+//	If a fd is given in the command,
+//		then output_fd will be set to the one defined	
+
+//	execute_cmd must get a output_fd as a param, or store one in the t_shell s.
+//	child process reads from stdin and must write to the output_fd given.
+
+//	the parent process will read from the child. (pipe_fd[0] = 0(stdin), pipe_fd[1] = output_fd))
+//	the parent process will wait for the child
 		pid = fork();
 		if (pid < 0)
 			return (err(ERR_FORK_FAILED, ""));

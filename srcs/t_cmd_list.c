@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/30 13:31:48 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 13:34:58 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 14:16:12 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,44 @@ int		add_cmd(t_cmd_list **cmd_list, char *cmd)
 {
 	t_cmd_list	*new_cmd;
 	t_cmd_list	*tmp;
+	static int i = 0;
 	
 	tmp = *cmd_list;
 	new_cmd = (t_cmd_list *)malloc(sizeof(new_cmd));
 	if (new_cmd)
 	{
-
-ft_putstr("Here\n");
+i++; // debug
+ft_printf("%d - add_cmd(%s)\n", i, cmd); // debug
 
 		new_cmd->cmd = ft_strdup(cmd);
 		new_cmd->pipes = NULL;
 		new_cmd->redir = NULL;
 		new_cmd->next = NULL;
+
+ft_putstr("Here 2\n"); // debug
+
 		if (tmp != NULL)
 		{
+
+ft_putstr("Here 3 --  list not empty\n"); // debug
+
 			while (tmp->next)
 				tmp = tmp->next;
 			tmp->next = new_cmd;
+
+ft_putstr("Here 4 --  new_cmd assigned\n"); // debug
+
 		}
 		else
+		{
+
+ft_putstr("Here 5 --  list empty\n"); // debug
+
 			*cmd_list = new_cmd;
+
+ft_putstr("Here 6 --  new_cmd assigned\n"); // debug
+
+		}
 		return (EXIT_SUCCESS);
 	}
 	return (EXIT_FAILURE);
@@ -49,13 +67,33 @@ void	free_cmd_list(t_cmd_list **list)
 
 	while (*list)
 	{
+
+ft_putstr("Here free_cmd_list -- 1\n"); // debug
+
 		cmd = *list;
 		*list = (*list)->next;
+
+ft_putstr("Here free_cmd_list -- 2\n"); // debug
+
 		if (cmd->pipes)
 			free_cmd_list(&cmd->pipes);
 		if (cmd->redir)
 			free_cmd_list(&cmd->redir);
+
+ft_putstr("Here free_cmd_list -- 3\n"); // debug
+
 		ft_strdel(&cmd->cmd);
 		free(cmd);
 	}
+}
+
+void	print_cmd_list(t_cmd_list *list)
+{
+printf("------- Printing Commands\n");
+	while (list)
+	{
+		printf(">%s\n", list->cmd);
+		list = list->next;
+	}
+printf("------- FINISHED Printing Commands\n");
 }
