@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 17:45:38 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 18:57:54 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,7 @@ void		shell_loop(t_shell *s)
 			cmd_list = s->commands;
 			while (cmd_list != NULL) // ! end of cmd_list
 			{
-				if (cmd_list->pipes)	// if there is '|' in cmd
-										// split and use split[n - 1] as stdin for split[n] so that each pipe/cmd gets stdin from the pipe/cmd before it.
-//					execute_pipes(cmd_list->pipes);
-				else if (cmd_list->redir) // if there is '>' or '<' in cmd. there will not be pipes in cmd.
-										// split. can separate by space ' '. All redirs will be separated by space, else error.
-										//	if "<&-" or  ">&-"
-										//	if '<', split[n] is stdin for split[n - 1]. 
-										//	if '>', split[n - 1] is stdin for split[n].
-//					execute_redir(cmd_list->redir);
+				process_input(cmd_list->cmd, s);
 				cmd_list = cmd_list->next;
 			}
 printf("shell_loop() -- free_cmd_list()\n"); // debug

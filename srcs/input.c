@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 18:03:53 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 17:45:36 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 18:53:31 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,28 +30,41 @@ static int	process_input(char *line, t_shell *s)
 	int			error;
 	t_cmd_list	*cmd;
 
-	error = EXIT_FAILURE;
-	cmd = s->commands;
-	while (cmd != NULL)
-	{
-		if (ft_strchr(cmd->cmd, '|'))
-		// split and use split[n - 1] as stdin for split[n] so that each pipe/cmd gets stdin from the pipe/cmd before it.
-
 /*
-		if (ft_strchr(cmd->cmd, '|'))
-			error = store_pipe(&cmd);
-//		else if (ft_strchr(cmd->cmd:, '<') || ft_strchr(cmd->cmd, '>'))
-//			error = store_redirect(&cmd, s);
-*/
-		cmd = cmd->next;
-	}
+				if ('|')	// if there is '|' in cmd
+//					process_input(cmd_list->cmd, s);
+				else if (!'|' && ('<' || '>') ) // if there is '>' or '<' in cmd. there will not be pipes in cmd.
+//					execute_redir(cmd_list->redir);
+*/			
+	error = EXIT_FAILURE;
 	if (s->commands == NULL)
-	{
-		if ((error = /*store_commands()*/store_colon(line, s)) != EXIT_SUCCESS)
-			return (error);
-		return (process_input(line, s));
-	}
-	return (error);
+		return (/*store_commands()*/store_colon(line, s)
+	if (ft_strchr(line, '|'))
+	// execute_pipe()
+					// split and use split[n - 1] as stdin for split[n] so that each pipe/cmd gets stdin from the pipe/cmd before it.
+					// cycle through split[] and process_input() each argument to check for redirs(< , >).
+	else if (ft_strchr(line, '<') /*or '>'*/) // there will be no '|' in line
+	//	// execute_redir()
+					// split. can separate by space ' '. All redirs will be separated by space, else error.
+					// if is a redirect, found out which way it going and execute it with redir_input() or redir_output()
+
+					//	if "<&-" or  ">&-"
+					//	if '<', 
+					//		split[n] is stdin for split[n - 1].
+					// 		set_redirect(); // sets input and output fd.
+					//	if '>',
+					//		split[n] is stdin for split[n + 1].
+					// 		set_redirect(); // sets input and output fd.
+
+	else // line contains no operators.
+				// check if is a file or a cmd
+				// and execute, return output to s->output_fd
+/*
+	if (ft_strchr(cmd->cmd, '|'))
+		error = store_pipe(&cmd);
+//	else if (ft_strchr(cmd->cmd:, '<') || ft_strchr(cmd->cmd, '>'))
+//		error = store_redirect(&cmd, s);
+*/
 }
 
 int		get_commands(t_shell *s)
@@ -66,7 +79,7 @@ int		get_commands(t_shell *s)
 		ft_strdel(&tmp);
 		process_input(line, s);
 
-print_cmd_list(s->commands); // debug
+//print_cmd_list(s->commands); // debug
 
 		ft_strdel(&line);
 	}
