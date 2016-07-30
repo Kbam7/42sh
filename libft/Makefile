@@ -6,7 +6,7 @@
 #    By: kbamping <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/28 14:01:24 by kbamping          #+#    #+#              #
-#    Updated: 2016/07/30 00:34:27 by kbamping         ###   ########.fr        #
+#    Updated: 2016/07/30 02:31:41 by kbamping         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,7 +69,7 @@ OBJS = ft_atoi.o ft_bzero.o ft_isalnum.o 					\
 	ft_lstnew.o ft_lstpushback.o ft_lstrev.o 				\
 	ft_printf.o ft_strchr_end.o ft_swap.o ft_float_swap.o 	\
 	ft_strtoupper.o ft_nstrsplit.o ft_memswap.o ft_isint.o	\
-	ft_sprintf.o ft_fprintf.o ft_strjoinstr.c				\
+	ft_sprintf.o ft_fprintf.o ft_strjoinstr.o				\
 
 all: $(NAME)
 

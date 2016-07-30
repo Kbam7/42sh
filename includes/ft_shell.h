@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/07/30 00:35:10 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 13:25:59 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define ERR_NO_WRITE			1008
 # define ERR_NO_EXEC			1009
 # define ERR_FORK_FAILED		1010
+# define ERR_INVALID_PIPE		1011
 
 typedef struct		s_env_func
 {
@@ -110,7 +111,15 @@ void			set_prompt(t_shell *s);
 /*
 **	input.c
 */
-int				get_input(t_shell *s);
+int				get_commands(t_shell *s);
+void			get_input(t_cmd_list *command, t_shell *s);
+
+/*
+**	input_utils.c
+*/
+int				check_colon(char *str, t_shell *s);
+int				check_pipe(t_cmd_list **cmd);
+int				check_redirect(t_cmd_list *cmd, t_shell *s);
 
 /*
 **	shell_args.c
@@ -149,6 +158,12 @@ void			print_variables(char **env);
 **	err.c
 */
 int				err(int errno, char *msg);
+
+/*
+**	t_cmd_list.c
+*/
+int				add_cmd(t_cmd_list **cmd_list, char *cmd);
+void			free_cmd_list(t_cmd_list **list);
 
 /*
 **	###=----[ BUILTIN FUNCTIONS ]-----=###

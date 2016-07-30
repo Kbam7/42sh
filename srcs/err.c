@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:50 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 00:25:00 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 13:24:42 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ static void	check_errno(char **tmp, int errno, char *msg)
 		*tmp = ft_strjoinstr("User does not have write rights for '", msg, "'");
 	else if (errno == ERR_NO_EXEC)
 		*tmp = ft_strjoinstr("User does not have execute rights for '", msg, "'");
+	else if (errno == ERR_INVALID_PIPE)
+		*tmp = ft_strjoinstr("Invalid pipe '", msg, "'");
 	else
 		*tmp = ft_strdup("No further details");
 }

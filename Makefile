@@ -8,13 +8,14 @@ SRCS		=	srcs/main.c				\
 				srcs/init.c				\
 				srcs/prompt.c			\
 				srcs/input.c			\
+				srcs/input_utils.c		\
 				srcs/shell_args.c		\
 				srcs/environ.c			\
 				srcs/execute.c			\
-				srcs/tab_funcs.c			\
+				srcs/tab_funcs.c		\
 				srcs/utils.c			\
 				srcs/err.c				\
-				srcs/ft_nstrjoin.c
+				srcs/t_cmd_list.c
 
 BUILTIN		=	srcs/builtin/ft_cd.c			\
 				srcs/builtin/ft_echo.c			\

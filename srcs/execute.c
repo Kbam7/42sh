@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 00:46:38 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 13:27:10 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int		try_system(t_shell *s)
 													s->env_var : s->shell_var;
 	while (s->paths[i] != NULL)
 	{
-		path = ft_nstrjoin(s->paths[i], "/", s->input[0]);
+		path = ft_strjoinstr(s->paths[i], "/", s->input[0]);
 		if (access(path, F_OK) == 0)
 			if (check_rights(path, 'r', 0, 'x') == EXIT_SUCCESS)
 			{

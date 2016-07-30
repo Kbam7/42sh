@@ -6,12 +6,12 @@ int	check_colon(char *str, t_shell *s)
 	int				ret;
 	t_split_string	cmds;
 
-	i = 0;
+	i = -1;
 	ret = EXIT_FAILURE;
 	if (ft_strchr(str, ';'))
 	{
 		cmds = ft_nstrsplit(str, ';');
-		while (i++ < cmds.words)
+		while (i++ < (int)cmds.words)
 			ret = add_cmd(&s->commands, cmds.strings[i]);
 		free_tab(cmds.strings, cmds.words);
 	}
@@ -20,31 +20,43 @@ int	check_colon(char *str, t_shell *s)
 	return (ret);
 }
 
-int	check_pipe(t_cmd_list *list, t_shell *s)
+int	check_pipe(t_cmd_list **cmd)
 {
 	int				i;
-	t_split_string	cmd;
+	int				ret;
+	t_split_string	args;
+	t_cmd_list		*pipes;
 
-	cmd = ft_nstrsplit(line, '|');
-	while (i < commands.words)
+	i = -1;
+	args = ft_nstrsplit((*cmd)->cmd, '|');
+	if (args.words > 1)
 	{
-		if (!(s.cmd.words)
-			s->commands = create_node(command.string[i])
-		s->commands->pipes = add_node(commands.strings[i]};
-		i++;
+		while (++i < (int)args.words)
+			ret = add_cmd(&(*cmd)->pipes, args.strings[i]);
+		pipes = (*cmd)->pipes;
+		while (pipes)
+		{
+			if (ft_strchr(pipes->cmd, '<') || ft_strchr(pipes->cmd, '>'))
+	//			check_redirect(&pipes, s);
+			pipes = pipes->next;
+		}
+		return (ret);
 	}
-	check_redirect(c);
+	else
+		return (err(ERR_INVALID_PIPE, "--- check_pipe()---"));
 }
-
-int	check_redirect(char *cmd, t_shell *s)
-{
 /*
+int	check_redirect(t_cmd_list *cmd, t_shell *s)
+{
+	int	i;
+
+	i = 0;
+	while (cmd->cmd[i] != '\0')
 	{
-	command_redirect = nstrsplit(line, '');
+		if (cmd->cmd[i] == '>')
+			check_write
+		if (cmd->cmd[i] == '<')
+		
 	}
-	if (strcmp)
-	else if (commands = ft_nstrsplit(line, '>'))
-	{
-	}
-*/
 }
+*/
