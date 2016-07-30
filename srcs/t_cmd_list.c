@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/30 13:31:48 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 22:16:28 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/31 00:09:15 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ int		add_cmd(t_cmd_list **cmd_list, char *cmd)
 {
 	t_cmd_list	*new_cmd;
 	t_cmd_list	*tmp;
-	static int i = 0; //debug
+//	static int i = 0; //debug
 	
 	tmp = *cmd_list;
 	new_cmd = (t_cmd_list *)malloc(sizeof(t_cmd_list));
 	if (new_cmd)
 	{
-i++; // debug
-ft_printf("%d - add_cmd(%s)\n", i, cmd); // debug
+//i++; // debug
+//ft_printf("%d - add_cmd(%s)\n", i, cmd); // debug
 
 		if ((new_cmd->cmd = ft_strdup(cmd)) == NULL) // NOTE!! check if ft_strdup returns successfully
 		{
@@ -60,21 +60,15 @@ void	free_cmd_list(t_cmd_list **list)
 
 	while (*list)
 	{
-
-ft_putstr("Here free_cmd_list -- 1\n"); // debug
-
+//ft_putstr("Here free_cmd_list -- 1\n"); // debug
 		cmd = *list;
 		*list = (*list)->next;
-
-ft_putstr("Here free_cmd_list -- 2\n"); // debug
-
+//ft_putstr("Here free_cmd_list -- 2\n"); // debug
 		if (cmd->pipes)
 			free_cmd_list(&cmd->pipes);
 		if (cmd->redir)
 			free_cmd_list(&cmd->redir);
-
-ft_putstr("Here free_cmd_list -- 3\n"); // debug
-
+//ft_putstr("Here free_cmd_list -- 3\n"); // debug
 		ft_strdel(&cmd->cmd);
 		free(cmd);
 	}
@@ -83,10 +77,13 @@ ft_putstr("Here free_cmd_list -- 3\n"); // debug
 void	print_cmd_list(t_cmd_list *list)
 {
 printf("------- Printing Commands\n");
-	while (list)
+	t_cmd_list	*tmp;
+
+	tmp = list;
+	while (tmp)
 	{
-		printf(">%s\n", list->cmd);
-		list = list->next;
+		printf(">%s\n", tmp->cmd);
+		tmp = tmp->next;
 	}
 printf("------- FINISHED Printing Commands\n");
 }

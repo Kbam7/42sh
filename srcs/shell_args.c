@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 16:51:31 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 00:25:00 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 23:49:51 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	get_arg(int ac, char **argv, t_shell *s)
 	s->arg_p = 0;
 	s->arg_u = 0;
 	while (ac-- != 1)
-	{
 		if (argv[ac][0] == '-' && argv[ac][1])
 		{
 			i = 0;
@@ -37,5 +36,6 @@ void	get_arg(int ac, char **argv, t_shell *s)
 			err(ERR_INVALID_ARG, tmp);
 			ft_strdel(&tmp);
 		}
-	}
+	if (s->arg_p == 0 && s->arg_u == 0)
+		intro_message();
 }

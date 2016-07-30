@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 18:03:53 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 21:47:06 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/31 00:30:43 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,7 @@ int		get_commands(t_shell *s)
 			ft_strdel(&cmd);
 			return (0);
 		}
-
-ft_printf("Here -------------\n");
-
-print_cmd_list(s->commands); // debug
-
-ft_printf("Here -------------\n");
-
 		ft_strdel(&cmd);
-
-ft_printf("Here -------------\n");
-
 	}
 	if (ret < 0)
 		return (err(ERR_GNL, "ft_gnl Error!"));
@@ -81,6 +71,7 @@ int	process_input(t_cmd_list *cmd, t_shell *s)
 		// and execute, return output to s->output_fd
 		get_input(cmd, s);
 		error = execute_cmd(s);
+		free_tab(s->input, ft_tablen(s->input));
 	}
 	return (error);
 }

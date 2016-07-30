@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 22:09:35 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/31 00:19:31 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,18 @@ void		shell_loop(t_shell *s)
 		ft_putstr(s->prompt);
 		if ((ret = get_commands(s) > 0)) // THIS MUST ONLY GET THE COMMANDS> It must not save any other list of pipes or redir. 
 		{
+printf("shell_loop() -- added cmd_list\n"); // debug
 			cmd_list = s->commands;
 			while (cmd_list != NULL) // ! end of cmd_list
 			{
 				ret = process_input(cmd_list, s); // this will run until all commands have been executed, "exit" was input, or there was an error.
 				if (ret == EXIT_SH || ret == EXIT_FAILURE)
 					break ;
+//				free_tab(s->input, ft_tablen(s->input));
 				cmd_list = cmd_list->next;
 			}
-//printf("shell_loop() -- free_cmd_list()\n"); // debug
+print_cmd_list(s->commands); // debug
+printf("shell_loop() -- free_cmd_list()\n"); // debug
 			free_cmd_list(&s->commands);
 		}
 //		if ret == 0, nothin input

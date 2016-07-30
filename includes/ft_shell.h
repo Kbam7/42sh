@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/07/30 21:53:18 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 23:35:20 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void			init_env(t_shell *s, int argc, char **argv, char **envp);
 /*
 **	prompt.c
 */
-//void			intro_message();
+void			intro_message();
 void			set_prompt(t_shell *s);
 
 /*

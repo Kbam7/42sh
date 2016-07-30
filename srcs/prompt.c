@@ -6,31 +6,25 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 00:25:00 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 23:42:49 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-/*
-void	intro_message()
+
+void	intro_message(void)
 {
-	static int	flag = 0; // theoretically stops this displaying when launching the shell within itself.
-
-	if (!flag)
-	{
-//	Have this read in from a file.
-	Welcome to my version of Bash. If you would like to have you user name and/or
-	current directory displayed, you will need to relaunch with the relevant options.
-	[- OPTIONS -]
-	-p	Displays current working directory.
-	-u	Displays your username
-	-pu	Displays both the path and your username
-
-	flag = 1;
-	}
+	ft_printf(C_BOLD C_GREEN"\t-- [Welcome to my version of Bash] --"C_NONE
+		"\nIf you would like to have you user name and/or"
+		"\ncurrent directory displayed, you will need to "
+		"\nrelaunch with the relevant options."
+	C_BOLD"\n\t-- [OPTIONS] --\n"C_NONE
+	C_BOLD"-p"C_NONE"\tDisplays current working directory\n"
+	C_BOLD"-u"C_NONE"\tDisplays your username\n"
+	C_BOLD"-pu"C_NONE"\tDisplays both the path and your username\n"
+	);
 }
-*/
 
 static char	*get_path(t_shell *s)
 {
