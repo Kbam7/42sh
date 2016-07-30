@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/30 13:31:48 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 20:26:12 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 22:16:28 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,36 @@ int		add_cmd(t_cmd_list **cmd_list, char *cmd)
 {
 	t_cmd_list	*new_cmd;
 	t_cmd_list	*tmp;
-	static int i = 0;
+	static int i = 0; //debug
 	
 	tmp = *cmd_list;
-	new_cmd = (t_cmd_list *)malloc(sizeof(new_cmd));
+	new_cmd = (t_cmd_list *)malloc(sizeof(t_cmd_list));
 	if (new_cmd)
 	{
-//i++; // debug
-//ft_printf("%d - add_cmd(%s)\n", i, cmd); // debug
+i++; // debug
+ft_printf("%d - add_cmd(%s)\n", i, cmd); // debug
 
-		new_cmd->cmd = ft_strdup(cmd); // NOTE!! check if ft_strdup returns successfully
+		if ((new_cmd->cmd = ft_strdup(cmd)) == NULL) // NOTE!! check if ft_strdup returns successfully
+		{
+			err(ERR_MALLOC, "add_cmd()");
+			return (EXIT_FAILURE);
+		}
 		new_cmd->pipes = NULL;
 		new_cmd->redir = NULL;
 		new_cmd->next = NULL;
 		if (tmp != NULL)
 		{
-//ft_putstr("add_cmd --  list not empty\n"); // debug
+ft_putstr("add_cmd --  list not empty\n"); // debug
 			while (tmp->next)
 				tmp = tmp->next;
 			tmp->next = new_cmd;
-//ft_putstr("add_cmd --  new_cmd assigned\n"); // debug
+ft_putstr("add_cmd --  new_cmd assigned\n"); // debug
 		}
 		else
 		{
-//ft_putstr("add_cmd --  list empty\n"); // debug
+ft_putstr("add_cmd --  list empty\n"); // debug
 			*cmd_list = new_cmd;
-//ft_putstr("add_cmd --  new_cmd assigned\n"); // debug
+ft_putstr("add_cmd --  new_cmd assigned\n"); // debug
 		}
 		return (EXIT_SUCCESS);
 	}

@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:50 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 20:36:13 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 21:56:47 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static void	check_errno(char **tmp, int errno, char *msg)
 {
 	if (errno == ERR_INVALID_ARG)
 		*tmp = ft_strjoinstr("Invalid arguments for '", msg, "'");
+	else if (errno == ERR_MALLOC)
+		*tmp = ft_strjoinstr("malloc error in '", msg, "'. That sounds bad. .");
 	else if (errno == ERR_GNL)
 		*tmp = ft_strjoinstr("Oh no!! Its a '", msg, "'. That sounds bad. .");
 	else if (errno == ERR_NOTFOUND)

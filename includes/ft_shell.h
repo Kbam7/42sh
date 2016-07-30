@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/07/30 20:21:19 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 21:53:18 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@
 # define ERR_NO_EXEC			1009
 # define ERR_FORK_FAILED		1010
 # define ERR_INVALID_PIPE		1011
+# define ERR_GNL				1011
+# define ERR_MALLOC				1012
 
 typedef struct		s_env_func
 {
@@ -122,12 +124,13 @@ void			set_prompt(t_shell *s);
 **	input.c
 */
 int				get_commands(t_shell *s);
+int				process_input(t_cmd_list *cmd, t_shell *s);
 void			get_input(t_cmd_list *command, t_shell *s);
 
 /*
 **	input_utils.c
 */
-int				store_command(char *str, t_shell *s);
+int				store_commands(char *str, t_shell *s);
 int				store_pipe(t_cmd_list **cmd);
 //int				store_redirect(t_cmd_list *cmd, t_shell *s);
 

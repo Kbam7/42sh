@@ -6,12 +6,13 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 20:55:53 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/30 22:09:35 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
+/*
 execute_pipes(t_cmd_list *pipe_list, t_shell *s)
 {
 		while (pipe_list)
@@ -42,13 +43,14 @@ execute_redir(t_cmd_list *redir_list, t_shell *s)
 			free_tab(s->input, ft_tablen(s->input));
 		}
 }
+*/
 
 void		shell_loop(t_shell *s)
 {
 	int			ret;
 	t_cmd_list	*cmd_list;
-	t_cmd_list	*command;
 
+	ret = 0;
 	while (ret != EXIT_SH)
 	{
 		set_prompt(s);
@@ -58,8 +60,8 @@ void		shell_loop(t_shell *s)
 			cmd_list = s->commands;
 			while (cmd_list != NULL) // ! end of cmd_list
 			{
-				ret = process_input(cmd_list->cmd, s); // this will run until all commands have been executed, "exit" was input, or there was an error.
-				if (ret == EXIT_SH)
+				ret = process_input(cmd_list, s); // this will run until all commands have been executed, "exit" was input, or there was an error.
+				if (ret == EXIT_SH || ret == EXIT_FAILURE)
 					break ;
 				cmd_list = cmd_list->next;
 			}
