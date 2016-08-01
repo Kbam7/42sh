@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/10 13:29:59 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/01 16:43:59 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/01 23:24:44 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	change_to_home_dir(t_shell *s)
 	char	*tmp;
 
 	if ((tmp = ft_getenv("HOME", s)) == NULL)
-		err(ERR_CHDIR, "cd: HOME: variable not set.");
+		err(ERR_CHDIR, "cd: 'HOME' variable not set.");
 	else
 		return (change_dir(tmp, s));
 	return (EXIT_FAILURE);
@@ -73,7 +73,7 @@ int	change_to_oldpwd(t_shell *s)
 	char	*tmp;
 
 	if ((tmp = ft_getenv("OLDPWD", s)) == NULL)
-		err(ERR_CHDIR, "cd: OLDPWD: variable not set.");
+		err(ERR_CHDIR, "cd: 'OLDPWD' variable not set.");
 	else
 		return (change_dir(tmp, s));
 	return (EXIT_FAILURE);

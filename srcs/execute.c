@@ -6,24 +6,17 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 21:03:57 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/01 23:23:04 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-int	try_builtin(t_shell *s)
+
+int	check_builtin_env_funcs(t_shell *s)
 {
-	if (ft_strcmp(s->input[0], "cd") == 0)
-		return (ft_cd(s->input, s));
-	else if (ft_strcmp(s->input[0], "echo") == 0)
-		return (ft_echo(s->input, s));
-	else if (ft_strcmp(s->input[0], "21sh") == 0)
-		return (run_shell(s));
-	else if (ft_strcmp(s->input[0], "env") == 0)
+	if (ft_strcmp(s->input[0], "env") == 0)
 		return (ft_env(s->input, s));
-//	else if (ft_strcmp(s->input[0], "printenv") == 0)
-//		return (ft_env(s));
 	else if (ft_strcmp(s->input[0], "set") == 0)
 		return (ft_set(2, s->input[1], s->input[2], s));
 	else if (ft_strcmp(s->input[0], "setenv") == 0)
@@ -34,6 +27,37 @@ int	try_builtin(t_shell *s)
 		return (ft_unsetenv(s->input[1], s));
 	else if (ft_strcmp(s->input[0], "unset") == 0)
 		return (ft_unsetenv(s->input[1], s));
+	else
+		return (ERR_NOTFOUND);
+}
+
+/*
+int	check_assign_variable(t_shell *s)
+{
+	int	i;
+
+	i  0;
+	while (s->input[i])
+		if (ft_strchr(s->input[i], '='))
+	else
+		return (ERR_NOTFOUND);
+}
+*/
+
+int	try_builtin(t_shell *s)
+{
+	int	ret;
+
+	if (ft_strcmp(s->input[0], "cd") == 0)
+		return (ft_cd(s->input, s));
+	else if (ft_strcmp(s->input[0], "echo") == 0)
+		return (ft_echo(s->input, s));
+	else if (ft_strcmp(s->input[0], "21sh") == 0)
+		return (run_shell(s));
+	else if ((ret = check_builtin_env_funcs(s)) != ERR_NOTFOUND)
+		return (ret);
+//	else if ((ret = check_assign_variable(s)) != ERR_NOTFOUND)
+//		return (ret);
 	else
 		return (ft_strcmp(s->input[0], "exit") == 0 ? EXIT_SH : ERR_NOTFOUND);
 }

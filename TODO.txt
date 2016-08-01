@@ -8,9 +8,6 @@
 	must be handled. E.G: TEST="The String"; echo $TEST; -- This should print
 	"The String" without the quotes.
 
-##-	Check if variables being declared should be shell variables or environment
-	variables.
-
 ##-	Check functionality for 'cd'. Specifically 'cd ~', 'cd -', 'cd --', 'cd'
 
 ##-	When input is received, you will need to check it for pipes, redirects and command line seperators. i.e. |, >, <, >>, << and ;
