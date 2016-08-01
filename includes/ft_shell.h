@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/07/30 23:35:20 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/07/31 15:06:33 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ typedef struct			s_func_opt
 typedef struct			s_cmd_list
 {
 	char 				*cmd;
-	struct s_cmd_list	*pipes;
-	struct s_cmd_list	*redir;
+//	struct s_cmd_list	*pipes;
+//	struct s_cmd_list	*redir;
 	struct s_cmd_list	*next;
 }				t_cmd_list;
 
