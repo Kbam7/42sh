@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/10 13:29:59 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 00:25:00 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/01 15:31:00 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,13 @@
 
 static int	change_dir(char *path, t_shell *s)
 {
-// check if path exists, then check rights if it exists. --  access(path, F_OK) . .. .
 	if (access(path, F_OK) != 0)
 		return (err(ERR_NO_FILE, path));
 	if ((check_rights(path, 'r', 0, 'x') != EXIT_SUCCESS) || chdir(path) != 0)
 		return (err(ERR_CHDIR, path));
-// Update current working directory and OLDPWD. OLDPWD is a shell variable, not environment var
-	ft_set(1, "OLDPWD", s->cwd, s);
-	s->cwd = getcwd(NULL, 4096);
-	ft_set(1, "PWD", s->cwd, s);
+	ft_set(2, "OLDPWD", ft_getenv("PWD", s), s);
+	ft_set(1, "PWD", getcwd(NULL, 4096), s);
+	s->cwd = ft_getenv("PWD", s);
 	return (EXIT_SUCCESS);
 }
 
@@ -64,7 +62,7 @@ int	change_to_home_dir(t_shell *s)
 	char	*tmp;
 
 	if ((tmp = ft_getenv("HOME", s)) == NULL)
-		ft_putstr("cd: HOME variable not set.");
+		err(ERR_CHDIR, "cd: HOME: variable not set.");
 	else
 		return (change_dir(tmp, s));
 	return (EXIT_FAILURE);
@@ -74,8 +72,10 @@ int	change_to_oldpwd(t_shell *s)
 {
 	char	*tmp;
 
+ft_putstr("change_to_oldpwd\n"); // debug
+
 	if ((tmp = ft_getenv("OLDPWD", s)) == NULL)
-		ft_putstr("cd: OLDPWD variable not set.\n");
+		err(ERR_CHDIR, "cd: OLDPWD: variable not set.\n");
 	else
 		return (change_dir(tmp, s));
 	return (EXIT_FAILURE);

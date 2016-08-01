@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 23:42:49 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/01 14:59:22 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static char	*get_path(t_shell *s)
 	char	*path;
 	int		len;
 
+	s->cwd = ft_getenv("PWD", s);
 	len = ft_strlen(ft_getenv("HOME", s));
 	if (ft_strncmp(s->cwd, ft_getenv("HOME", s), len) == 0)
 	{
