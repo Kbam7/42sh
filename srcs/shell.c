@@ -6,44 +6,11 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/31 15:10:45 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/01 16:38:47 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
-
-/*
-execute_pipes(t_cmd_list *pipe_list, t_shell *s)
-{
-		while (pipe_list)
-		{
-//		printf("shell_loop() - pipe -- get_input(%s)\n", command->cmd); // debug
-			get_input(pipe_list, s);
-
-			if (s->input)
-
-//		printf("shell_loop() - pipe -- execute_cmd(%s)\n", s->input[0]); // debug
-			ret = execute_cmd(s, command->cmd);
-			free_tab(s->input, ft_tablen(s->input));
-			if (ret == EXIT_SH)
-				break ;
-			pipe_list = pipe_list->next;
-		}
-}
-
-execute_redir(t_cmd_list *redir_list, t_shell *s)
-{
-		while (redir_list)
-		{
-			get_input()
-//	printf("shell_loop() - pipe -- get_input(%s)\n", command->cmd); // debug
-			get_input(command, s);
-//	printf("shell_loop() - pipe -- execute_cmd(%s)\n", s->input[0]); // debug
-			ret = execute_cmd(s, command->cmd);
-			free_tab(s->input, ft_tablen(s->input));
-		}
-}
-*/
 
 void		shell_loop(t_shell *s)
 {

@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/30 23:16:38 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 23:16:40 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/01 17:00:38 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,41 @@ int	store_commands(char *str, t_shell *s)
 	else
 		ret = add_cmd(&s->commands, str);
 	return (ret);
+}
+
+int		get_commands(t_shell *s)
+{
+	char			*cmd;
+	int				ret;
+	char			*tmp;
+
+	if ((ret = ft_gnl(0, &tmp)) > 0)
+	{
+		cmd = ft_strtrim(tmp);
+		ft_strdel(&tmp);
+		if (store_commands(cmd, s) != EXIT_SUCCESS)
+		{
+			ft_strdel(&cmd);
+			return (0);
+		}
+		ft_strdel(&cmd);
+	}
+	if (ret < 0)
+		return (err(ERR_GNL, "ft_gnl Error!"));
+	return (ret);
+}
+
+// This will get the string of the command and make it into input[](argv for executing commands)
+void	get_input(t_cmd_list *command, t_shell *s)
+{
+	char			*tmp;
+	t_split_string	data;
+
+	tmp = ft_strtrim(command->cmd);
+	data = ft_nstrsplit(tmp, ' ');
+	ft_strdel(&tmp);
+	s->input = ft_tabdup(data.strings, data.words);
+	free_tab(data.strings, data.words);
 }
 /*
 int	store_pipe(t_cmd_list **cmd)

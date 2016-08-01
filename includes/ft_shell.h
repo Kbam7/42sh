@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/01 15:02:03 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/01 16:42:20 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,15 +123,15 @@ void			set_prompt(t_shell *s);
 /*
 **	input.c
 */
-int				get_commands(t_shell *s);
 int				process_input(t_cmd_list *cmd, t_shell *s);
-void			get_input(t_cmd_list *command, t_shell *s);
 
 /*
 **	input_utils.c
 */
+int				get_commands(t_shell *s);
+void			get_input(t_cmd_list *command, t_shell *s);
 int				store_commands(char *str, t_shell *s);
-int				store_pipe(t_cmd_list **cmd);
+//int				store_pipe(t_cmd_list **cmd);
 //int				store_redirect(t_cmd_list *cmd, t_shell *s);
 
 /*
