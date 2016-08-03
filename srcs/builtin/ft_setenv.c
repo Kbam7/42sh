@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:47 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/01 15:28:57 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/03 14:07:39 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	new_env_var(char *name, char *value, char ***env)
 
 	len = ft_tablen(*env);
 	tab = ft_tabdup(*env, len + 1);
-	free_tab(*env, len);
+	free_tab((void **)*env, len);
 	tmp = ft_strjoin("=", value);
 	tab[len] = ft_strjoin(name, tmp);
 	ft_strdel(&tmp);
@@ -44,10 +44,10 @@ static int	variable_exists(char *name, char *value, char ***env)
 			tmp = ft_strjoin("=", value);
 			(*env)[i] = ft_strjoin(name, tmp);
 			ft_strdel(&tmp);
-			free_tab(tab.strings, tab.words);
+			free_tab((void **)tab.strings, tab.words);
 			return (EXIT_SUCCESS);
 		}
-		free_tab(tab.strings, tab.words);
+		free_tab((void **)tab.strings, tab.words);
 		++i;
 	}
 	return (EXIT_FAILURE);
@@ -74,7 +74,7 @@ static int	get_and_set_values(char *str, char ***env)
 		status = ft_set_env(args.strings[0], "", env);
 	else
 		status = ft_set_env(args.strings[0], args.strings[1], env);
-	free_tab(args.strings, args.words);
+	free_tab((void **)args.strings, args.words);
 	return (status);
 }
 
@@ -86,7 +86,7 @@ int			ft_set(int env_type, char *name, char *val, t_shell *s)
 	status = EXIT_FAILURE;
 	env = check_env_type(env_type, s);
 	if (!name && !val)
-		print_variables(*env);
+		print_variables(*env, s);
 	else if (name && ft_strchr(name, '='))
 		status = get_and_set_values(name, env);
 	else if (val && ft_strchr(val, '='))
@@ -101,7 +101,5 @@ int			ft_set(int env_type, char *name, char *val, t_shell *s)
 		return (err(ERR_INVALID_ARG, "set"));
 	if (env_type == 1)
 		status = ft_set(2, name, val, s);
-//	if (status == EXIT_FAILURE && env_type == 2)
-//		print_variables(*env);
 	return (status);
 }

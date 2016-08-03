@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:42 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 00:25:00 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/03 14:08:30 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,6 @@ static int	get_args(char **input, t_shell *s)
 int	ft_env(char **input, t_shell *s)
 {
 	get_args(input, s);
-	print_variables(s->env_var);
+	print_variables(s->env_var, s);
 	return (EXIT_SUCCESS);
 }

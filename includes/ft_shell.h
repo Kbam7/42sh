@@ -6,11 +6,9 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/01 16:42:20 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/03 14:07:10 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// Helloo
 
 #ifndef FT_SHELL_H
 # define FT_SHELL_H
@@ -25,6 +23,9 @@
 */
 # define MAXNAME		255
 # define MAXPATH		4096
+
+//	Just a cool DEFINE i found, could be useful
+//# define die(e) do { fprintf(stderr, "%s\n", e); exit(EXIT_FAILURE); } while (0);
 
 /*
 **	Macros for errors
@@ -41,8 +42,9 @@
 # define ERR_NO_EXEC			1009
 # define ERR_FORK_FAILED		1010
 # define ERR_INVALID_PIPE		1011
-# define ERR_GNL				1011
-# define ERR_MALLOC				1012
+# define ERR_CREATE_PIPE		1012
+# define ERR_GNL				1013
+# define ERR_MALLOC				1014
 
 typedef struct		s_env_func
 {
@@ -78,18 +80,11 @@ typedef struct			s_cmd_list
 	struct s_cmd_list	*next;
 }				t_cmd_list;
 
-typedef struct			s_fd
-{
-	int		read_fd;
-	int		write_fd;
-	int		pipe_fd[2];
-}						t_fd;
-
 typedef struct			s_shell
 {
 	char		**env_var;	// copy to child
-	char		**shell_var;// do not copy to child
 	// init the rest everytime
+	char		**shell_var;// do not copy to child
 	t_func_opt	func_opt;
 	char		**argv;
 	char		**paths;
@@ -99,7 +94,12 @@ typedef struct			s_shell
 	int			arg_p;
 	int			arg_u;
 	t_cmd_list	*commands;
-	t_fd		fd;
+	int			write_fd;
+	int			read_fd;
+	int			**pipes;
+	int			n_pipes;
+	int			pipe_i;
+	int			n_redirs;
 }				t_shell;
 
 /*
@@ -123,13 +123,15 @@ void			set_prompt(t_shell *s);
 /*
 **	input.c
 */
-int				process_input(t_cmd_list *cmd, t_shell *s);
+int				process_input(char *cmd, t_shell *s);
+int				process_pipes(char *cmd, t_shell *s);
+int				process_redir(char *cmd, t_shell *s);
 
 /*
 **	input_utils.c
 */
 int				get_commands(t_shell *s);
-void			get_input(t_cmd_list *command, t_shell *s);
+void			get_input(char *cmd, t_shell *s);
 int				store_commands(char *str, t_shell *s);
 //int				store_pipe(t_cmd_list **cmd);
 //int				store_redirect(t_cmd_list *cmd, t_shell *s);
@@ -158,14 +160,14 @@ int				try_system(t_shell *s);
 */
 char			**ft_tabdup(char **tab, int len);
 int				ft_tablen(char **envp);
-void			free_tab(char **tab, int len);
+void			free_tab(void **tab, int len);
 
 /*
 **	utils.c
 */
 int				check_rights(char *path, int r, int w, int x);
 char			***check_env_type(int type, t_shell *s);
-void			print_variables(char **env);
+void			print_variables(char **env, t_shell *s);
 
 /*
 **	err.c

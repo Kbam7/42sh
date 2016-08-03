@@ -1,6 +1,12 @@
-##-	Check if the command entered contains the full-path or if the command entered
-	is just the command name. If full-path, do not append the paths from the
-	environment variable PATH.
+##-	-Check if the command entered contains the full-path or if the command entered
+	  is just the command name. If full-path, do not append the paths from the
+	  environment variable PATH.
+	-Check ft_select or a previous project for code that reads '/' in paths and
+	  adds something to it or does somwthing else with the path. This will be usefull
+	  for checking if a path is being used to execute ls or anthother command, or if
+	  the string is a raw command. e.g "cd ./path" and not "/bin/cd ./path"
+					   "./21sh" or "21sh", both should execute.
+
 
 ##-	Get 'echo' and 'env' working.
 

@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:50 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 21:56:47 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/02 18:51:27 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ static void	check_errno(char **tmp, int errno, char *msg)
 		*tmp = ft_strjoinstr("Invalid arguments for '", msg, "'");
 	else if (errno == ERR_MALLOC)
 		*tmp = ft_strjoinstr("malloc error in '", msg, "'. That sounds bad. .");
+	else if (errno == ERR_CREATE_PIPE)
+		*tmp = ft_strjoinstr("pipe() failed in '", msg, "' function.");
+	else if (errno == ERR_INVALID_PIPE)
+		*tmp = ft_strjoinstr("Invalid pipe '", msg, "'");
 	else if (errno == ERR_GNL)
 		*tmp = ft_strjoinstr("Oh no!! Its a '", msg, "'. That sounds bad. .");
 	else if (errno == ERR_NOTFOUND)
@@ -36,8 +40,6 @@ static void	check_errno(char **tmp, int errno, char *msg)
 		*tmp = ft_strjoinstr("User does not have write rights for '", msg, "'");
 	else if (errno == ERR_NO_EXEC)
 		*tmp = ft_strjoinstr("User does not have execute rights for '", msg, "'");
-	else if (errno == ERR_INVALID_PIPE)
-		*tmp = ft_strjoinstr("Invalid pipe '", msg, "'");
 	else
 		*tmp = ft_strdup("No further details");
 }

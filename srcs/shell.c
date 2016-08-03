@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/01 16:38:47 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/03 13:43:34 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ void		shell_loop(t_shell *s)
 			cmd_list = s->commands;
 			while (cmd_list != NULL) // ! end of cmd_list
 			{
-				ret = process_input(cmd_list, s); // this will run until all commands have been executed, "exit" was input, or there was an error.
+				ret = process_input(cmd_list->cmd, s); // this will run until all commands have been executed, "exit" was input, or there was an error.
 				if (ret == EXIT_SH || ret == EXIT_FAILURE)
 					break ;
-//				free_tab(s->input, ft_tablen(s->input));
+//				free_tab((void **)s->input, ft_tablen(s->input));
 				cmd_list = cmd_list->next;
 			}
 //print_cmd_list(s->commands); // debug
@@ -48,7 +48,7 @@ static int	launch_shell(t_shell *s)
 	if (execve(ft_getenv("21SH_PATH", s), s->argv, s->env_var) != -1)
 		exit(EXIT_SUCCESS);
 	err(ERR_EXEC_SHELL, ft_getenv("21SH_PATH", s));
-	free_tab(s->input, ft_tablen(s->input));
+	free_tab((void **)s->input, ft_tablen(s->input));
 	free_t_shell(s);
 	exit(EXIT_FAILURE);
 }
@@ -72,9 +72,9 @@ int			run_shell(t_shell *s)
 
 void	free_t_shell(t_shell *s)
 {
-	free_tab(s->env_var, ft_tablen(s->env_var));
-	free_tab(s->shell_var, ft_tablen(s->shell_var));
-	free_tab(s->paths, ft_tablen(s->paths));
-	free_tab(s->argv, ft_tablen(s->argv));
+	free_tab((void **)s->env_var, ft_tablen(s->env_var));
+	free_tab((void **)s->shell_var, ft_tablen(s->shell_var));
+	free_tab((void **)s->paths, ft_tablen(s->paths));
+	free_tab((void **)s->argv, ft_tablen(s->argv));
 	ft_strdel(&s->prompt);
 }
