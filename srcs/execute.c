@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/04 22:52:26 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/04 23:34:00 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,7 +245,8 @@ dprintf(2, "--- CHILD PROCESS ---\nexecute_cmd() -- Trying to execute '%s' with 
 		// child has executed and written to the output fd required, whether its for a pipe, redir or screen.
 		}
 		
-// Parent only
+// -----   Parent only   ------
+
 		if (s->n_redirs) // if theres redirs, do them FIRST!
 		{
 			// nothing yet
