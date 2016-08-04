@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/04 22:06:08 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/04 22:52:26 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ dprintf(2, "--- CHILD PROCESS ---\nexecute_cmd() -- Trying to execute '%s' with 
 				i = s->pipe_i;
 				if (i == 0) // first cmd
 				{
-		dprintf(2, "child -- first cmd (i = 0)\n"); // debug
+		dprintf(2, "execute_cmd() -- child -- first cmd (i = 0)\n"); // debug
 				//	dup2(s->pipes[i + 1][1], 1);	// REDIR STDOUT to write-end of next pipe
 				//	close(s->pipes[i + 1][1]);				// closed pipe[1] as its not needed
 				//	dup2(STDOUT_FILENO, s->pipes[i + 1][1]);	// REDIR STDOUT to write-end of next pipe
@@ -191,15 +191,14 @@ dprintf(2, "--- CHILD PROCESS ---\nexecute_cmd() -- Trying to execute '%s' with 
 					close(s->pipes[i][0]);						// close STDOUT and write to pipe[i + 1]
 					close(s->pipes[i][1]);						// close STDOUT and write to pipe[i + 1]
 
-		dprintf(2, "--- STDOUT closed, OUTPUT goes to s->pipes[i + 1][1]\n");		// debug
-		dprintf(2, "--- STDIN open, s->pipes[i][0] closed  -- Not reading from first pipe\n");		// debug
-		dprintf(2, "--- s->pipes[i][1] closed  -- Not writing to first pipe\n");		// debug
-
+		dprintf(2, "execute_cmd() -- --- STDOUT closed, OUTPUT goes to s->pipes[i + 1][1]\n");		// debug
+		dprintf(2, "execute_cmd() -- --- STDIN open, s->pipes[i][0] closed  -- Not reading from first pipe\n");		// debug
+		dprintf(2, "execute_cmd() -- --- s->pipes[i][1] closed  -- Not writing to first pipe\n");		// debug
 				}
 				else if (s->n_pipes == 1) // last pipe
 				{
 
-		dprintf(2, "child -- Last cmd (s->n_pipes == 1)\n"); // debug
+		dprintf(2, "execute_cmd() -- child -- Last cmd (s->n_pipes == 1)\n"); // debug
 
 				//	dup2(s->pipes[i][0], 0); // read from current pipe
 				//	close(s->pipes[i][0]);				// close dup pipe read-end
@@ -208,16 +207,17 @@ dprintf(2, "--- CHILD PROCESS ---\nexecute_cmd() -- Trying to execute '%s' with 
 
 				//	s->pipes[i][0] = dup(STDIN_FILENO);
 					dup2(s->pipes[i][0], STDIN_FILENO); // read from current pipe
+					close(s->pipes[i][0]);	// STDIN reading from pipe
 					close(s->pipes[i][1]);	// close last write-end, STDOUT used
 
-		dprintf(2, "STDIN closed,  input is from s->pipes[i][0]\n");		// debug
-		dprintf(2, "STDOUT open, writing to screen\n");		// debug
-		dprintf(2, "s->pipes[i][1] -- last write-end closed, writing to screen\n");		// debug
+		dprintf(2, "execute_cmd() -- STDIN closed,  input is from s->pipes[i][0]\n");		// debug
+		dprintf(2, "execute_cmd() -- STDOUT open, writing to screen\n");		// debug
+		dprintf(2, "execute_cmd() -- s->pipes[i][1] -- last write-end closed, writing to screen\n");		// debug
 
 				}
 				else
 				{
-		dprintf(2, "child --  middle cmd -- pipes[%d]\n", i); // debug
+		dprintf(2, "execute_cmd() -- child --  middle cmd -- pipes[%d]\n", i); // debug
 
 				//	dup2(s->pipes[i][0], 0); // read from current pipe
 				//	close(s->pipes[i][0]);				// close dup pipe read-end
@@ -227,11 +227,13 @@ dprintf(2, "--- CHILD PROCESS ---\nexecute_cmd() -- Trying to execute '%s' with 
 				//	s->pipes[i + 1][1] = dup(STDOUT_FILENO);
 				//	close(STDIN_FILENO);
 				//	close(STDOUT_FILENO);
+					close(s->pipes[i][1]);	// close this pipe, writing to next pipe
 					dup2(s->pipes[i][0], STDIN_FILENO); // read from current pipe
+					close(s->pipes[i][0]);	// STDIN reading from pipe
 					dup2(s->pipes[i + 1][1], STDOUT_FILENO);
 
-		dprintf(2, "STDIN closed, reading from s->pipes[i][0]\n");		// debug
-		dprintf(2, "STDOUT closed, writing to s->pipes[i + 1][1]\n");		// debug
+		dprintf(2, "execute_cmd() -- STDIN closed, reading from s->pipes[i][0]\n");		// debug
+		dprintf(2, "execute_cmd() -- STDOUT closed, writing to s->pipes[i + 1][1]\n");		// debug
 
 				}
 				try_system(s);
@@ -242,7 +244,40 @@ dprintf(2, "--- CHILD PROCESS ---\nexecute_cmd() -- Trying to execute '%s' with 
 			}
 		// child has executed and written to the output fd required, whether its for a pipe, redir or screen.
 		}
+		
 // Parent only
+		if (s->n_redirs) // if theres redirs, do them FIRST!
+		{
+			// nothing yet
+		}
+		else if (s->n_pipes)// else if no redirs, are there pipes? If yes, use it.
+		{
+			i = s->pipe_i;
+			if (i == 0) // first cmd
+			{
+			dprintf(2, "execute_cmd() -- parent -- first cmd (i = 0)\n"); // debug
+					close(s->pipes[i][0]);						// close pipe[0], not reading from first pipe
+					close(s->pipes[i][1]);						// close pipe[1], not writing to first pipe
+			}
+			else if (s->n_pipes == 1) // last pipe
+			{
+			dprintf(2, "execute_cmd() -- Parent -- Last cmd (s->n_pipes == 1)\n"); // debug
+					close(s->pipes[i][0]);	// STDIN reading from pipe
+					close(s->pipes[i][1]);	// close last write-end, STDOUT used
+			}
+			else
+			{
+			dprintf(2, "execute_cmd() -- parent -- middle cmd -- \n"); // debug
+					close(s->pipes[i][0]);	// STDIN reading from pipe[i][0]
+					close(s->pipes[i][1]);	// STDOUT writing to pipe[i +1][1]
+			}
+		}
+		else	// NO redirs and NO pipes EXIST !!
+		{
+			// something here
+		}
+
+
 //	Just wait for child and check its exit status.
 		wait(&status);
 // error checks
