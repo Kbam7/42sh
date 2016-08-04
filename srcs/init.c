@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 02:28:26 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/04 15:48:57 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/04 18:01:45 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ void	init_env(t_shell *s, int argc, char **argv, char **envp)
 
 //dprintf(2, "init() -- s->read_fd(OLD) = UNINITIALIZED\n"); // debug
 //	dup2(STDIN_FILENO, s->read_fd);
-	s->read_fd = dup(STDIN_FILENO);
-dprintf(2, "init() -- s->read_fd(NEW) = %d -- STDIN_FILENO = %d\n", s->read_fd, STDIN_FILENO); // debug
+//	s->read_fd = dup(STDIN_FILENO);
+//dprintf(2, "init() -- s->read_fd(NEW) = %d -- STDIN_FILENO = %d\n", s->read_fd, STDIN_FILENO); // debug
 //dprintf(2, "init() -- s->write_fd(OLD) = UNINITIALIZED\n"); // debug
 //	dup2(STDOUT_FILENO, s->write_fd);
-	s->write_fd = dup(STDOUT_FILENO);
-dprintf(2, "init() -- s->write_fd(NEW) = %d -- STDOUT_FILENO = %d\n", s->write_fd, STDOUT_FILENO); // debug
+//	s->write_fd = dup(STDOUT_FILENO);
+//dprintf(2, "init() -- s->write_fd(NEW) = %d -- STDOUT_FILENO = %d\n", s->write_fd, STDOUT_FILENO); // debug
 	s->pipes = NULL;
 	s->n_pipes = 0;
 	s->pipe_i = 0;

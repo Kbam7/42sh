@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/04 16:11:34 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/04 22:06:08 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,20 +90,30 @@ int		try_system(t_shell *s)
 		if (access(path, F_OK) == 0)
 			if (check_rights(path, 'r', 0, 'x') == EXIT_SUCCESS)
 			{
-
+/*			
 char	buf;							// debug
 if (s->pipe_i > 0)						// debug
 {
-dprintf(2, "try_system() -- path exists, printing frmom pipe now. .\n----- PRINT OUTPUT -----\n\n");	// debug
-	while (read(s->read_fd, &buf, 1) > 0)	// debug
-		write(s->write_fd, &buf, 1);	// debug
+dprintf(2, "try_system() -- path exists, reading from pipe[i][0] now. .\n" // debug
+			"----- PRINT OUTPUT -- to STDOUT -----\n\n");	// debug
+	while (read(s->pipes[s->pipe_i][0], &buf, 1) > 0)	// debug
+	{
+		ft_putstr_fd(" >", 2);
+		write(2, &buf, 1);	// debug
+	}
 dprintf(2, "\n----- END PRINT OUTPUT -----\ntry_system() -- printing finished. .\n");	// debug
 }
-		
-dprintf(2, "try_system() -- path exists, executing now. .\n----- OUTPUT -----\n\n");	// debug
+fflush(stderr);
+dprintf(2, "try_system() -- path exists, executing now. .\n----- OUTPUT -----\n\n");	// debuig
+fflush(stdout);
 
+//	(void)var;// debug
+*/
 				if (execve(path, s->input, var) != -1)
+				{
 					ft_strdel(&path);
+					free_t_shell(s);
+				}
 				exit(EXIT_SUCCESS);
 			}
 
@@ -149,7 +159,7 @@ dprintf(2, "--- CHILD PROCESS ---\nexecute_cmd() -- Trying to execute '%s' with 
 		// child only
 			if (s->n_redirs) // if theres redirs, do them FIRST!
 			{
-dprintf(2, "child -- execute_cmd() n_redirs = %d -- s->write_fd = %d\n", s->n_redirs, s->write_fd); // debug
+//dprintf(2, "child -- execute_cmd() n_redirs = %d -- s->write_fd = %d\n", s->n_redirs, s->write_fd); // debug
 				i = s->redir_i;
 				
 				//	If a left redir(<) is found, read from arg defined after (<)
@@ -161,103 +171,78 @@ dprintf(2, "child -- execute_cmd() n_redirs = %d -- s->write_fd = %d\n", s->n_re
 			else if (s->n_pipes)// else if no redirs, are there pipes? If yes, use it.
 			{
 				i = s->pipe_i;
-dprintf(2, "child -- execute_cmd() pipes -- ORIGINAL -- s->write_fd = %d\ts->read_fd = %d\n", s->write_fd, s->read_fd); // debug
-
 				if (i == 0) // first cmd
 				{
-					dup2(s->pipes[i + 1][1], STDOUT_FILENO);// REDIR STDOUT to write-end of next pipe
-					close(s->pipes[i + 1][1]);				// closed pipe[1] as its not needed
-					
+		dprintf(2, "child -- first cmd (i = 0)\n"); // debug
+				//	dup2(s->pipes[i + 1][1], 1);	// REDIR STDOUT to write-end of next pipe
+				//	close(s->pipes[i + 1][1]);				// closed pipe[1] as its not needed
+				//	dup2(STDOUT_FILENO, s->pipes[i + 1][1]);	// REDIR STDOUT to write-end of next pipe
+				//	dup2(s->pipes[i + 1][1], 1);	// REDIR STDOUT to write-end of next pipe
+				//	close(s->pipes[i + 1][1]);				// closed pipe[1] as its not needed
+			
+			//		s->pipes[i + 1][1] = dup(STDOUT_FILENO);
+			//		close(STDOUT_FILENO);
+
+		//dprintf(2, "STDOUT now goes to s->pipes[i + 1][1]\n");		// debug
+
+			//		s->pipes[i + 1][1] = dup(STDOUT_FILENO);
+			//		close(STDOUT_FILENO);						// close STDOUT and write to pipe[i + 1]
+					dup2(s->pipes[i + 1][1], STDOUT_FILENO);
+					close(s->pipes[i][0]);						// close STDOUT and write to pipe[i + 1]
+					close(s->pipes[i][1]);						// close STDOUT and write to pipe[i + 1]
+
+		dprintf(2, "--- STDOUT closed, OUTPUT goes to s->pipes[i + 1][1]\n");		// debug
+		dprintf(2, "--- STDIN open, s->pipes[i][0] closed  -- Not reading from first pipe\n");		// debug
+		dprintf(2, "--- s->pipes[i][1] closed  -- Not writing to first pipe\n");		// debug
+
 				}
 				else if (s->n_pipes == 1) // last pipe
 				{
+
+		dprintf(2, "child -- Last cmd (s->n_pipes == 1)\n"); // debug
+
+				//	dup2(s->pipes[i][0], 0); // read from current pipe
+				//	close(s->pipes[i][0]);				// close dup pipe read-end
+				//	dup2(0, s->pipes[i][0]); // read from current pipe
+				//	close(0);				// close dup pipe read-end
+
+				//	s->pipes[i][0] = dup(STDIN_FILENO);
 					dup2(s->pipes[i][0], STDIN_FILENO); // read from current pipe
-					close(s->pipes[i][0]);				// close dup pipe read-end
+					close(s->pipes[i][1]);	// close last write-end, STDOUT used
+
+		dprintf(2, "STDIN closed,  input is from s->pipes[i][0]\n");		// debug
+		dprintf(2, "STDOUT open, writing to screen\n");		// debug
+		dprintf(2, "s->pipes[i][1] -- last write-end closed, writing to screen\n");		// debug
+
 				}
 				else
 				{
+		dprintf(2, "child --  middle cmd -- pipes[%d]\n", i); // debug
+
+				//	dup2(s->pipes[i][0], 0); // read from current pipe
+				//	close(s->pipes[i][0]);				// close dup pipe read-end
+				//	dup2(s->pipes[i + 1][1], 1);// REDIR STDOUT to write-end of next pipe
+				//	close(s->pipes[i + 1][1]);				// closed pipe[1] as its not needed
+				//	s->pipes[i][0] = dup(STDIN_FILENO);
+				//	s->pipes[i + 1][1] = dup(STDOUT_FILENO);
+				//	close(STDIN_FILENO);
+				//	close(STDOUT_FILENO);
 					dup2(s->pipes[i][0], STDIN_FILENO); // read from current pipe
-					close(s->pipes[i][0]);				// close dup pipe read-end
-					dup2(s->pipes[i + 1][1], STDOUT_FILENO);// REDIR STDOUT to write-end of next pipe
-					close(s->pipes[i + 1][1]);				// closed pipe[1] as its not needed
+					dup2(s->pipes[i + 1][1], STDOUT_FILENO);
+
+		dprintf(2, "STDIN closed, reading from s->pipes[i][0]\n");		// debug
+		dprintf(2, "STDOUT closed, writing to s->pipes[i + 1][1]\n");		// debug
+
 				}
-/*
-				if (s->n_pipes > 1)
-				{
-					// DO NOT CLOSE read-end of pipe[i], its needed by the pipe ahead of it.
-					dup2(s->pipes[i][1], STDOUT_FILENO);// REDIR STDOUT to write-end of pipe
-					close(s->pipes[i][1]);				// closed pipe[1] as its not needed
-				}
-				// if after first pipe/command, then read from the pipe, else read from STDIN
-				if (i > 0)
-				{	
-					dup2(s->pipes[i - 1][0], STDIN_FILENO);
-					close(s->pipes[i - 1][0]);			// closed. Using STDIN..
-				}
-*/
-dprintf(2, "child -- execute_cmd() pipes -- CHANGED TO -- s->write_fd = %d\ts->read_fd = %d\n", s->write_fd, s->read_fd); // debug
 				try_system(s);
 			}
 			else	// NO redirs and NO pipes EXIST !!
 			{
-//dprintf(2, "execute_cmd() -- s->write_fd(OLD) = %d\n", s->write_fd); // debug
-//dprintf(s->write_fd, "ptstr with s->write_fd (%d)\n", s->write_fd);	// debug
-//				if (s->pipes/* || s->redirs*/) // if there are pipes or redirs, redir the STDOUT
-//				{
-//					dup2(s->write_fd, STDOUT_FILENO);	// REDIR STDOUT to write-end of pipe if there are
-													//	else it wil be STDOUT_FILENO by default
-
-//dprintf(2, "execute_cmd() -- s->write_fd(NEW) = %d\n", s->write_fd); // debug
-//				close(s->pipes[s->pipe_i][0]);		// Not reading from pipe, only writing
-			// TESTING IF PIPE[i][1] ALREADY CLOSED
-//				if (close(s->pipes[s->pipe_i][1]) == 0)
-//				{
-					// debug
-//				}// Duplicated this fd and redirs the STDOUT to the pipe.
-			//	close(s->pipes[s->pipe_i][1]);		// Duplicated this fd and redirs the STDOUT to the pipe.
-													// Can use STDOUT and pipe[1] interchangeably
-													// closed pipe[1] as its not needed
-//				}
 				try_system(s);
 			}
-
-
 		// child has executed and written to the output fd required, whether its for a pipe, redir or screen.
 		}
 // Parent only
-/*
-// START -- do_parent()
-			if (s->n_redirs) // if theres redirs, do them FIRST!
-			{
-		// START -- do_parent_redir()
-
-		// END -- do_parent_redir()
-			}
-			else if (s->n_pipes)// else if no redirs, are there pipes? If yes, use it.
-			{
-		// START -- do_parent_pipe()
-				i = s->pipe_i;
-				// if after first pipe/command, then read from the pipe, else read from STDIN
-				if (i > 0)
-				{
-					dup2(s->pipes[i - 1][0], s->read_fd);	// read from pipe[i - 1][0]
-					close(s->pipes[i - 1][0]); // pipe read-end not used. 
-				}
-	if (i > 0)	// debug
-		dprintf(2, "do_parent_pipe() -- These should match if theres pipes.\n"				// debug
-			"If last pipe, write will be STDOUT_FILENO. IF first, read will be STDIN_FILENO\n"// debug
-			"s->write_fd >%d\ts->pipe[i][1] >%d\ns->read_fd >%d\ts->pipe[i - 1][0] >%d\n",	// debug
-							s->write_fd, s->pipes[i][1], s->read_fd, s->pipes[i - 1][0]); // debug
-		// END -- do_parent_pipe()
-			}
-			else	// NO redirs and NO pipes EXIST !!
-			{
-		// START -- do_parent_default()
-
-		// END -- do_parent_default()
-			}
-// END -- do_parent() 
-*/
 //	Just wait for child and check its exit status.
 		wait(&status);
 // error checks

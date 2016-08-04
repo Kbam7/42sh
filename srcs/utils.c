@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:24:20 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/03 16:34:38 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/04 18:03:19 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ char	***check_env_type(int type, t_shell *s)
 		return (&s->shell_var);
 }
 
-void	print_variables(char **env, t_shell *s)
+void	print_variables(char **env)
 {
 	int	i;
 
 	i = 0;
 	while (env[i] != NULL)
 	{
-		ft_putendl_fd(env[i], s->write_fd);
+		ft_putendl_fd(env[i], STDOUT_FILENO);
 		++i;
 	}
 }

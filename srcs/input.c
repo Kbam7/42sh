@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 18:03:53 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/04 17:42:09 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/04 21:38:45 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,6 @@ while (j < len)
 	++j;
 }
 /* END DEBUG */
-//		trimmed[len] = NULL;
-/* START DEBUG */
-j = 0;
-dprintf(2, "--- After trimmed[len] assigned to NULL\n");
-while (j < len)
-{
-	dprintf(2, "----- trimmed[%d] >%s<\n", j, trimmed[j]);
-	++j;
-}
-/* END DEBUG */
 		return (trimmed);
 	}
 	return (tab);
@@ -63,12 +53,6 @@ int	process_input(char *cmd, t_shell *s)
 {
 	int			error;
 
-/*
-				if ('|')	// if there is '|' in cmd
-//					process_input(cmd_list->cmd, s);
-				else if (!'|' && ('<' || '>') ) // if there is '>' or '<' in cmd. there will not be pipes in cmd.
-//					execute_redir(cmd_list->redir);
-*/			
 	error = EXIT_FAILURE;
 	if (ft_strchr(cmd, '|'))
 	 return (process_pipes(cmd, s));
@@ -78,7 +62,7 @@ int	process_input(char *cmd, t_shell *s)
 	else
 	{	// try execute cmd
 		get_input(cmd, s);
-dprintf(2, "process_input() calling execute_cmd() input[0] '%s' -- input[1] '%s' ...\n", s->input[0], s->input[1]); // debug
+dprintf(2, "\n\nprocess_input() -- NEW COMMAND --  calling execute_cmd() input[0] '%s' -- input[1] '%s' ...\n", s->input[0], s->input[1]); // debug
 
 		error = execute_cmd(s); // exucutes the function and reads output to write_fd
 		free_tab((void **)s->input, ft_tablen(s->input));
@@ -105,20 +89,17 @@ int		process_pipes(char *cmd, t_shell *s)
 	while (i < sub_cmd.words)
 	{
 		s->pipes[i] = (int *)malloc(sizeof(int) * 2);
-		s->pipes[i][0] = dup(STDIN_FILENO);
-		s->pipes[i][1] = dup(STDOUT_FILENO);
+		if (pipe(s->pipes[i]) == -1)
+			return (err(ERR_CREATE_PIPE, "execute_cmd()"));
+	//	s->pipes[i][0] = dup(STDIN_FILENO);
+	//	s->pipes[i][1] = dup(STDOUT_FILENO);
 		++i;
 	}
 
-	// lop through sub_cmd.strings[] and execute
+	// loop through sub_cmd.strings[] and execute
 	while (sub_cmd.strings[s->pipe_i] && (s->n_pipes = sub_cmd.words - s->pipe_i) > 0)
 	{
 		i = s->pipe_i;
-
-
-		if (pipe(s->pipes[i]) == -1)
-			return (err(ERR_CREATE_PIPE, "execute_cmd()"));
-
 		if (s->n_pipes == 1 && sub_cmd.strings[i] == NULL)
 		{
 		// user has input "cat author |", there is no command after the pipe so
