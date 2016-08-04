@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 18:03:53 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/03 13:57:31 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/04 17:42:09 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,16 @@ static char	**trim_commands(char **tab, int len)
 	int		i;
 	char	**trimmed;
 
+/* START DEBUG */
+dprintf(2, "trim_commands() -- len = %d\n", len);	// debug
+int	j = 0;
+while (j < len)
+{
+	dprintf(2, "----- pre-trimmed tab[%d] >%s<\n", j, tab[j]);
+	++j;
+}
+/* END DEBUG */
+
 	i = 0;
 	if (len > 0)
 	{
@@ -24,10 +34,26 @@ static char	**trim_commands(char **tab, int len)
 		while (i < len)
 		{
 			trimmed[i] = ft_strtrim(tab[i]);
-			ft_strdel(&tab[i]);
 			++i;
 		}
-		trimmed[len] = NULL;
+/* START DEBUG */
+int	j = 0;
+while (j < len)
+{
+	dprintf(2, "----- trimmed[%d] >%s<\n", j, trimmed[j]);
+	++j;
+}
+/* END DEBUG */
+//		trimmed[len] = NULL;
+/* START DEBUG */
+j = 0;
+dprintf(2, "--- After trimmed[len] assigned to NULL\n");
+while (j < len)
+{
+	dprintf(2, "----- trimmed[%d] >%s<\n", j, trimmed[j]);
+	++j;
+}
+/* END DEBUG */
 		return (trimmed);
 	}
 	return (tab);
@@ -51,14 +77,8 @@ int	process_input(char *cmd, t_shell *s)
 	// return (process_redirs(cmd, s));
 	else
 	{	// try execute cmd
-		// cmd string doesnt have any operators (< > |)
-		// check if is a file or a cmd
-
-		// if there are still
-		// and execute.
 		get_input(cmd, s);
-
-printf("Trying to execute '%s' with '%s' ...", s->input[0], s->input[1]); // debug
+dprintf(2, "process_input() calling execute_cmd() input[0] '%s' -- input[1] '%s' ...\n", s->input[0], s->input[1]); // debug
 
 		error = execute_cmd(s); // exucutes the function and reads output to write_fd
 		free_tab((void **)s->input, ft_tablen(s->input));
@@ -69,17 +89,36 @@ printf("Trying to execute '%s' with '%s' ...", s->input[0], s->input[1]); // deb
 int		process_pipes(char *cmd, t_shell *s)
 {
 	t_split_string	sub_cmd;
-	int				i;
+	char			**tmp;
+	size_t				i;
 
 	// split and use split[n - 1] as stdin for split[n] so that each pipe/cmd gets stdin from the pipe/cmd before it.
 	sub_cmd = ft_nstrsplit(cmd, '|');
-	sub_cmd.strings = trim_commands(sub_cmd.strings, sub_cmd.words);
-	s->pipes = (int **)malloc(sizeof(int *) * sub_cmd.words);
+	tmp = trim_commands(sub_cmd.strings, (int)sub_cmd.words);
+	free_tab((void **)sub_cmd.strings, sub_cmd.words);
+	sub_cmd.strings = ft_tabdup(tmp, sub_cmd.words);
+	free_tab((void **)tmp, sub_cmd.words);
 
-	// cycle through split[] and process_input() each argument to check for redirs(< , >) or if can execute.
+	// Create int **array for pipes
+	s->pipes = (int **)malloc(sizeof(int *) * sub_cmd.words);
+	i = 0;
+	while (i < sub_cmd.words)
+	{
+		s->pipes[i] = (int *)malloc(sizeof(int) * 2);
+		s->pipes[i][0] = dup(STDIN_FILENO);
+		s->pipes[i][1] = dup(STDOUT_FILENO);
+		++i;
+	}
+
+	// lop through sub_cmd.strings[] and execute
 	while (sub_cmd.strings[s->pipe_i] && (s->n_pipes = sub_cmd.words - s->pipe_i) > 0)
 	{
 		i = s->pipe_i;
+
+
+		if (pipe(s->pipes[i]) == -1)
+			return (err(ERR_CREATE_PIPE, "execute_cmd()"));
+
 		if (s->n_pipes == 1 && sub_cmd.strings[i] == NULL)
 		{
 		// user has input "cat author |", there is no command after the pipe so
@@ -92,47 +131,11 @@ int		process_pipes(char *cmd, t_shell *s)
 		}
 		else
 		{
-			//	For pipes and redirs, make an array of integer arrays with 2 ints in each array.
-			s->pipes[i] = (int *)malloc(sizeof(int) * 2);
-			if (pipe(s->pipes[i]) == -1)
-				return (err(ERR_CREATE_PIPE, "execute_cmd()"));
-
-			// if after first pipe/command, then read from the pipe, else read from STDIN
-			s->read_fd = (i > 0) ? s->pipes[i - 1][0] : STDIN_FILENO;
-// NOTE!!->	//	to read s->read_fd -- dup2(STDIN_FILENO, s->read_fd);
-
-			// while not last pipe output to pipe[i][1] else output to STDOUT
-			s->write_fd = (s->n_pipes > 1) ? s->pipes[i][1] : STDOUT_FILENO;
-			//	to write to s->write_fd -- dup2(STDOUT_FILENO, s->write_fd);
-
-	printf("s->write_fd >%d\ts->pipe[i][1] >%d\ns->read_fd >%d\ts->pipe[i - 1][0] >%d\n", s->write_fd, s->pipes[i][1], s->read_fd, s->pipes[i][0]); // debug
 			process_input(sub_cmd.strings[i], s);
-
-// At this point, the output has been read into the pipe or to the screen if its the last command.
-
-
-/* This step is handled by setting write_fd to either STDOUT or pipe[1]
-			if (s->n_pipes == 1)//	if on the last cmd being piped to, then write its output to the screen
-			{
-				ft_putstr_fd("Reading from pipe[0] to  STDOUT_FILENO\n", 2); // debug
-				while (read(s->pipe[0], &buf, 1) > 0)
-					write(STDOUT_FILENO, &buf, 1);
-			}
-			else // read output_pipe into input
-			{
-				ft_putstr_fd("There are still commands to piped\n"
-					"-- Read from pipe[0] in next command\n", 2);	// debug
-			}
-*/
-
 		}
+// At this point, the output has been read into the pipe or to the screen if its the last command.
 		++s->pipe_i;
 	}
-/*
-	if (s->pipes.n_pipes == 0) // all pipes have been executed, write to stdout.
-		while (read(s->pipes.pipe[0], &buf, 1) > 0)// Read from read-end of pipe
-			write(s->write_fd, &buf, 1);	// write to screen
-*/		
 	free_tab((void **)s->pipes, s->pipe_i);
 	free_tab((void **)sub_cmd.strings, ft_tablen(sub_cmd.strings));
 	return (EXIT_SUCCESS);

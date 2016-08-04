@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:24:20 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/03 14:07:21 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/03 16:34:38 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	print_variables(char **env, t_shell *s)
 	i = 0;
 	while (env[i] != NULL)
 	{
-		write(s->write_fd, env[i], ft_strlen(env[i]));
+		ft_putendl_fd(env[i], s->write_fd);
 		++i;
 	}
 }

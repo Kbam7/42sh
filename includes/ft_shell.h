@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/03 14:07:10 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/03 16:43:04 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,15 @@ typedef struct			s_shell
 	t_cmd_list	*commands;
 	int			write_fd;
 	int			read_fd;
+// pipes
 	int			**pipes;
 	int			n_pipes;
 	int			pipe_i;
+// redirs
+	int			**redirs;
 	int			n_redirs;
+	int			redir_i;
+//
 }				t_shell;
 
 /*
