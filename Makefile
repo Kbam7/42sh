@@ -8,7 +8,9 @@ SRCS		=	srcs/main.c				\
 				srcs/init.c				\
 				srcs/prompt.c			\
 				srcs/input.c			\
-				srcs/input_utils.c		\
+				srcs/commands.c			\
+				srcs/redirs.c			\
+				srcs/pipes.c			\
 				srcs/shell_args.c		\
 				srcs/environ.c			\
 				srcs/execute.c			\

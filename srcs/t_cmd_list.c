@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/30 13:31:48 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/01 14:15:23 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/05 07:47:27 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ int		add_cmd(t_cmd_list **cmd_list, char *cmd)
 	}
 	return (EXIT_FAILURE);
 }
-
-
 
 void	free_cmd_list(t_cmd_list **list)
 {

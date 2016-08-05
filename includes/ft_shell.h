@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/04 18:03:33 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/05 08:22:52 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ int				try_system(t_shell *s);
 char			**ft_tabdup(char **tab, int len);
 int				ft_tablen(char **envp);
 void			free_tab(void **tab, int len);
+char			**tab_trim(char **tab, int len);
 
 /*
 **	utils.c

@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/30 23:16:38 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/03 17:36:44 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/05 07:37:49 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,41 +69,3 @@ void	get_input(char *cmd, t_shell *s)
 	s->input = ft_tabdup(data.strings, data.words);
 	free_tab((void **)data.strings, data.words);
 }
-/*
-int	store_pipe(t_cmd_list **cmd)
-{
-	size_t			i;
-	int				ret;
-	t_split_string	args;
-	t_cmd_list		*pipes;
-
-	i = 0;
-	args = ft_nstrsplit((*cmd)->cmd, '|');
-	if (args.words > 1)
-	{
-		while (i < args.words)
-		{
-			ret = add_cmd(&(*cmd)->pipes, args.strings[i]);
-			++i;
-		}
-		return (ret);
-	}
-	else
-		return (err(ERR_INVALID_PIPE, "--- store_pipe()---"));
-}
-*/
-/*
-int	store_redirect(t_cmd_list *cmd, t_shell *s)
-{
-	int	i;
-
-	i = 0;
-	while (cmd->cmd[i] != '\0')
-	{
-		if (cmd->cmd[i] == '>')
-			store_write
-		if (cmd->cmd[i] == '<')
-		
-	}
-}
-*/
