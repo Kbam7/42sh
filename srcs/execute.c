@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/05 07:47:27 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/05 14:34:15 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,11 @@ int		try_system(t_shell *s)
 //	Prints from pipe
 /*		
 char	buf;							// debug
-if (s->pipe_i > 0)						// debug
+if (s->pipe.pipe_i > 0)						// debug
 {
 dprintf(2, "try_system() -- path exists, reading from pipe[i][0] now. .\n" // debug
 			"----- PRINT OUTPUT -- to STDOUT -----\n\n");	// debug
-	while (read(s->pipes[s->pipe_i][0], &buf, 1) > 0)	// debug
+	while (read(s->pipe.pipes[s->pipe.pipe_i][0], &buf, 1) > 0)	// debug
 	{
 		ft_putstr_fd(" >", 2);
 		write(2, &buf, 1);	// debug
@@ -153,41 +153,41 @@ dprintf(2, "--- CHILD PROCESS ---\nexecute_cmd() -- Trying to execute '%s' with 
 				//																		read file.txt into stdin for cmd.
 
 			}
-			else if (s->n_pipes)// else if no redirs, are there pipes? If yes, use it.
+			else if (s->pipe.n_pipes)// else if no redirs, are there pipes? If yes, use it.
 			{
-				i = s->pipe_i;
+				i = s->pipe.pipe_i;
 				if (i == 0) // first cmd
 				{
 //		dprintf(2, "execute_cmd() -- child -- first cmd (i = 0)\n"); // debug
-		//dprintf(2, "STDOUT now goes to s->pipes[i + 1][1]\n");		// debug
-					dup2(s->pipes[i + 1][1], STDOUT_FILENO);
-					close(s->pipes[i][0]);						// close STDOUT and write to pipe[i + 1]
-					close(s->pipes[i][1]);						// close STDOUT and write to pipe[i + 1]
+		//dprintf(2, "STDOUT now goes to s->pipe.pipes[i + 1][1]\n");		// debug
+					dup2(s->pipe.pipes[i + 1][1], STDOUT_FILENO);
+					close(s->pipe.pipes[i][0]);						// close STDOUT and write to pipe[i + 1]
+					close(s->pipe.pipes[i][1]);						// close STDOUT and write to pipe[i + 1]
 
-//		dprintf(2, "execute_cmd() -- --- STDOUT closed, OUTPUT goes to s->pipes[i + 1][1]\n");		// debug
-//		dprintf(2, "execute_cmd() -- --- STDIN open, s->pipes[i][0] closed  -- Not reading from first pipe\n");		// debug
-//		dprintf(2, "execute_cmd() -- --- s->pipes[i][1] closed  -- Not writing to first pipe\n");		// debug
+//		dprintf(2, "execute_cmd() -- --- STDOUT closed, OUTPUT goes to s->pipe.pipes[i + 1][1]\n");		// debug
+//		dprintf(2, "execute_cmd() -- --- STDIN open, s->pipe.pipes[i][0] closed  -- Not reading from first pipe\n");		// debug
+//		dprintf(2, "execute_cmd() -- --- s->pipe.pipes[i][1] closed  -- Not writing to first pipe\n");		// debug
 				}
-				else if (s->n_pipes == 1) // last pipe
+				else if (s->pipe.n_pipes == 1) // last pipe
 				{
 
-//		dprintf(2, "execute_cmd() -- child -- Last cmd (s->n_pipes == 1)\n"); // debug
-					dup2(s->pipes[i][0], STDIN_FILENO); // read from current pipe
-					close(s->pipes[i][0]);	// STDIN reading from pipe
-					close(s->pipes[i][1]);	// close last write-end, STDOUT used
-	//	dprintf(2, "execute_cmd() -- STDIN closed,  input is from s->pipes[i][0]\n");		// debug
+//		dprintf(2, "execute_cmd() -- child -- Last cmd (s->pipe.n_pipes == 1)\n"); // debug
+					dup2(s->pipe.pipes[i][0], STDIN_FILENO); // read from current pipe
+					close(s->pipe.pipes[i][0]);	// STDIN reading from pipe
+					close(s->pipe.pipes[i][1]);	// close last write-end, STDOUT used
+	//	dprintf(2, "execute_cmd() -- STDIN closed,  input is from s->pipe.pipes[i][0]\n");		// debug
 	//	dprintf(2, "execute_cmd() -- STDOUT open, writing to screen\n");		// debug
-	//	dprintf(2, "execute_cmd() -- s->pipes[i][1] -- last write-end closed, writing to screen\n");		// debug
+	//	dprintf(2, "execute_cmd() -- s->pipe.pipes[i][1] -- last write-end closed, writing to screen\n");		// debug
 				}
 				else
 				{
 //		dprintf(2, "execute_cmd() -- child --  middle cmd -- pipes[%d]\n", i); // debug
-					close(s->pipes[i][1]);	// close this pipe, writing to next pipe
-					dup2(s->pipes[i][0], STDIN_FILENO); // read from current pipe
-					close(s->pipes[i][0]);	// STDIN reading from pipe
-					dup2(s->pipes[i + 1][1], STDOUT_FILENO);
-//		dprintf(2, "execute_cmd() -- STDIN closed, reading from s->pipes[i][0]\n");		// debug
-//		dprintf(2, "execute_cmd() -- STDOUT closed, writing to s->pipes[i + 1][1]\n");		// debug
+					close(s->pipe.pipes[i][1]);	// close this pipe, writing to next pipe
+					dup2(s->pipe.pipes[i][0], STDIN_FILENO); // read from current pipe
+					close(s->pipe.pipes[i][0]);	// STDIN reading from pipe
+					dup2(s->pipe.pipes[i + 1][1], STDOUT_FILENO);
+//		dprintf(2, "execute_cmd() -- STDIN closed, reading from s->pipe.pipes[i][0]\n");		// debug
+//		dprintf(2, "execute_cmd() -- STDOUT closed, writing to s->pipe.pipes[i + 1][1]\n");		// debug
 				}
 				try_system(s);
 			}
@@ -204,26 +204,26 @@ dprintf(2, "--- CHILD PROCESS ---\nexecute_cmd() -- Trying to execute '%s' with 
 		{
 			// nothing yet
 		}
-		else if (s->n_pipes)// else if no redirs, are there pipes? If yes, use it.
+		else if (s->pipe.n_pipes)// else if no redirs, are there pipes? If yes, use it.
 		{
-			i = s->pipe_i;
+			i = s->pipe.pipe_i;
 			if (i == 0) // first cmd
 			{
 //			dprintf(2, "execute_cmd() -- parent -- first cmd (i = 0)\n"); // debug
-					close(s->pipes[i][0]);						// close pipe[0], not reading from first pipe
-					close(s->pipes[i][1]);						// close pipe[1], not writing to first pipe
+					close(s->pipe.pipes[i][0]);						// close pipe[0], not reading from first pipe
+					close(s->pipe.pipes[i][1]);						// close pipe[1], not writing to first pipe
 			}
-			else if (s->n_pipes == 1) // last pipe
+			else if (s->pipe.n_pipes == 1) // last pipe
 			{
-//			dprintf(2, "execute_cmd() -- Parent -- Last cmd (s->n_pipes == 1)\n"); // debug
-					close(s->pipes[i][0]);	// STDIN reading from pipe
-					close(s->pipes[i][1]);	// close last write-end, STDOUT used
+//			dprintf(2, "execute_cmd() -- Parent -- Last cmd (s->pipe.n_pipes == 1)\n"); // debug
+					close(s->pipe.pipes[i][0]);	// STDIN reading from pipe
+					close(s->pipe.pipes[i][1]);	// close last write-end, STDOUT used
 			}
 			else
 			{
 //			dprintf(2, "execute_cmd() -- parent -- middle cmd -- \n"); // debug
-					close(s->pipes[i][0]);	// STDIN reading from pipe[i][0]
-					close(s->pipes[i][1]);	// STDOUT writing to pipe[i +1][1]
+					close(s->pipe.pipes[i][0]);	// STDIN reading from pipe[i][0]
+					close(s->pipe.pipes[i][1]);	// STDOUT writing to pipe[i +1][1]
 			}
 		}
 		else	// NO redirs and NO pipes EXIST !!

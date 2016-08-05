@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/05 08:22:52 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/05 14:44:51 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define FT_SHELL_H
 
 # include "libft.h"
+# include "builtin.h"
+
 # include <sys/wait.h>
 
 #include <stdio.h> // debug
@@ -46,37 +48,10 @@
 # define ERR_GNL				1013
 # define ERR_MALLOC				1014
 
-typedef struct		s_env_func
-{
-	int	u;	// unsets variable for environment (s->env_var)
-	int	i;	// ignores envrironment. temporarily creates an empty environment.
-}				t_env_func;
-
-typedef struct			s_echo_func
-{
-	int	e;		// enable interpretation of backlash escapes
-	int	up_e;	// (default) Disable interpretation of backslash escapes
-	int	n;		// do  not output trailing newline
-}				t_echo_func;
-
-typedef struct			s_cd_func
-{
-	int	l;	// force symbolic links to be followed
-	int	p;	// (default)use the physical directory structure without following symbolic links
-}				t_cd_func;
-
-typedef struct			s_func_opt
-{
-	t_env_func	env;
-	t_echo_func	echo;
-	t_cd_func	cd;
-}				t_func_opt;
 
 typedef struct			s_cmd_list
 {
 	char 				*cmd;
-//	struct s_cmd_list	*pipes;
-//	struct s_cmd_list	*redir;
 	struct s_cmd_list	*next;
 }				t_cmd_list;
 
@@ -94,16 +69,8 @@ typedef struct			s_shell
 	int			arg_p;
 	int			arg_u;
 	t_cmd_list	*commands;
-//	int			write_fd;
-//	int			read_fd;
-// pipes
-	int			**pipes;
-	int			n_pipes;
-	int			pipe_i;
-// redirs
-	int			**redirs;
-	int			n_redirs;
-	int			redir_i;
+	t_redirs	redir;
+	t_pipes		pipe;
 //
 }				t_shell;
 
@@ -187,33 +154,5 @@ int				add_cmd(t_cmd_list **cmd_list, char *cmd);
 void			free_cmd_list(t_cmd_list **list);
 void			print_cmd_list(t_cmd_list *list); // debug
 
-/*
-**	###=----[ BUILTIN FUNCTIONS ]-----=###
-*/
-
-/*
-**	ft_cd.c
-*/
-int				ft_cd(char **args, t_shell *s);
-
-/*
-**	ft_echo.c
-*/
-int				ft_echo(char **args, t_shell *s);
-
-/*
-**	ft_env.c
-*/
-int				ft_env(char **input, t_shell *s);
-
-/*
-**	ft_setenv.c
-*/
-int				ft_set(int env_type, char *name, char *val, t_shell *s);
-
-/*
-**	ft_unsetenv.c
-*/
-int				ft_unsetenv(char *name, t_shell *s);
 
 #endif
