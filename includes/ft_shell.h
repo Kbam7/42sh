@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/05 14:44:51 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/06 00:41:45 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct			s_shell
 	int			arg_p;
 	int			arg_u;
 	t_cmd_list	*commands;
-	t_redirs	redir;
+	t_redirs	*redir;
 	t_pipes		pipe;
 //
 }				t_shell;
@@ -105,8 +105,6 @@ int				process_redir(char *cmd, t_shell *s);
 int				get_commands(t_shell *s);
 void			get_input(char *cmd, t_shell *s);
 int				store_commands(char *str, t_shell *s);
-//int				store_pipe(t_cmd_list **cmd);
-//int				store_redirect(t_cmd_list *cmd, t_shell *s);
 
 /*
 **	shell_args.c

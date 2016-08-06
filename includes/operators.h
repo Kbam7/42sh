@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 14:38:37 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/05 14:41:01 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/06 00:46:16 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@
 
 typedef struct			s_redirs
 {
-// redirs
-	int			**redirs;
-	int			n_redirs;
-	int			redir_i;
-
+	char			**cmd;		// holds each command/path
+	char			**rdr;		// for redir operator strings
+	int				**pipe;		// for redir pipes
+	int				n_rdr;
+	int				i;			// current redir index
+	struct s_redirs	*next;
 }						t_redirs;
 
 typedef struct			s_pipes
 {
-// pipes
-	int			**pipes;
-	int			n_pipes;
-	int			pipe_i;
+	int				**pipes;
+	int				n_pipes;
+	int				pipe_i;
 }						t_pipes;
 
 #endif

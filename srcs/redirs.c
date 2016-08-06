@@ -6,76 +6,159 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:25:22 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/05 13:53:00 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/06 03:33:12 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
+static int	is_whtspc(char c)
+{
+	if (c == ' ' || c == '\t' || c == '\v' || c == '\r')
+		return (1);
+	return (0);
+}
+
+void	execute_redirs(t_shell *s)
+{
+	// this function will call process_input() witheach redir and create pipes as needed
+
+
+}
+
+void	process_output_redir(char *str, t_shell *s)
+{
+	// this function must be executed just before executing the command
+	//	this function will create all the necessary pipes/redirs
+	// try call process_input() to execute the commands after redirections are done
+
+		// write output to pipe
+
+				if (str[0] == '&' && str[1] == '>')	// ('&>')
+				{
+				// redir STDOUT && STDERR to output destination
+					
+				}
+				if (i == 0 || is_whtspc(cmd[i - 1]))	// ('>..' || ' >')
+					// no FD defined, redir STDOUT fd(1), to destination
+				if (cmd[++i] == '>')	// ('>>')
+				{
+					//	append to output destination
+					++i;
+				}
+				if (cmd[i] == '&')	// ('>&')
+				{
+					// ampersand
+					++i;
+				}
+				if (cmd[i])
+				while (cmd[i] != '\0' && is_whtspc(cmd[i]))	//	(> ..)
+					++i;
+				len = i;
+				while (cmd[len] != '\0' && !is_whtspc(cmd[len]))// read chars from space to space to
+					++len;										// form a word/path to a file or command..
+				if (len > i)						// word found
+					word = ft_strsub(cmd, i, len);	// get word
+				//	WHAT TO DO WITH 'word' ???
+
+
+}
+
 int		process_redir(char *cmd, t_shell *s)
 {
-	t_split_string	sub_cmd;
-	char			**tmp;
-	size_t				i;
-// Redirection allows commands’ file handles to be duplicated, opened, closed,
-// made to refer to different files, and can change the files the command reads from and writes to.
 
-			//	For pipes and redirs, make an array of integer arrays with 2 ints in each array.
-			//	redirs = (int **)malloc(sizeof(int *) * sub_cmd.words + 1);
+	int		i;
+	int		ret;
+	int		open;
+	int		offset;
+	char	*path;
+	char	*rdr_str;
 
-					// split. can separate by space ' '. All redirs will be separated by space, else error.
-					// if is a redirect, found out which way it going and execute it with redir_input() or redir_output()
+	open = 0;
+	ret = EXIT_FAILURE;
+	i = 0;
+	while (cmd[i] != '\0')
+	{
+		path = NULL;
+		rdr_str = NULL;
+		offset = i;
+		// if quote, cycle to end quote
+		if (cmd[i] == '"')
+		{
+			++open;
+			while (open && cmd[i] != '\0')
+			{
+				++i;
+				if (cmd[i] == '"')
+					--open;
+			}
+			if (cmd[i] == '"')
+				++i;
+		}
+		//	if write to file
+		if (cmd[i] == '>')
+		{
+		// write output to pipe
+		//	write pipe to file/path
 
-					//	if "<&-" or  ">&-" close STDIN or STDOUT repectively
-					//	if '<', 
-					//		split[n] is stdin for split[n - 1].
-					// 		set_redirect(); // sets input and output fd.
-					//	if '>',
-					//		split[n] is stdin for split[n + 1].
-					// 		set_redirect(); // sets input and output fd.
 
+		// get redir string, and process_output_redir()
 
+			// go to start index of rdr_string
+			while (i > offset && !is_whtspc(cmd[i - 1]))
+			{
+				--i;
+				if (cmd[i] == '&' && cmd[i + 1] == '>')
+					break ;
+			}
+			len = i; // i == start index of redir_str
+
+			// go to end of rdr_string. (white-space or EOL)
+			while (cmd[len] != '\0' && !is_whtspc(cmd[len]))
+				++len;
+			if (i > offset)	// are there chars before rdr_string
+			{
+			//	save as a path, if path exists, execute it.
+			//					else create path and write to it--
+		 		path = ft_strsub(cmd, offset, (i - offset));
+			}
+			//	save rdr_string -- check rdr string for two ampersands  (2x '&')
+			rdr_str = ft_strsub(cmd, i, len - 1);
+			if (new_redir(&s->redirs, rdr_str, path) == EXIT_FAILURE)
+				// error
+
+			i = len;
+		}
+		else if (cmd[i] = '<')
+		{
+			// get stdin from cmd after '<'..
+
+			++i;
+		}
+		else
+			++i;
+	}
+	if (ret = execute_redirs(s) != EXIT_SUCCESS)
+		return (err(ERR_NOEXEC_REDIR));
+	return (ret);
+}
+
+/*
 	if (ft_strchr(cmd, '>'))
 	{
 		// do OUTPUT REDIR '>'
-	sub_cmd = ft_nstrsplit(cmd, '>');
-	tmp = trim_commands(sub_cmd.strings, (int)sub_cmd.words);
-	free_tab((void **)sub_cmd.strings, sub_cmd.words);
-	sub_cmd.strings = ft_tabdup(tmp, sub_cmd.words);
-
-	// loop through sub_cmd.strings[] and execute
-	while (sub_cmd.strings[s->redir_i] && (s->n_redirs = sub_cmd.words - s->redir_i) > 0)
-	{
-		i = s->pipe_i;
-		process_input(sub_cmd.strings[i], s);
-		++s->pipe_i;
-	}
-
-
+		//	If a right redir(>) is found, output to arg defined after (>)
+		//	i.e read from arg into stdin for cmd. 					e.g	cmd < file.txt
+		//																		open file.txt
+		//																		read file.txt into stdin for cmd.
 
 	else if (ft_strchr(cmd, '<'))
 	{
 		// do INPUT REDIR '<'
+		//	If a left redir(<) is found, read from arg defined after (<)
+		//	i.e execute arg, and read its output into cmd. 					e.g	cmd < file.txt
+		//																		open file.txt
+		//																		read file.txt into stdin for cmd.
+
 	}
-
-	// split and use split[n - 1] as stdin for split[n] so that each pipe/cmd gets stdin from the pipe/cmd before it.
-	sub_cmd = ft_nstrsplit(cmd, '<');
-	tmp = trim_commands(sub_cmd.strings, (int)sub_cmd.words);
-	free_tab((void **)sub_cmd.strings, sub_cmd.words);
-	sub_cmd.strings = ft_tabdup(tmp, sub_cmd.words);
-	free_tab((void **)tmp, sub_cmd.words);
-
-//dprintf(2, "process_pipe() ---- Here - 1\n"); // debug
-
-	// Create int **array for pipes
-	s->pipes = (int **)malloc(sizeof(int *) * sub_cmd.words);
-	i = 0;
-	while (i < sub_cmd.words)
-	{
-		s->pipes[i] = (int *)malloc(sizeof(int) * 2);
-		if (pipe(s->pipes[i]) == -1)
-			return (err(ERR_CREATE_PIPE, "execute_cmd()"));
-		++i;
-	}
-
-}
+*/

@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/05 14:34:15 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/06 03:17:39 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ int		execute_cmd(t_shell *s)
 dprintf(2, "--- CHILD PROCESS ---\nexecute_cmd() -- Trying to execute '%s' with '%s' ...\n", s->input[0], s->input[1]); // debug
 
 		// child only
-			if (s->n_redirs) // if theres redirs, do them FIRST!
+			if (s->redir->n_rdr) // if theres redirs, do them FIRST!
 			{
 //dprintf(2, "child -- execute_cmd() n_redirs = %d -- s->write_fd = %d\n", s->n_redirs, s->write_fd); // debug
 				i = s->redir_i;

@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 18:03:53 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/05 13:04:40 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/06 03:00:24 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ int	process_input(char *cmd, t_shell *s)
 	if (ft_strchr(cmd, '|'))
 	 return (process_pipes(cmd, s));
 	else if (ft_strchr(cmd, '<') || ft_strchr(cmd, '>')) // there will be no '|' in cmd
-		return (error);
-	// return (process_redirs(cmd, s));
+	 return (process_redir(cmd, s));
 	else
 	{	// try execute cmd
 		get_input(cmd, s);
