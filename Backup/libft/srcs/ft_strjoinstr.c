@@ -1,32 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   operators.h                                        :+:      :+:    :+:   */
+/*   ft_strjoinstr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/08/05 14:38:37 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/06 14:56:16 by kbamping         ###   ########.fr       */
+/*   Created: 2016/07/09 15:07:59 by kbamping          #+#    #+#             */
+/*   Updated: 2016/07/30 00:29:21 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef OPERATORS_H
-# define OPERATORS_H
+#include "libft.h"
 
-typedef struct			s_redirs
+char	*ft_strjoinstr(char *s1, char *s2, char *s3)
 {
-	char			**cmd;		// holds each command/path
-	char			**rdr;		// for redir operator strings
-	int				**pipe;		// for redir pipes
-	int				n_rdr;
-	int				rdr_i;			// current redir index
-}						t_redirs;
+	char	*tmp;
+	char	*str;
 
-typedef struct			s_pipes
-{
-	int				**pipes;
-	int				n_pipes;
-	int				pipe_i;
-}						t_pipes;
-
-#endif
+	if (s1 && s2 && s3)
+	{
+		tmp = ft_strjoin(s1, s2);
+		str = ft_strjoin(tmp, s3);
+		free(tmp);
+		return (str);
+	}
+	else
+		return (NULL);
+}

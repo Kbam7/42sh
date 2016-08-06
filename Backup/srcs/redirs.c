@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:25:22 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/06 14:25:22 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/06 12:52:43 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,14 @@ static int	is_whtspc(char c)
 void	execute_redirs(t_shell *s)
 {
 	// this function will call process_input() witheach redir and create pipes as needed
-	t_redirs	*list;
 
-	list = s->redirs;
-	while (list)
-	{
-		process_output_redir();
-		list = list->next;
-	}
 
 }
 
 void	process_output_redir(char *str, t_shell *s)
 {
 	// this function must be executed just before executing the command
-	//	this function will create the necessary redirect (pipe) for the current redir
+	//	this function will create all the necessary pipes/redirs
 	// try call process_input() to execute the commands after redirections are done
 
 		// write output to pipe
@@ -118,24 +111,23 @@ int		process_redir(char *cmd, t_shell *s)
 				if (cmd[i] == '&' && cmd[i + 1] == '>')
 					break ;
 			}
+			len = i; // i == start index of redir_str
+
+			// go to end of rdr_string. (white-space or EOL)
+			while (cmd[len] != '\0' && !is_whtspc(cmd[len]))
+				++len;
 			if (i > offset)	// are there chars before rdr_string
 			{
 			//	save as a path, if path exists, execute it.
 			//					else create path and write to it--
 		 		path = ft_strsub(cmd, offset, (i - offset));
 			}
-
-			len = i; // i == start index of redir_str
-
-			// go to end of rdr_string. (white-space or EOL)
-			while (cmd[len] != '\0' && !is_whtspc(cmd[len]))
-				++len;
 			//	save rdr_string -- check rdr string for two ampersands  (2x '&')
 			rdr_str = ft_strsub(cmd, i, len - 1);
+			if (new_redir(&s->redirs, rdr_str, path) == EXIT_FAILURE)
+				// error
 
-			if (add_redir(&s->redirs, rdr_str, path) == EXIT_FAILURE)
-				return (err(ERR_MALLOC, "add_redir() --"));
-
+			// update position index
 			i = len;
 		}
 		else if (cmd[i] = '<')
@@ -147,17 +139,6 @@ int		process_redir(char *cmd, t_shell *s)
 		else
 			++i;
 	}
-
-	// check to see if i == ft_strlen(cmd). If they match, it means we ended on a redir. and all has been stored ( _ > )
-	// if they dont match, it means cmd ends with a cmd string and we must save the leftover ( __ > __ )
-	if (i < ft_strlen(cmd))
-	{
-		// save remaining chars i --> length
-		path = ft_strsub(cmd, i, (ft_strlen(cmd) - i));
-		if (add_redir(&s->redirs, NULL, path) == EXIT_FAILURE)
-			return (err(ERR_MALLOC, "add_redir() --"));
-	}
-
 	if (ret = execute_redirs(s) != EXIT_SUCCESS)
 		return (err(ERR_NOEXEC_REDIR));
 	return (ret);

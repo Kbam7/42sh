@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/06 15:21:23 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/06 03:17:39 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ dprintf(2, "--- CHILD PROCESS ---\nexecute_cmd() -- Trying to execute '%s' with 
 			if (s->redir->n_rdr) // if theres redirs, do them FIRST!
 			{
 //dprintf(2, "child -- execute_cmd() n_redirs = %d -- s->write_fd = %d\n", s->n_redirs, s->write_fd); // debug
-				i = s->rdr_i;
+				i = s->redir_i;
 				
 				//	If a left redir(<) is found, read from arg defined after (<)
 				//	i.e execute arg, and read its output into cmd. 					e.g	cmd < file.txt
