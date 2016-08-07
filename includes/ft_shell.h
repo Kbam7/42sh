@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/06 15:03:34 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/06 18:53:45 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int				process_pipes(char *cmd, t_shell *s);
 int				process_redir(char *cmd, t_shell *s);
 
 /*
-**	input_utils.c
+**	commands.c
 */
 int				get_commands(t_shell *s);
 void			get_input(char *cmd, t_shell *s);

@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/06 15:21:23 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/06 20:14:12 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,13 +144,27 @@ dprintf(2, "--- CHILD PROCESS ---\nexecute_cmd() -- Trying to execute '%s' with 
 		// child only
 			if (s->redir->n_rdr) // if theres redirs, do them FIRST!
 			{
-//dprintf(2, "child -- execute_cmd() n_redirs = %d -- s->write_fd = %d\n", s->n_redirs, s->write_fd); // debug
-				i = s->rdr_i;
-				
 				//	If a left redir(<) is found, read from arg defined after (<)
 				//	i.e execute arg, and read its output into cmd. 					e.g	cmd < file.txt
 				//																		open file.txt
 				//																		read file.txt into stdin for cmd.
+
+//dprintf(2, "child -- execute_cmd() n_redirs = %d -- s->write_fd = %d\n", s->n_redirs, s->write_fd); // debug
+				i = s->rdr_i;
+				if (s->redir.dir == '>')
+				{
+					// send s->redir.out_fd to s->
+					child_output_redir(s->redir.rdr[i], s);
+
+				}
+				else if (s->redir.dir == '<')
+				{
+					// read from s->redir.in_fd(s->redir.cmd i + 1]) into STDIN_FILENO for s->redir.cmd[i]
+					child_input_redir(s->redir.rdr[i], s);
+				}
+
+
+
 
 			}
 			else if (s->pipe.n_pipes)// else if no redirs, are there pipes? If yes, use it.
