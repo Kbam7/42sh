@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/06 18:53:45 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/08 21:45:50 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,23 @@
 # define FT_SHELL_H
 
 # include "libft.h"
-# include "builtin.h"
-
 # include <sys/wait.h>
 
-#include <stdio.h> // debug
+
+	#include <stdio.h> // debug
+
 
 /*
-**	Max pathname and filename macros
+** --[ DEFINES -- FILE/DIRECTORY ]--
 */
+
 # define MAXNAME		255
 # define MAXPATH		4096
 
-//	Just a cool DEFINE i found, could be useful
-//# define die(e) do { fprintf(stderr, "%s\n", e); exit(EXIT_FAILURE); } while (0);
-
 /*
-**	Macros for errors
+** --[ DEFINES -- ERRORS ]--
 */
+
 # define EXIT_SH				1000
 # define ERR_INVALID_ARG		1001
 # define ERR_NOTFOUND			1002
@@ -48,14 +47,73 @@
 # define ERR_GNL				1013
 # define ERR_MALLOC				1014
 
+/*
+** --[ STRUCTS -- BUILTIN FUNCTIONS ]--
+**
+** Builtin function prototypes are at the bottom
+**
+*/
 
-typedef struct			s_cmd_list
+typedef struct	s_env_func
 {
-	char 				*cmd;
+	int	u;	// unsets variable for environment (s->env_var)
+	int	i;	// ignores envrironment. temporarily creates an empty environment.
+}				t_env_func;
+
+typedef struct	s_echo_func
+{
+	int	e;		// enable interpretation of backlash escapes
+	int	up_e;	// (default) Disable interpretation of backslash escapes
+	int	n;		// do  not output trailing newline
+}				t_echo_func;
+
+typedef struct	s_cd_func
+{
+	int	l;	// force symbolic links to be followed
+	int	p;	// (default)use the physical directory structure without following symbolic links
+}				t_cd_func;
+
+typedef struct	s_func_opt
+{
+	t_env_func	env;
+	t_echo_func	echo;
+	t_cd_func	cd;
+}				t_func_opt;
+
+/*
+** --[ STRUCTS -- PIPES & REDIRS ]--
+*/
+
+typedef struct			s_redirs
+{
+	char			**cmd;		// holds each command/path
+	char			**rdr;		// for redir operator strings
+	int				**pipe;		// for redir pipes
+	int				dir;
+	int				n_rdr;
+	int				rdr_i;		// current redir index
+	int				in_fd;		// defines fd on right of operator (<,>).
+	int				out_fd;		// defines fd on left of operator (<,>)
+}						t_redirs;
+
+typedef struct			s_pipes
+{
+	int				**pipes;
+	int				n_pipes;
+	int				pipe_i;
+}						t_pipes;
+
+/*
+** --[ STRUCTS -- SHELL ]--
+*/
+
+typedef struct	s_cmd_list
+{
+	char				*cmd;
 	struct s_cmd_list	*next;
 }				t_cmd_list;
 
-typedef struct			s_shell
+typedef struct	s_shell
 {
 	char		**env_var;	// copy to child
 	// init the rest everytime
@@ -73,6 +131,16 @@ typedef struct			s_shell
 	t_pipes		pipe;
 //
 }				t_shell;
+
+/*
+** --[ FUNCTION PROTOTYPES ]--
+*/
+
+
+int		child_output_redir(char *str, t_shell *s);
+
+
+
 
 /*
 **	shell.c
@@ -146,11 +214,57 @@ void			print_variables(char **env);
 int				err(int errno, char *msg);
 
 /*
+** --[ FUNCTION PROTOTYPES -- TYPEDEFS ]--
+*/
+
+/*
 **	t_cmd_list.c
 */
 int				add_cmd(t_cmd_list **cmd_list, char *cmd);
 void			free_cmd_list(t_cmd_list **list);
 void			print_cmd_list(t_cmd_list *list); // debug
 
+/*
+**	t_redirs.c
+*/
+int				add_redir(char *rdr_str, char *cmd, t_shell *s);
+
+/*
+**	--[ BUILTIN FUNCTIONS ]--
+*/
+
+/*
+**	ft_cd.c
+*/
+int				ft_cd(char **args, t_shell *s);
+int				change_to_home_dir(t_shell *s);
+int				change_to_oldpwd(t_shell *s);
+int				cd_change_to_fullpath(char *input, t_shell *s);
+
+/*
+**	ft_cd_utils.c
+*/
+int				cd_invalid_input(char *input);
+void			cd_set_arg(char c, t_shell *s);
+
+/*
+**	ft_echo.c
+*/
+int				ft_echo(char **args, t_shell *s);
+
+/*
+**	ft_env.c
+*/
+int				ft_env(char **input, t_shell *s);
+
+/*
+**	ft_setenv.c
+*/
+int				ft_set(int env_type, char *name, char *val, t_shell *s);
+
+/*
+**	ft_unsetenv.c
+*/
+int				ft_unsetenv(char *name, t_shell *s);
 
 #endif

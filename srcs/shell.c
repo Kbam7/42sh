@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/04 23:39:11 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/09 00:56:45 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,24 +22,18 @@ void		shell_loop(t_shell *s)
 	{
 		set_prompt(s);
 		ft_putstr(s->prompt);
-		if ((ret = get_commands(s) > 0)) // THIS MUST ONLY GET THE COMMANDS> It must not save any other list of pipes or redir. 
+		if ((ret = get_commands(s) > 0))
 		{
-//printf("shell_loop() -- added cmd_list\n"); // debug
 			cmd_list = s->commands;
-			while (cmd_list != NULL) // ! end of cmd_list
+			while (cmd_list != NULL)
 			{
-				ret = process_input(cmd_list->cmd, s); // this will run until all commands have been executed, "exit" was input, or there was an error.
+				ret = process_input(cmd_list->cmd, s);
 				if (ret == EXIT_SH || ret == EXIT_FAILURE)
 					break ;
-//				free_tab((void **)s->input, ft_tablen(s->input));
 				cmd_list = cmd_list->next;
 			}
-//print_cmd_list(s->commands); // debug
-//printf("shell_loop() -- free_cmd_list()\n"); // debug
 			free_cmd_list(&s->commands);
 		}
-//		if ret == 0, nothin input
-//		if ret < 0, gnl error gets printed, prompt is reprinted
 	}
 }
 
@@ -70,8 +64,10 @@ int			run_shell(t_shell *s)
 	return (status);
 }
 
-void	free_t_shell(t_shell *s)
+void		free_t_shell(t_shell *s)
 {
+	if (s->commands)
+		free_cmd_list(&s->commands);
 	free_tab((void **)s->env_var, ft_tablen(s->env_var));
 	free_tab((void **)s->shell_var, ft_tablen(s->shell_var));
 	free_tab((void **)s->paths, ft_tablen(s->paths));

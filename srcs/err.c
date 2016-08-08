@@ -6,11 +6,27 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:50 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/02 18:51:27 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/08 16:24:43 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
+
+static char	*check_file_error(int errno, char *msg)
+{
+	if (errno == ERR_MAX_PATHLEN)
+		return (ft_strjoinstr("Maximum path length reached.\n'", msg, "'"));
+	else if (errno == ERR_NO_FILE)
+		return (ft_strjoinstr("File/Directory does not exist '", msg, "'"));
+	else if (errno == ERR_NO_READ)
+		return (ft_strjoinstr("User hasn't got read rights for '", msg, "'"));
+	else if (errno == ERR_NO_WRITE)
+		return (ft_strjoinstr("User hasn't got write rights for '", msg, "'"));
+	else if (errno == ERR_NO_EXEC)
+		return (ft_strjoinstr("User hasn't got exec rights for '", msg, "'"));
+	else
+		return (NULL);
+}
 
 static void	check_errno(char **tmp, int errno, char *msg)
 {
@@ -30,16 +46,8 @@ static void	check_errno(char **tmp, int errno, char *msg)
 		*tmp = ft_strjoinstr("Fork failed! '", msg, "'");
 	else if (errno == ERR_CHDIR)
 		*tmp = ft_strjoinstr("Cannot change to directory '", msg, "'");
-	else if (errno == ERR_MAX_PATHLEN)
-		*tmp = ft_strjoinstr("Maximum path length reached.\n'", msg, "'");
-	else if (errno == ERR_NO_FILE)
-		*tmp = ft_strjoinstr("File/Directory does not exist '", msg, "'");
-	else if (errno == ERR_NO_READ)
-		*tmp = ft_strjoinstr("User does not have read rights for '", msg, "'");
-	else if (errno == ERR_NO_WRITE)
-		*tmp = ft_strjoinstr("User does not have write rights for '", msg, "'");
-	else if (errno == ERR_NO_EXEC)
-		*tmp = ft_strjoinstr("User does not have execute rights for '", msg, "'");
+	else if ((*tmp = check_file_error(errno, msg)) != NULL)
+		*tmp = *tmp;
 	else
 		*tmp = ft_strdup("No further details");
 }
@@ -52,7 +60,7 @@ int			err(int errno, char *msg)
 
 	check_errno(&tmp, errno, msg);
 	err_msg = ft_strjoin(err, tmp);
-	ft_putendl(err_msg);
+	ft_putendl_fd(err_msg, STDERR_FILENO);
 	free(tmp);
 	free(err_msg);
 	return (errno);

@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:27:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/03 13:48:56 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/07 14:36:14 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static void	remove_var(char *name, char **var)
 
 int			ft_unsetenv(char *name, t_shell *s)
 {
-
 	if (name == NULL || ft_strchr(name, '='))
 		return (err(ERR_INVALID_ARG, "unsetenv"));
 	if (check_env_variables(name, s) != NULL)

@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 02:28:26 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/06 19:41:56 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/07 14:31:49 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	init_builtin_func_options(t_shell *s)
 	s->func_opt.cd.p = 1;
 }
 
-void	init_pipes_redirs(t_shell *s)
+void		init_pipes_redirs(t_shell *s)
 {
 	s->pipe.pipes = NULL;
 	s->pipe.n_pipes = 0;
@@ -37,7 +37,7 @@ void	init_pipes_redirs(t_shell *s)
 	s->redir.in_fd = STDIN_FILENO;
 }
 
-void	init_env(t_shell *s, int argc, char **argv, char **envp)
+void		init_env(t_shell *s, int argc, char **argv, char **envp)
 {
 	t_split_string	tmp;
 	char			*tmpstr;

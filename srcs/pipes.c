@@ -6,49 +6,57 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:24:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/05 14:33:10 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/08 15:08:26 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-int		process_pipes(char *cmd, t_shell *s)
+static void	reset_and_free_vars(char **cmds, size_t n_cmds, t_shell *s)
 {
-	t_split_string	sub_cmd;
+	s->pipe.n_pipes = 0;
+	s->pipe.pipe_i = 0;
+	free_tab((void **)s->pipe.pipes, n_cmds);
+	free_tab((void **)cmds, n_cmds);
+}
+
+static int	init_pipes(char *cmd, char ***cmds,  t_shell *s)
+{
+	t_split_string	split;
 	char			**tmp;
-	size_t				i;
 
-	sub_cmd = ft_nstrsplit(cmd, '|');
-	tmp = tab_trim(sub_cmd.strings, (int)sub_cmd.words);
-	free_tab((void **)sub_cmd.strings, sub_cmd.words);
-	sub_cmd.strings = ft_tabdup(tmp, sub_cmd.words);
-	free_tab((void **)tmp, sub_cmd.words);
-
-//dprintf(2, "process_pipe() ---- Here - 1\n"); // debug
-
+	split = ft_nstrsplit(cmd, '|');
+	tmp = tab_trim(split.strings, (int)split.words);
+	free_tab((void **)split.strings, split.words);
+	*cmds = ft_tabdup(tmp, split.words);
+	free_tab((void **)tmp, split.words);
 	// Create int **array for pipes
-	s->pipe.pipes = (int **)malloc(sizeof(int *) * sub_cmd.words);
-	i = 0;
-	while (i < sub_cmd.words)
+	if ((s->pipe.pipes = (int **)malloc(sizeof(int *) * split.words)) == NULL)
+		return (err(ERR_MALLOC, "process_pipes() -- init_pipes()"));
+	return (split.words);
+}
+
+int			process_pipes(char *cmd, t_shell *s)
+{
+	int		i;
+	int		n_cmds;
+	char	**cmds;
+
+	if ((n_cmds = init_pipes(cmd, &cmds, s)) == ERR_MALLOC)
+		return (n_cmds);
+	i = -1;
+	while (++i < n_cmds)
 	{
-		s->pipe.pipes[i] = (int *)malloc(sizeof(int) * 2);
+		if ((s->pipe.pipes[i] = (int *)malloc(sizeof(int) * 2)) == NULL)
+			return (err(ERR_MALLOC, "process_pipes()"));
 		if (pipe(s->pipe.pipes[i]) == -1)
 			return (err(ERR_CREATE_PIPE, "execute_cmd()"));
-		++i;
 	}
-
-//dprintf(2, "process_pipe() ---- Here - 2\n"); // debug
-
-	// loop through sub_cmd.strings[] and execute
-	while (sub_cmd.strings[s->pipe.pipe_i] && (s->pipe.n_pipes = sub_cmd.words - s->pipe.pipe_i) > 0)
+	// loop through cmds[] and execute
+	while (cmds[s->pipe.pipe_i] && (s->pipe.n_pipes = n_cmds - s->pipe.pipe_i) > 0)
 	{
-		i = s->pipe.pipe_i;
-		if (s->pipe.n_pipes == 1 && sub_cmd.strings[i] == NULL)
+		if (s->pipe.n_pipes == 1 && cmds[s->pipe.pipe_i] == NULL)
 		{
-
-//dprintf(2, "process_pipe() ---- Here  - 2.1 -- s->n->pipe.pipes = %d\tsub_cmd.strings[i] = >%s< -- NULL\n",
-//																		s->pipe.n_pipes, sub_cmd.strings[i]); // debug
-
 		// user has input "cat author |", there is no command after the pipe so
 		//	read one line(ft_gnl), and use that line as a command. This command may be
 		//	multiple commands piped together, so running the input through from
@@ -58,21 +66,10 @@ int		process_pipes(char *cmd, t_shell *s)
 		//	is the parent of shell_loop, waits for the child and then uses the pipe
 		}
 		else
-		{
-
-//dprintf(2, "process_pipe() ---- Here  - 2.2 -- s->n->pipe.pipes = %d\tsub_cmd.strings[i] = >%s<\n", s->pipe.n_pipes, sub_cmd.strings[i]); // debug
-
-			process_input(sub_cmd.strings[i], s);
-		}
+			process_input(cmds[s->pipe.pipe_i], s);
 // At this point, the output has been read into the pipe or to the screen if its the last command.
 		++s->pipe.pipe_i;
 	}
-
-//dprintf(2, "process_pipe() ---- Here - 3 -- s->pipe.n_pipes = %d\n", s->pipe.n_pipes); // debug
-
-	s->pipe.n_pipes = 0;
-	s->pipe.pipe_i = 0;
-	free_tab((void **)s->pipe.pipes, s->pipe.pipe_i);
-	free_tab((void **)sub_cmd.strings, ft_tablen(sub_cmd.strings));
+	reset_and_free_vars(cmds, n_cmds, s);
 	return (EXIT_SUCCESS);
 }

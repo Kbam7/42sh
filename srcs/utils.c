@@ -6,13 +6,11 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:24:20 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/04 18:03:19 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/07 14:28:58 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
-
-/* START -- Add to check_path.c */
 
 int		check_rights(char *path, int r, int w, int x)
 {
@@ -29,9 +27,6 @@ int		check_rights(char *path, int r, int w, int x)
 		ret = err(ERR_NO_EXEC, path);
 	return (ret);
 }
-
-/* END   -- Add to check_path.c */
-
 
 char	***check_env_type(int type, t_shell *s)
 {

@@ -9,17 +9,19 @@ SRCS		=	srcs/main.c				\
 				srcs/prompt.c			\
 				srcs/input.c			\
 				srcs/commands.c			\
-				srcs/redirs.c			\
 				srcs/pipes.c			\
+				srcs/redirs.c			\
 				srcs/shell_args.c		\
 				srcs/environ.c			\
 				srcs/execute.c			\
 				srcs/tab_funcs.c		\
 				srcs/utils.c			\
 				srcs/err.c				\
+				srcs/t_redirs.c			\
 				srcs/t_cmd_list.c
 
 BUILTIN		=	srcs/builtin/ft_cd.c			\
+				srcs/builtin/ft_cd_utils.c			\
 				srcs/builtin/ft_echo.c			\
 				srcs/builtin/ft_env.c			\
 				srcs/builtin/ft_setenv.c		\

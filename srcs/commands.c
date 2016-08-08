@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_utils.c                                      :+:      :+:    :+:   */
+/*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/07/30 23:16:38 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/05 07:37:49 by kbamping         ###   ########.fr       */
+/*   Created: 2016/08/07 14:32:15 by kbamping          #+#    #+#             */
+/*   Updated: 2016/08/07 14:32:34 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-int	store_commands(char *str, t_shell *s)
+int		store_commands(char *str, t_shell *s)
 {
 	size_t			i;
 	int				ret;
