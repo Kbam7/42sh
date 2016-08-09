@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:25:22 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/08 21:42:33 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/09 22:45:09 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,46 @@ static int	is_whtspc(char c)
 	return (0);
 }
 
+static void	reset_and_free_vars(t_shell *s)
+{
+	free_tab((void **)s->redir.rdr, ft_tablen(s->redir.rdr));
+	free_tab((void **)s->redir.cmd, ft_tablen(s->redir.cmd));
+	s->redir.n_rdr = 0;
+	s->redir.rdr_i = 0;
+}
+
+static int	check_prefix(char *str, int start, char dir, t_shell *s)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	i = 0;
+	while (str[start + i] != dir && str[start + i] != '\0')
+	{
+		if (ft_isdigit(str[start + i]))
+		{
+			j = i;
+			while (ft_isdigit(str[start + j]))
+				++j;
+			if (str[j] != dir)
+			{
+				// invalid command .. ('4..>' || '4..<')
+				break ;
+			}
+			tmp = ft_strsub(str, i, (j - i));
+			if (dir == '>')
+				s->redir.out_fd = ft_atoi(tmp);
+			else if (dir == '<')
+				s->redir.in_fd = ft_atoi(tmp);
+			ft_strdel(&tmp);
+		}
+		++i;	
+	}
+	
+	
+}
+
 static int	execute_redirs(t_shell *s)
 {
 	int	i;
@@ -29,6 +69,7 @@ static int	execute_redirs(t_shell *s)
 	// cycle through redirects
 	while (i < s->redir.n_rdr)
 	{
+		s->redir.rdr_i = i;
 	// check what type of redir is at s->redir.rdr[i], output_redir() OR input_redir()
 	//	execute when the redirects are done.
 		if (ft_strchr(s->redir.rdr[i], '>'))
@@ -47,6 +88,7 @@ static int	execute_redirs(t_shell *s)
 			break ;
 		++i;
 	}
+	reset_and_free_vars(s);
 	return (ret);
 }
 
@@ -63,13 +105,16 @@ int		process_redir(char *cmd, t_shell *s)
 	open = 0;
 	i = 0;
 
-	// the purpose of this loop is to store the redir string and the cammonds/paths
-	// on either side of the redir
+	// the purpose of this loop is to store the redir string and the commands/paths
+	// on either side of the redir. The function then execute the redirs, so it will
+	// run until it 
+
 	while (cmd[i] != '\0')
 	{
 		path = NULL;
 		rdr_str = NULL;
 		offset = i;
+/*		
 		// if quote, cycle to end quote
 		if (cmd[i] == '"')
 		{
@@ -83,6 +128,7 @@ int		process_redir(char *cmd, t_shell *s)
 			if (cmd[i] == '"')
 				++i;
 		}
+*/
 		//	if write to file
 		if (cmd[i] == '>')
 		{
@@ -95,20 +141,23 @@ int		process_redir(char *cmd, t_shell *s)
 				--i;
 				if (cmd[i] == '&' && cmd[i + 1] == '>')
 					break ;
+
 			}
-			if (i > offset)	// are there chars before rdr_string
+			if (i > offset)	// if i > offset, then the loop above executed atleast once
+							//	and there are chars before rdr_string
 			{
-			//	save as a path, if path exists, execute it.
-			//					else create path and write to it--
+			//	save as a command to execute.
 		 		path = ft_strsub(cmd, offset, (i - offset));
 			}
 
 			len = i; // i == start index of redir_str
+			// check if chars before redir are an integer, if they are then set it to s->redir.out_fd
+			check_prefix(cmd, i, '>', s);
 
 			// go to end of rdr_string. (white-space or EOL)
 			while (cmd[len] != '\0' && !is_whtspc(cmd[len]))
 				++len;
-			//	save rdr_string -- check rdr string for two ampersands  (2x '&')
+			//	save rdr_string
 			rdr_str = ft_strsub(cmd, i, len - 1);
 
 			if (add_redir(rdr_str, path, s) == EXIT_FAILURE)
@@ -120,15 +169,14 @@ int		process_redir(char *cmd, t_shell *s)
 		{
 			// get stdin from cmd after '<'..
 
-			++i;
 		}
 		else
 			++i;
 	}
 
-	// check to see if i == ft_strlen(cmd). If they match, it means we ended on a redir. and all has been stored ( _ > )
-	// if they dont match, it means cmd ends with a cmd string and we must save the leftover ( __ > __ )
-	if (i < (int)ft_strlen(cmd))
+	// check to see if i > len. If they are equal, it means we ended on a redir. and all has been stored ( _ > )
+	// if 'i' is greater, it means cmd ends with a cmd string and we must save the leftover ( __ > __ )
+	if (i > len)
 	{
 		// save remaining chars i --> length
 		path = ft_strsub(cmd, i, (ft_strlen(cmd) - i));

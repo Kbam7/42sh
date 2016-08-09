@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/09 00:54:45 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/09 23:12:26 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ int	try_system(t_shell *s)
 	exit(EXIT_FAILURE);
 }
 
+
+
 int	execute_cmd(t_shell *s)
 {
 	pid_t	pid;
@@ -114,41 +116,20 @@ int	execute_cmd(t_shell *s)
 				}
 			}
 			else if (s->pipe.n_pipes)// else if no redirs, are there pipes? If yes, use it.
-			{
-				i = s->pipe.pipe_i;
-				if (i == 0) // first cmd
-				{
-					dup2(s->pipe.pipes[i + 1][1], STDOUT_FILENO);
-					close(s->pipe.pipes[i][0]);						// close STDOUT and write to pipe[i + 1]
-					close(s->pipe.pipes[i][1]);						// close STDOUT and write to pipe[i + 1]
-				}
-				else if (s->pipe.n_pipes == 1) // last pipe
-				{
-					dup2(s->pipe.pipes[i][0], STDIN_FILENO); // read from current pipe
-					close(s->pipe.pipes[i][0]);	// STDIN reading from pipe
-					close(s->pipe.pipes[i][1]);	// close last write-end, STDOUT used
-				}
-				else
-				{
-					close(s->pipe.pipes[i][1]);	// close this pipe, writing to next pipe
-					dup2(s->pipe.pipes[i][0], STDIN_FILENO); // read from current pipe
-					close(s->pipe.pipes[i][0]);	// STDIN reading from pipe
-					dup2(s->pipe.pipes[i + 1][1], STDOUT_FILENO);
-				}
-				try_system(s);
-			}
-			else	// NO redirs and NO pipes EXIST !!
-				try_system(s);
+				child_pipe(s);
+
+			try_system(s);
 		// child has executed and written to the output fd required, whether its for a pipe, redir or screen.
 		}
 		
 // -----   Parent only   ------
 
+/*
 		if (s->redir.n_rdr) // if theres redirs, do them FIRST!
 		{
 			// nothing yet
 		}
-		else if (s->pipe.n_pipes)// else if no redirs, are there pipes? If yes, use it.
+		else*/ if (!s->redir.n_rdr && s->pipe.n_pipes)// else if no redirs, then do pipes if there are any..
 		{
 			i = s->pipe.pipe_i;
 			if (i == 0) // first cmd
@@ -171,65 +152,32 @@ int	execute_cmd(t_shell *s)
 		{
 			// something here
 		}
-//	Just wait for child and check its exit status.
+
+//	wait for child to finish
 		wait(&status);
 // error checks
 		if (WIFEXITED(status) && (status = WEXITSTATUS(status)) == EXIT_FAILURE)
 				return (err(ERR_NOTFOUND, s->input[0]));
+
+		if (s->redir.n_rdr) // if theres redirs
+		{
+			i = s->redir.rdr_i;
+			if (s->redir.dir == '>')
+			{
+				status = parent_output_redir(s->redir.rdr[i], s);
+			}
+			else if (s->redir.dir == '<')
+			{
+			//	status = parent_input_redir(s->redir.rdr[i], s);
+			}
+		}
+
+// error checks
+		if (status != EXIT_SUCCESS)
+				return (err(status, s->input[0]));
+
+
 	}
 	return (status);
 }
 
-/* START -- execute_utils.c */
-
-int		child_output_redir(char *str, t_shell *s)
-{
-	// execute this inside child process
-	// this function must be executed just before executing the command
-	//	this function will create the necessary redirect (pipe) for the current redir
-	// write output to pipe
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0' && str[i] != '>')
-		++i;
-	if (str[i] == '>')
-	{
-		if (i == 1 && str[i - 1] == '&')	// ('&>')
-		{
-		// redir STDOUT && STDERR of s->redir.cmd[i] to s->redir.cmd[i + 1]
-
-		// check if string contains another '&', if it does, then error
-			dup2(s->redir.pipe[i + 1][1], STDOUT_FILENO);
-			dup2(s->redir.pipe[i + 1][1], STDERR_FILENO);
-			close(s->redir.pipe[i + 1][1]);	// not needed, dupliated and redirected STDOUT to duplicate pipe
-			close(s->redir.pipe[i][0]);		// not reading from current pipe
-			close(s->redir.pipe[i][1]);		// not writing to current pipe
-		}
-		if (i == 0)	// (' >..')
-		{
-			// no FD defined, redir STDOUT fd(1), to destination
-			dup2(s->redir.pipe[i + 1][1], STDOUT_FILENO);
-			close(s->redir.pipe[i + 1][1]);
-			close(s->redir.pipe[i][0]);
-			close(s->redir.pipe[i][1]);
-		}
-		if (str[i + 1] == '>')	// ('>>')
-		{
-			//	append to output destination
-			//	s->redir.rdr_i + 1
-			++i;
-		}
-		if (str[i + 1] == '&')	// ('>&' || '>>&')
-		{
-			// ampersand
-			++i;
-		}
-	}
-	else if (str[i] == '<')
-	{
-	}
-	return (EXIT_SUCCESS);
-}
-
-/* END -- execute_utils.c */

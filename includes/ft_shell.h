@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/08 21:45:50 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/09 18:12:08 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,10 @@ typedef struct			s_redirs
 	char			**rdr;		// for redir operator strings
 	int				**pipe;		// for redir pipes
 	int				dir;
+	int				appnd;		// append/prepend or not?
 	int				n_rdr;
 	int				rdr_i;		// current redir index
+	// These are for the redirect fd's defined next to the '<'|'>'
 	int				in_fd;		// defines fd on right of operator (<,>).
 	int				out_fd;		// defines fd on left of operator (<,>)
 }						t_redirs;
