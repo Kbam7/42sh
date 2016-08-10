@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/15 11:23:58 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/26 23:57:21 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/10 15:11:21 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,16 @@ char	*ft_strtrim(char const *s)
 
 	i = -1;
 	start = 0;
+	if (!s)
+		return (NULL);
 	end = ft_strlen(s) - 1;
-	while (s[start] == '\n' || s[start] == ' ' || s[start] == '\t')
+	while (s[start] != '\0' && ft_iswhtspc(s[start]))
 		start++;
-	while (s[end] == '\n' || s[end] == ' ' || s[end] == '\t')
+	while (end > start && s[end] != '\0' &&  ft_iswhtspc(s[end]))
 		end--;
-	new_str = (char *)malloc(sizeof(*new_str) * (end - start + 2));
-	if (new_str == NULL || s == NULL)
+	if (start > end)
+		return (NULL);
+	if ((new_str = (char *)malloc(sizeof(char) * (end - start + 2))) == NULL)
 		return (NULL);
 	while (++i <= (end - start))
 		new_str[i] = s[start + i];

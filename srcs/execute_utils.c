@@ -6,9 +6,11 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/09 18:08:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/09 23:20:01 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/10 11:13:06 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "ft_shell.h"
 
 void	child_pipe(t_shell *s)
 {
@@ -33,6 +35,28 @@ void	child_pipe(t_shell *s)
 		dup2(s->pipe.pipes[i][0], STDIN_FILENO); // read from current pipe
 		close(s->pipe.pipes[i][0]);	// STDIN reading from pipe
 		dup2(s->pipe.pipes[i + 1][1], STDOUT_FILENO);
+	}
+}
+
+void	parent_pipe(t_shell *s)
+{
+	int	i;
+
+	i = s->pipe.pipe_i;
+	if (i == 0) // first cmd
+	{
+			close(s->pipe.pipes[i][0]);		// close pipe[0], not reading from first pipe
+			close(s->pipe.pipes[i][1]);		// close pipe[1], not writing to first pipe
+	}
+	else if (s->pipe.n_pipes == 1) // last pipe
+	{
+			close(s->pipe.pipes[i][0]);	// STDIN reading from pipe
+			close(s->pipe.pipes[i][1]);	// close last write-end, STDOUT used
+	}
+	else
+	{
+			close(s->pipe.pipes[i][0]);	// STDIN reading from pipe[i][0]
+			close(s->pipe.pipes[i][1]);	// STDOUT writing to pipe[i +1][1]
 	}
 }
 
@@ -83,9 +107,6 @@ int		child_output_redir(char *str, t_shell *s)
 			++i;
 		}
 	}
-	else if (str[i] == '<')
-	{
-	}
 	return (EXIT_SUCCESS);
 }
 
@@ -119,11 +140,12 @@ int		parent_output_redir(char *str, t_shell *s)
 		{
 			// redir STDOUT && STDERR of s->redir.cmd[i] to s->redir.cmd[i + 1]
 			if (s->redir.appnd)
-				if ((fd = open(s->redir.cmd[i + 1], O_CREAT | O_APPEND)) == -1)
-					return (err(ERR_CREATE, s->redir.cmd[i + 1]));
+				fd = open(s->redir.cmd[i + 1], O_CREAT | O_APPEND);
 			else
-				if ((fd = open(s->redir.cmd[i + 1], O_CREAT | O_TRUNC)) == -1)
-					return (err(ERR_CREATE, s->redir.cmd[i + 1]));
+				fd = open(s->redir.cmd[i + 1], O_CREAT | O_TRUNC);
+			if (fd < 0)
+				return (err(ERR_CREATE, s->redir.cmd[i + 1]));
+				
 			while (read(s->redir.pipe[i + 1][0], &buf, 1) > 0)
 				write(fd, &buf, 1);
 			close(fd);
@@ -131,14 +153,17 @@ int		parent_output_redir(char *str, t_shell *s)
 		else if (i == 0)	// (' >..')
 		{
 			// no FD defined, redir STDOUT fd(1), to destination
-			dup2(s->redir.pipe[i + 1][1], STDOUT_FILENO);
-			close(s->redir.pipe[i + 1][1]);
-			close(s->redir.pipe[i][0]);		// not reading
-			close(s->redir.pipe[i][1]);		// writing to duplicate
+			if (s->redir.appnd)
+				fd = open(s->redir.cmd[i + 1], O_CREAT | O_APPEND);
+			else
+				fd = open(s->redir.cmd[i + 1], O_CREAT | O_TRUNC);
+			if (fd < 0)
+				return (err(ERR_CREATE, s->redir.cmd[i + 1]));
+				
+			while (read(s->redir.pipe[i + 1][0], &buf, 1) > 0)
+				write(fd, &buf, 1);
+			close(fd);
 		}
-
-// check for file descriptors defined before/after the '>'
-
 		if (str[i + 1] == '&')	// ('>&' || '>>&')
 		{
 			// duplicate fd defined after '&', but before the next space.. ('2>&1') -- this will redir stderr to stdout
@@ -146,9 +171,6 @@ int		parent_output_redir(char *str, t_shell *s)
 				close(STDIN_FILENO);
 			++i;
 		}
-	}
-	else if (str[i] == '<')
-	{
 	}
 	// successfully completed the child command, the redirect and the parents path
 	return (EXIT_SUCCESS);

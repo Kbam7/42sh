@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 00:47:04 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/09 21:01:43 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/10 11:14:59 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int			add_redir(char *rdr_str, char *cmd, t_shell *s)
 			return (err(ERR_MALLOC, "add_redir() -- ft_tabdup()"));
 		free_tab((void **)s->redir.rdr, ft_tablen(s->redir.rdr));
 		s->redir.rdr = tmp;
-		s->redir.rdr[s->redir.n_rdr] = rdr_string;
+		s->redir.rdr[s->redir.n_rdr] = rdr_str;
 		s->redir.n_rdr++;
 		return (EXIT_SUCCESS);
 	}

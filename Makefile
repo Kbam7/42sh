@@ -14,6 +14,7 @@ SRCS		=	srcs/main.c				\
 				srcs/shell_args.c		\
 				srcs/environ.c			\
 				srcs/execute.c			\
+				srcs/execute_utils.c	\
 				srcs/tab_funcs.c		\
 				srcs/utils.c			\
 				srcs/err.c				\

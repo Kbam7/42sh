@@ -6,18 +6,11 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:25:22 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/09 22:45:09 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/10 14:32:54 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
-
-static int	is_whtspc(char c)
-{
-	if (c == ' ' || c == '\t' || c == '\v' || c == '\r')
-		return (1);
-	return (0);
-}
 
 static void	reset_and_free_vars(t_shell *s)
 {
@@ -27,6 +20,11 @@ static void	reset_and_free_vars(t_shell *s)
 	s->redir.rdr_i = 0;
 }
 
+
+/*
+** This function checks if the prefix before the redir symbols is a number.
+** If it is a number, use it as the s->redir.out_fd
+*/
 static int	check_prefix(char *str, int start, char dir, t_shell *s)
 {
 	int		i;
@@ -55,8 +53,7 @@ static int	check_prefix(char *str, int start, char dir, t_shell *s)
 		}
 		++i;	
 	}
-	
-	
+	return (EXIT_SUCCESS);	
 }
 
 static int	execute_redirs(t_shell *s)
@@ -97,12 +94,12 @@ int		process_redir(char *cmd, t_shell *s)
 
 	int		i;
 	int		len;
-	int		open;
+//	int		open;
 	int		offset;
 	char	*path;
 	char	*rdr_str;
 
-	open = 0;
+//	open = 0;
 	i = 0;
 
 	// the purpose of this loop is to store the redir string and the commands/paths
@@ -136,7 +133,7 @@ int		process_redir(char *cmd, t_shell *s)
 		// get redir string, and process_output_redir()
 
 			// go to start index of rdr_string
-			while (i > offset && !is_whtspc(cmd[i - 1]))
+			while (i > offset && !ft_iswhtspc(cmd[i - 1]))
 			{
 				--i;
 				if (cmd[i] == '&' && cmd[i + 1] == '>')
@@ -155,7 +152,7 @@ int		process_redir(char *cmd, t_shell *s)
 			check_prefix(cmd, i, '>', s);
 
 			// go to end of rdr_string. (white-space or EOL)
-			while (cmd[len] != '\0' && !is_whtspc(cmd[len]))
+			while (cmd[len] != '\0' && !ft_iswhtspc(cmd[len]))
 				++len;
 			//	save rdr_string
 			rdr_str = ft_strsub(cmd, i, len - 1);

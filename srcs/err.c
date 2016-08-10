@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:50 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/08 16:24:43 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/10 10:42:52 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static char	*check_file_error(int errno, char *msg)
 {
 	if (errno == ERR_MAX_PATHLEN)
 		return (ft_strjoinstr("Maximum path length reached.\n'", msg, "'"));
+	else if (errno == ERR_CREATE)
+		return (ft_strjoinstr("File/Directory cannot be created '", msg, "'"));
 	else if (errno == ERR_NO_FILE)
 		return (ft_strjoinstr("File/Directory does not exist '", msg, "'"));
 	else if (errno == ERR_NO_READ)

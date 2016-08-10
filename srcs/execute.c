@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/09 23:12:26 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/10 11:22:01 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	check_builtin_env_funcs(t_shell *s)
 	else if (ft_strcmp(s->input[0], "set") == 0)
 		return (ft_set(2, s->input[1], s->input[2], s));
 	else if (ft_strcmp(s->input[0], "setenv") == 0)
-		return (ft_set(2, s->input[1], s->input[2], s));
+		return (ft_set(1, s->input[1], s->input[2], s));
 	else if (ft_strcmp(s->input[0], "export") == 0)
 	{
 		tmp = ft_strdup(ft_getenv(s->input[1], s));
@@ -131,22 +131,7 @@ int	execute_cmd(t_shell *s)
 		}
 		else*/ if (!s->redir.n_rdr && s->pipe.n_pipes)// else if no redirs, then do pipes if there are any..
 		{
-			i = s->pipe.pipe_i;
-			if (i == 0) // first cmd
-			{
-					close(s->pipe.pipes[i][0]);		// close pipe[0], not reading from first pipe
-					close(s->pipe.pipes[i][1]);		// close pipe[1], not writing to first pipe
-			}
-			else if (s->pipe.n_pipes == 1) // last pipe
-			{
-					close(s->pipe.pipes[i][0]);	// STDIN reading from pipe
-					close(s->pipe.pipes[i][1]);	// close last write-end, STDOUT used
-			}
-			else
-			{
-					close(s->pipe.pipes[i][0]);	// STDIN reading from pipe[i][0]
-					close(s->pipe.pipes[i][1]);	// STDOUT writing to pipe[i +1][1]
-			}
+			parent_pipe(s);
 		}
 		else	// NO redirs and NO pipes EXIST !!
 		{
@@ -163,9 +148,7 @@ int	execute_cmd(t_shell *s)
 		{
 			i = s->redir.rdr_i;
 			if (s->redir.dir == '>')
-			{
 				status = parent_output_redir(s->redir.rdr[i], s);
-			}
 			else if (s->redir.dir == '<')
 			{
 			//	status = parent_input_redir(s->redir.rdr[i], s);

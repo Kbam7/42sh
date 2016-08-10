@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/09 18:12:08 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/10 11:14:33 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "libft.h"
 # include <sys/wait.h>
-
+# include <fcntl.h>
 
 	#include <stdio.h> // debug
 
@@ -37,15 +37,16 @@
 # define ERR_CHDIR				1003
 # define ERR_EXEC_SHELL			1004
 # define ERR_MAX_PATHLEN		1005
-# define ERR_NO_FILE			1006
-# define ERR_NO_READ			1007
-# define ERR_NO_WRITE			1008
-# define ERR_NO_EXEC			1009
-# define ERR_FORK_FAILED		1010
-# define ERR_INVALID_PIPE		1011
-# define ERR_CREATE_PIPE		1012
-# define ERR_GNL				1013
-# define ERR_MALLOC				1014
+# define ERR_CREATE				1006
+# define ERR_NO_FILE			1007
+# define ERR_NO_READ			1008
+# define ERR_NO_WRITE			1009
+# define ERR_NO_EXEC			1010
+# define ERR_FORK_FAILED		1011
+# define ERR_INVALID_PIPE		1012
+# define ERR_CREATE_PIPE		1013
+# define ERR_GNL				1014
+# define ERR_MALLOC				1015
 
 /*
 ** --[ STRUCTS -- BUILTIN FUNCTIONS ]--
@@ -194,6 +195,14 @@ char			*check_shell_variables(char *name, t_shell *s);
 int				execute_cmd(t_shell *s);
 int				try_builtin(t_shell *s);
 int				try_system(t_shell *s);
+
+/*
+**	execute_utils.c
+*/
+void	child_pipe(t_shell *s);
+void	parent_pipe(t_shell *s);
+int		child_output_redir(char *str, t_shell *s);
+int		parent_output_redir(char *str, t_shell *s);
 
 /*
 **	tab_funcs.c

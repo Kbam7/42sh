@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/07 14:32:15 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/07 14:32:34 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/10 12:01:55 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ int		store_commands(char *str, t_shell *s)
 
 	i = 0;
 	ret = EXIT_FAILURE;
+	if (str == NULL)
+		return (EXIT_FAILURE);
+
+dprintf(1, "store_commands(), str >%s<\n", str); // debug
+
 	if (ft_strchr(str, ';'))
 	{
 		args = ft_nstrsplit(str, ';');
@@ -43,8 +48,14 @@ int		get_commands(t_shell *s)
 
 	if ((ret = ft_gnl(0, &tmp)) > 0)
 	{
+
+dprintf(1, "get_commands(), tmp >%s<\n", tmp); // debug
+
 		cmd = ft_strtrim(tmp);
 		ft_strdel(&tmp);
+
+dprintf(1, "get_commands(), trimmed cmd >%s\n", cmd); // debug
+
 		if (store_commands(cmd, s) != EXIT_SUCCESS)
 		{
 			ft_strdel(&cmd);
