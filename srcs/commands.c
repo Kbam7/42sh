@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/07 14:32:15 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/10 12:01:55 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/10 15:15:07 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,6 @@ dprintf(1, "get_commands(), tmp >%s<\n", tmp); // debug
 
 		cmd = ft_strtrim(tmp);
 		ft_strdel(&tmp);
-
-dprintf(1, "get_commands(), trimmed cmd >%s\n", cmd); // debug
-
 		if (store_commands(cmd, s) != EXIT_SUCCESS)
 		{
 			ft_strdel(&cmd);

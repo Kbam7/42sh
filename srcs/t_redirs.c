@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 00:47:04 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/10 11:14:59 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/10 15:39:57 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 
 static int	init_redir(char *rdr_str, char *cmd, t_shell *s)
 {
+
+dprintf(1, "add_redir() - init_redir()\n"
+			"adding rdr_str = >%s<\nadding cmd = >%s<\n", rdr_str, cmd); // debug
+
 	if ((s->redir.cmd = (char **)malloc(sizeof(char *) * 2)) == NULL)
 		return (err(ERR_MALLOC, "add_redir() -- init_redir()"));
 	s->redir.cmd[0] = cmd;
