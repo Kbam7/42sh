@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/10 11:14:33 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/11 09:56:32 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ typedef struct			s_redirs
 	int				n_rdr;
 	int				rdr_i;		// current redir index
 	// These are for the redirect fd's defined next to the '<'|'>'
-	int				in_fd;		// defines fd on right of operator (<,>).
-	int				out_fd;		// defines fd on left of operator (<,>)
+	int				pre_fd;			// defines fd on left of operator (<,>)
+	int				post_fd;		// defines fd on right of operator (<,>).
 }						t_redirs;
 
 typedef struct			s_pipes

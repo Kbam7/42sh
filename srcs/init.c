@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 02:28:26 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/07 14:31:49 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/11 15:05:12 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void		init_pipes_redirs(t_shell *s)
 	s->redir.pipe = NULL;
 	s->redir.n_rdr = 0;
 	s->redir.rdr_i = 0;
-	s->redir.out_fd = STDOUT_FILENO;
-	s->redir.in_fd = STDIN_FILENO;
+	s->redir.pre_fd = -1;
+	s->redir.post_fd = -1;
 }
 
 void		init_env(t_shell *s, int argc, char **argv, char **envp)

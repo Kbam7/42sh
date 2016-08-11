@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 00:47:04 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/10 15:39:57 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/11 13:45:39 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,6 @@ int			add_redir(char *rdr_str, char *cmd, t_shell *s)
 {
 	char	**tmp;
 
-	// check if rdr_string contains two '&', if it does, then error
-	if (ft_strchr(ft_strchr(rdr_str, '&'), '&'))
-		return (EXIT_FAILURE);
 	if (s->redir.n_rdr == 0)
 		return (init_redir(rdr_str, cmd, s));
 	else if (s->redir.n_rdr > 0)
