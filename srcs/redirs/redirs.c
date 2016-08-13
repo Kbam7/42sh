@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:25:22 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/13 02:23:36 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/13 14:44:57 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ static int	execute_redirs(t_shell *s)
 		if (ft_strchr(s->redir.rdr[i], '>'))
 		{
 dprintf(2, "----------  process_redir() - execute_redirs() -- Output redir\n"
-			"s->redir.cmd[%d] = >%s<\ns->redir.rdr[%d] = >%s<\n", i, s->redir.cmd[i], i, s->redir.rdr[i]);	// debug
+			"s->redir.cmd[%d] = >%s<\ns->redir.rdr[%d] = '%s'\ns->redir.cmd[%d] = >%s<\n",
+											i, s->redir.cmd[i], i, s->redir.rdr[i], i+1, s->redir.cmd[i+1]);// debug
 			s->redir.dir = '>';
 			ret = process_input(s->redir.cmd[i], s);
 		}
@@ -76,20 +77,23 @@ int		process_redir(char *str, t_shell *s)
 	free_tab((void **)sp.strings, sp.words);
 	sp.strings = ft_tabdup(tmp, sp.words);
 
-	cmd = NULL;
+	cmd = ft_strnew(1);
 	rdr_str = NULL;
 	i = 0;
 	while (i < (int)sp.words)
 	{
+
+dprintf(1, "process_redir() -- after split by ' ' -- sp.strings[%d] = >%s< -- "
+		"rdr_str == >%s< && cmd == >%s<\n", i, sp.strings[i], rdr_str, cmd); // debug
+
+//		if (cmd == NULL)
+//			cmd = ft_strnew(1);
 		if (ft_strchr(sp.strings[i], '>'))
 		{
 			// check chars before and after redir, and return only the redir string.
 			rdr_str = analyze_redir(sp.strings[i], '>', &cmd, s);
-			if (!rdr_str || add_redir(rdr_str, cmd, s) == EXIT_FAILURE)
+			if (!rdr_str || add_redir(&rdr_str, &cmd, s) == EXIT_FAILURE)
 				return (EXIT_FAILURE);
-			if (cmd)
-				ft_strdel(&cmd);
-			ft_strdel(&rdr_str);
 		}
 		else if (ft_strchr(sp.strings[i], '<'))
 		{
@@ -100,95 +104,31 @@ int		process_redir(char *str, t_shell *s)
 			// no redir, so concatinate it to the current cmd
 			// join all strings before the current one.
 
-			oldcmd = cmd;
-			cmd = ft_strjoinstr(oldcmd, sp.strings[i], " ");
-			ft_strdel(&oldcmd);
+dprintf(1, "process_redir() -- NO REDIR in this string, save to existing cmd -- current cmd = >%s<\n", cmd); // debug
 
+			oldcmd = (cmd == NULL) ? ft_strnew(1) : cmd;
+			cmd = ft_strjoinstr(oldcmd, sp.strings[i], " ");
+
+dprintf(1, "process_redir() -- oldcmd = >%s<\tnew cmd = >%s<\n", oldcmd, cmd); // debug
+
+			ft_strdel(&oldcmd);
 			if (s->redir.nxt_cmd)
 			{
 				oldcmd = cmd;
 				cmd = ft_strjoinstr(s->redir.nxt_cmd, " ", oldcmd);
 				ft_strdel(&oldcmd);
+				ft_strdel(&s->redir.nxt_cmd);
 			}
 			if ((i + 1) == (int)sp.words) // last word? i.e, no redir after this string ... add cmd to list of cmds
-				if (add_redir(rdr_str, cmd, s) == EXIT_FAILURE)
+			{
+dprintf(1, "process_redir() -- Adding last cmd -- rdr_str = >%s<\tcmd = >%s<\n", rdr_str, cmd);
+				if (add_redir(&rdr_str, &cmd, s) == EXIT_FAILURE)
 					return (EXIT_FAILURE);
+			}
 
 		}
 		++i;
 	}
 
-/*
-	i = 0;
-
-	while (cmd[i] != '\0')
-	{
-		cmd = NULL;
-		rdr_str = NULL;
-		offset = i;
-
-		//	if write to file
-		if (cmd[i] == '>')
-		{
-		// write output to pipe then write pipe to file/cmd
-		// get redir string, and process_output_redir()
-			// go to start index of rdr_string
-			while (i > 0 && !ft_iswhtspc(cmd[i - 1]))
-			{
-				--i;
-				if (cmd[i] == '&' && cmd[i + 1] == '>')
-					break ;
-
-			}
-
-dprintf(1, "process_redir() -- i = %d\toffset = %d --\n", i, offset); // debug
-
-			if (i > offset)	// if i > offset, then the loop above executed atleast once
-							//	and there are chars before rdr_string
-			{
-			//	save as a command to execute.
-		 		cmd = ft_strsub(cmd, offset, (i - offset));
-			}
-
-dprintf(1, "process_redir() -- before check_prefix() --  cmd -- '%s' --\n", cmd); // debug
-
-			len = i; // i == start index of redir_str
-			// check if chars before redir are an integer, if they are then set it to s->redir.out_fd
-			check_prefix(cmd, i, '>', s);
-
-			// go to end of rdr_string. (white-space or EOL)
-			while (cmd[len] != '\0' && !ft_iswhtspc(cmd[len]))
-				++len;
-			//	save rdr_string
-			rdr_str = ft_strsub(cmd, i, len - 1);
-
-			if (add_redir(rdr_str, cmd, s) == EXIT_FAILURE)
-				return (err(ERR_MALLOC, "add_redir() --"));
-
-			i = len;
-
-dprintf(1, "process_redir() --\nadded rdr_str and cmd\n'%s' -- '%s'\n", rdr_str, cmd); // debug
-//dprintf(1, "process_redir()\n", tmp); // debug
-
-		}
-		else if (cmd[i] == '<')
-		{
-			// get stdin from cmd after '<'..
-
-		}
-		else
-			++i;
-	}
-
-	// check to see if i > len. If they are equal, it means we ended on a redir. and all has been stored ( _ > )
-	// if 'i' is greater, it means cmd ends with a cmd string and we must save the leftover ( __ > __ )
-	if (i > len)
-	{
-		// save remaining chars i --> length
-		cmd = ft_strsub(cmd, i, (ft_strlen(cmd) - i));
-		if (add_redir(NULL, cmd, s) == EXIT_FAILURE)
-			return (err(ERR_MALLOC, "add_redir()"));
-	}
-*/
 	return (execute_redirs(s));
 }

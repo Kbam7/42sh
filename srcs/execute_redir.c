@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/13 02:00:06 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/13 02:19:59 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/13 14:49:07 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int		child_output_redir(char *str, t_shell *s)
 		{
 	//		dup2(s->redir.pipe[i + 1][1], s->redir.pre_fd);
 	//		close(s->redir.pipe[i + 1][1]);
-			dup2(s->redir.pipe[i][1], s->redir.pre_fd);
+			dup2(s->redir.pipe[i][1], STDOUT_FILENO);
 			close(s->redir.pipe[i][0]);		// not reading
 			close(s->redir.pipe[i][1]);		// writing to duplicate
 		}
@@ -127,9 +127,9 @@ int		parent_output_redir(char *str, t_shell *s)
 		{
 			// no FD defined, redir STDOUT fd(1), to destination
 			if (s->redir.appnd)
-				fd = open(s->redir.cmd[i + 1], O_CREAT | O_APPEND);
+				fd = open(s->redir.cmd[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0664); // S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
 			else
-				fd = open(s->redir.cmd[i + 1], O_CREAT | O_TRUNC);
+				fd = open(s->redir.cmd[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0664); // S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
 			if (fd < 0)
 				return (err(ERR_CREATE, s->redir.cmd[i + 1]));
 				

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/13 02:14:59 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/13 14:16:23 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,7 +271,7 @@ void			print_cmd_list(t_cmd_list *list); // debug
 /*
 **	t_redirs.c
 */
-int				add_redir(char *rdr_str, char *cmd, t_shell *s);
+int				add_redir(char **rdr_str, char **cmd, t_shell *s);
 
 /*
 **	--[ BUILTIN FUNCTIONS ]--
