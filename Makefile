@@ -10,11 +10,15 @@ SRCS		=	srcs/main.c				\
 				srcs/input.c			\
 				srcs/commands.c			\
 				srcs/pipes.c			\
-				srcs/redirs.c			\
+				srcs/redirs/redirs.c	\
+				srcs/redirs/analyze_redir.c	\
+				srcs/redirs/check_prefix.c	\
+				srcs/redirs/check_postfix.c	\
 				srcs/shell_args.c		\
 				srcs/environ.c			\
 				srcs/execute.c			\
-				srcs/execute_utils.c	\
+				srcs/execute_pipe.c		\
+				srcs/execute_redir.c	\
 				srcs/tab_funcs.c		\
 				srcs/utils.c			\
 				srcs/err.c				\

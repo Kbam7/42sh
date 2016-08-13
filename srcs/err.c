@@ -6,9 +6,13 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:50 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/10 10:42:52 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/12 21:32:45 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+syntax error near unexpected token `newline' -- For ERR_BAD_TOKEN
+*/
 
 #include "ft_shell.h"
 
@@ -36,6 +40,8 @@ static void	check_errno(char **tmp, int errno, char *msg)
 		*tmp = ft_strjoinstr("Invalid arguments for '", msg, "'");
 	else if (errno == ERR_MALLOC)
 		*tmp = ft_strjoinstr("malloc error in '", msg, "'. That sounds bad. .");
+	else if (errno == ERR_BAD_TOKEN)
+		*tmp = ft_strjoinstr("syntax error near unexpected token '", msg, "'");
 	else if (errno == ERR_CREATE_PIPE)
 		*tmp = ft_strjoinstr("pipe() failed in '", msg, "' function.");
 	else if (errno == ERR_INVALID_PIPE)

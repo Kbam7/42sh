@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:25:22 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/12 00:22:27 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/13 02:23:36 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,15 @@ static int	execute_redirs(t_shell *s)
 		s->redir.rdr_i = i;
 		if (ft_strchr(s->redir.rdr[i], '>'))
 		{
-dprintf(2, "----------  process_redir() - execute_redirs()\n"
+dprintf(2, "----------  process_redir() - execute_redirs() -- Output redir\n"
 			"s->redir.cmd[%d] = >%s<\ns->redir.rdr[%d] = >%s<\n", i, s->redir.cmd[i], i, s->redir.rdr[i]);	// debug
 			s->redir.dir = '>';
 			ret = process_input(s->redir.cmd[i], s);
 		}
 		else if (ft_strchr(s->redir.rdr[i], '<'))
 		{
+dprintf(2, "----------  process_redir() - execute_redirs() -- Input redir\n"
+			"s->redir.cmd[%d] = >%s<\ns->redir.rdr[%d] = >%s<\n", i, s->redir.cmd[i], i, s->redir.rdr[i]);	// debug
 			s->redir.dir = '<';
 			ret = process_input(s->redir.cmd[i], s);
 		}
@@ -62,11 +64,8 @@ int		process_redir(char *str, t_shell *s)
 		//	if no redir, save all the strings after the last redir as
 		//	a path to a file. 
 
-	int				len;
-	int				offset;
-
 	t_split_string	sp;
-	char			*tmp;
+	char			**tmp;
 	char			*cmd;
 	char			*oldcmd;
 	char			*rdr_str;
@@ -79,31 +78,22 @@ int		process_redir(char *str, t_shell *s)
 
 	cmd = NULL;
 	rdr_str = NULL;
-
-	while (i < sp.words)
+	i = 0;
+	while (i < (int)sp.words)
 	{
 		if (ft_strchr(sp.strings[i], '>'))
 		{
-			// check chars before and after redir, and set appropriate varibles
-			rdr_string = analyze_redir(sp.strings[i], '>', &cmd, s);
-			if (add_redir(rdr_str, cmd, s) == EXIT_FAILURE)
+			// check chars before and after redir, and return only the redir string.
+			rdr_str = analyze_redir(sp.strings[i], '>', &cmd, s);
+			if (!rdr_str || add_redir(rdr_str, cmd, s) == EXIT_FAILURE)
 				return (EXIT_FAILURE);
 			if (cmd)
 				ft_strdel(&cmd);
 			ft_strdel(&rdr_str);
 		}
 		else if (ft_strchr(sp.strings[i], '<'))
-		{ //  MAKE THIS RUN THE SAME CODE AS '>'
-		/*
-			rdr_str = ft_strdup(s.strings[i]);
-			// check chars before and after redir, and set appropriate varibles
-			analyze_redir(rdr_str, '<', s);
-			if (add_redir(rdr_str, cmd, s) == EXIT_FAILURE)
-				return (EXIT_FAILURE);
-			if (cmd)
-				ft_strdel(&cmd);
-			ft_strdel(&rdr_str);
-		*/
+		{
+		//  MAKE THIS RUN THE SAME CODE AS '>'
 		}
 		else
 		{
@@ -111,10 +101,16 @@ int		process_redir(char *str, t_shell *s)
 			// join all strings before the current one.
 
 			oldcmd = cmd;
-			cmd = ft_strjoinstr(oldcmd, sp.string[j], " ");
+			cmd = ft_strjoinstr(oldcmd, sp.strings[i], " ");
 			ft_strdel(&oldcmd);
 
-			if ((i + 1) == sp.words) // last word? .. add cmd to list of cmds
+			if (s->redir.nxt_cmd)
+			{
+				oldcmd = cmd;
+				cmd = ft_strjoinstr(s->redir.nxt_cmd, " ", oldcmd);
+				ft_strdel(&oldcmd);
+			}
+			if ((i + 1) == (int)sp.words) // last word? i.e, no redir after this string ... add cmd to list of cmds
 				if (add_redir(rdr_str, cmd, s) == EXIT_FAILURE)
 					return (EXIT_FAILURE);
 

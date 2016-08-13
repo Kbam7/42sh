@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/11 09:56:32 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/13 02:14:59 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@
 # define ERR_CREATE_PIPE		1013
 # define ERR_GNL				1014
 # define ERR_MALLOC				1015
+# define ERR_BAD_TOKEN			1016
+
+
 
 /*
 ** --[ STRUCTS -- BUILTIN FUNCTIONS ]--
@@ -88,6 +91,7 @@ typedef struct	s_func_opt
 typedef struct			s_redirs
 {
 	char			**cmd;		// holds each command/path
+	char			*nxt_cmd;	// holds left over chars from after the redir string
 	char			**rdr;		// for redir operator strings
 	int				**pipe;		// for redir pipes
 	int				dir;
@@ -168,7 +172,6 @@ void			set_prompt(t_shell *s);
 */
 int				process_input(char *cmd, t_shell *s);
 int				process_pipes(char *cmd, t_shell *s);
-int				process_redir(char *cmd, t_shell *s);
 
 /*
 **	commands.c
@@ -176,6 +179,32 @@ int				process_redir(char *cmd, t_shell *s);
 int				get_commands(t_shell *s);
 void			get_input(char *cmd, t_shell *s);
 int				store_commands(char *str, t_shell *s);
+
+/*
+**	pipes.c
+*/
+int				process_pipes(char *cmd, t_shell *s);
+
+/*
+**	redirs.c
+*/
+int				process_redir(char *cmd, t_shell *s);
+
+/*
+**	analyze_redir.c
+*/
+int				get_pos(char *str, char ch);
+char			*analyze_redir(char *str, char dir, char **cmd, t_shell *s);
+
+/*
+**	check_prefix.c
+*/
+char			*check_prefix(char *str, int pos, char **cmd, t_shell *s);
+
+/*
+**	check_postfix.c
+*/
+char			*check_postfix(char *str, int pos, t_shell *s);
 
 /*
 **	shell_args.c
@@ -197,12 +226,16 @@ int				try_builtin(t_shell *s);
 int				try_system(t_shell *s);
 
 /*
-**	execute_utils.c
+**	execute_pipe.c
 */
-void	child_pipe(t_shell *s);
-void	parent_pipe(t_shell *s);
-int		child_output_redir(char *str, t_shell *s);
-int		parent_output_redir(char *str, t_shell *s);
+void			child_pipe(t_shell *s);
+void			parent_pipe(t_shell *s);
+
+/*
+**	execute_redir.c
+*/
+int				child_output_redir(char *str, t_shell *s);
+int				parent_output_redir(char *str, t_shell *s);
 
 /*
 **	tab_funcs.c

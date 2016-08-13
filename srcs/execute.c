@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/10 11:22:01 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/13 01:30:42 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,7 @@ int	execute_cmd(t_shell *s)
 			{
 				i = s->redir.rdr_i;
 				if (s->redir.dir == '>')
-				{
 					child_output_redir(s->redir.rdr[i], s);
-				}
 				else if (s->redir.dir == '<')
 				{
 					// read from s->redir.in_fd(s->redir.cmd i + 1]) into STDIN_FILENO for s->redir.cmd[i]
@@ -124,20 +122,10 @@ int	execute_cmd(t_shell *s)
 		
 // -----   Parent only   ------
 
-/*
-		if (s->redir.n_rdr) // if theres redirs, do them FIRST!
-		{
-			// nothing yet
-		}
-		else*/ if (!s->redir.n_rdr && s->pipe.n_pipes)// else if no redirs, then do pipes if there are any..
+		if (!s->redir.n_rdr && s->pipe.n_pipes)// if no redirs, then do pipes if there are any..
 		{
 			parent_pipe(s);
 		}
-		else	// NO redirs and NO pipes EXIST !!
-		{
-			// something here
-		}
-
 //	wait for child to finish
 		wait(&status);
 // error checks

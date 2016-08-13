@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 02:28:26 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/11 15:05:12 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/12 21:13:59 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void		init_pipes_redirs(t_shell *s)
 	s->pipe.n_pipes = 0;
 	s->pipe.pipe_i = 0;
 	s->redir.cmd = NULL;
+	s->redir.nxt_cmd = NULL;
 	s->redir.rdr = NULL;
 	s->redir.pipe = NULL;
 	s->redir.n_rdr = 0;
