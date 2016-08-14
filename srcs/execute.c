@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/13 01:30:42 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/14 17:36:38 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,16 @@ int	try_system(t_shell *s)
 					ft_strdel(&path);
 					free_t_shell(s);
 				}
-				exit(EXIT_SUCCESS);
+//				exit(EXIT_SUCCESS);
 			}
 		ft_strdel(&path);
 	}
-	free_tab((void **)s->input, ft_tablen(s->input));
-	free_t_shell(s);
-	exit(EXIT_FAILURE);
+//	free_tab((void **)s->input, ft_tablen(s->input));
+//	free_tab((void **)s->pipe.pipes, (s->pipe.n_pipes + s->pipe.pipe_i));
+//	free_tab((void **)cmds, (s->pipe.n_pipes + s->pipe.pipe_i));
+//	free_t_shell(s);
+//	exit(EXIT_FAILURE);
+	return (ERR_NOTFOUND);
 }
 
 
@@ -91,49 +94,68 @@ int	execute_cmd(t_shell *s)
 	int		status;
 	int		i;
 
-	status = EXIT_FAILURE;
+//	status = EXIT_FAILURE; Possibly not needed as it is initialized in the next line
 
-	if ((status = try_builtin(s)) == ERR_NOTFOUND)
-	{
-		pid = fork();
-		if (pid < 0)
+//	if ((status = try_builtin(s)) == ERR_NOTFOUND)
+//	{
+		if ((pid = fork()) < 0)
 			return (err(ERR_FORK_FAILED, ""));
 		if (pid == 0)
 		{
-//dprintf(2, "--- CHILD PROCESS ---\nexecute_cmd() -- Trying to execute '%s' with '%s' ...\n", s->input[0], s->input[1]); // debug
+dprintf(2, "--- START -- CHILD PROCESS --- ppid = %d\tpid = %d\n"
+			"execute_cmd() - child -- Trying to execute '%s' with '%s' ...\n", getppid(), getpid(), s->input[0], s->input[1]); // debug
 		// child only
-			if (s->redir.n_rdr) // if theres redirs, do them FIRST!
+			if ((status = try_builtin(s)) == ERR_NOTFOUND)
 			{
-				i = s->redir.rdr_i;
-				if (s->redir.dir == '>')
-					child_output_redir(s->redir.rdr[i], s);
-				else if (s->redir.dir == '<')
+				if (s->pipe.n_pipes)
+					child_pipe(s);
+				if (s->redir.n_rdr) // if theres redirs, do them FIRST!
 				{
-					// read from s->redir.in_fd(s->redir.cmd i + 1]) into STDIN_FILENO for s->redir.cmd[i]
-				//	child_input_redir(s->redir.rdr[i], s);
+					i = s->redir.rdr_i;
+					if (s->redir.dir == '>')
+						child_output_redir(s->redir.rdr[i], s);
+					else if (s->redir.dir == '<')
+					{
+						// read from s->redir.in_fd(s->redir.cmd i + 1]) into STDIN_FILENO for s->redir.cmd[i]
+					//	child_input_redir(s->redir.rdr[i], s);
+					}
 				}
+				status = try_system(s);
 			}
-			else if (s->pipe.n_pipes)// else if no redirs, are there pipes? If yes, use it.
-				child_pipe(s);
-
-			try_system(s);
 		// child has executed and written to the output fd required, whether its for a pipe, redir or screen.
+dprintf(2, "--- CHILD PROCESS returning, not exited --- ppid = %d\tpid = %d\n", getppid(), getpid()); // debug
+dprintf(2, "2 - child -- status = '%d'\tpid = %d\n", status, getpid()); // debug
+			free_t_shell(s);
+			exit((status - 900));
 		}
 		
 // -----   Parent only   ------
 
-		if (!s->redir.n_rdr && s->pipe.n_pipes)// if no redirs, then do pipes if there are any..
+dprintf(2, "execute_cmd() -- Parent only area ------- ppid = %d\tpid = %d\n", getppid(), getpid()); // debug
+
+		if (s->pipe.n_pipes)// if no redirs, then do pipes if there are any..
 		{
+dprintf(2, "execute_cmd() -- Parent only area -- Do pipe  n_pipes = '%d' --- ppid = %d\tpid = %d\n", s->pipe.n_pipes, getppid(), getpid()); // debug
 			parent_pipe(s);
 		}
 //	wait for child to finish
+dprintf(2, "execute_cmd() -- Waiting for child ------- pid = %d\n", getpid()); // debug
 		wait(&status);
+dprintf(2, "execute_cmd() -- Finished waiting ------- pid = %d\n", getpid()); // debug
+
 // error checks
-		if (WIFEXITED(status) && (status = WEXITSTATUS(status)) == EXIT_FAILURE)
-				return (err(ERR_NOTFOUND, s->input[0]));
+		if (WIFEXITED(status) && (status = WEXITSTATUS(status)) != EXIT_SUCCESS)
+		{
+dprintf(2, "1 -- status = '%d'\tpid = %d\n", status, getpid()); // debug
+			return (err(((status == 1) ? 1 : status + 900), s->input[0]));
+//			return (err(status, s->input[0]));
+		}
+dprintf(2, "2 -- status = '%d'\tpid = %d\n", status, getpid()); // debug
+
 
 		if (s->redir.n_rdr) // if theres redirs
 		{
+dprintf(2, "execute_cmd() -- Parent only area -- Do redir  n_rdr = '%d' --- ppid = %d\tpid = %d\n", s->redir.n_rdr, getppid(), getpid()); // debug
 			i = s->redir.rdr_i;
 			if (s->redir.dir == '>')
 				status = parent_output_redir(s->redir.rdr[i], s);
@@ -143,12 +165,8 @@ int	execute_cmd(t_shell *s)
 			}
 		}
 
-// error checks
-		if (status != EXIT_SUCCESS)
-				return (err(status, s->input[0]));
 
-
-	}
+//	}
 	return (status);
 }
 

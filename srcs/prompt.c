@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/01 14:59:22 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/14 14:52:22 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	set_prompt(t_shell *s)
 	char		*tmp;
 	static	int	count = 1;
 
+//dprintf(2, "set_prompt() -- START -- \tpid = %d\n", getpid()); // debug
 	if (s->prompt && (count == 1 || s->arg_p))
 	{
 		free(s->prompt);
@@ -68,4 +69,5 @@ void	set_prompt(t_shell *s)
 		s->prompt = tmp;
 	}
 	++count;
+//dprintf(2, "set_prompt() -- END -- \tpid = %d\n", getpid()); // debug
 }

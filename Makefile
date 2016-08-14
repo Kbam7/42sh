@@ -10,6 +10,7 @@ SRCS		=	srcs/main.c				\
 				srcs/input.c			\
 				srcs/commands.c			\
 				srcs/pipes.c			\
+				srcs/pipetab_funcs.c	\
 				srcs/redirs/redirs.c	\
 				srcs/redirs/analyze_redir.c	\
 				srcs/redirs/check_prefix.c	\
@@ -26,7 +27,7 @@ SRCS		=	srcs/main.c				\
 				srcs/t_cmd_list.c
 
 BUILTIN		=	srcs/builtin/ft_cd.c			\
-				srcs/builtin/ft_cd_utils.c			\
+				srcs/builtin/ft_cd_utils.c		\
 				srcs/builtin/ft_echo.c			\
 				srcs/builtin/ft_env.c			\
 				srcs/builtin/ft_setenv.c		\

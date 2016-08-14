@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:24:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/08 15:08:26 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/14 12:23:08 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 static void	reset_and_free_vars(char **cmds, size_t n_cmds, t_shell *s)
 {
+dprintf(2, "process_pipes() -- START reset_and_free_vars()\tpid = %d\n", getpid()); // debug
 	s->pipe.n_pipes = 0;
 	s->pipe.pipe_i = 0;
 	free_tab((void **)s->pipe.pipes, n_cmds);
 	free_tab((void **)cmds, n_cmds);
+dprintf(2, "process_pipes() -- END reset_and_free_vars()\tpid = %d\n", getpid()); // debug
 }
 
 static int	init_pipes(char *cmd, char ***cmds,  t_shell *s)
@@ -66,10 +68,14 @@ int			process_pipes(char *cmd, t_shell *s)
 		//	is the parent of shell_loop, waits for the child and then uses the pipe
 		}
 		else
-			process_input(cmds[s->pipe.pipe_i], s);
+			if ((i = process_input(cmds[s->pipe.pipe_i], s)) != EXIT_SUCCESS)
+			{
+dprintf(2, "process_pipes() -- process_input() NOT SUCCESSFULL!\ti = %d\tpid = %d\n", i, getpid()); // debug
+				break ;
+			}
 // At this point, the output has been read into the pipe or to the screen if its the last command.
 		++s->pipe.pipe_i;
 	}
 	reset_and_free_vars(cmds, n_cmds, s);
-	return (EXIT_SUCCESS);
+	return ((i == EXIT_SUCCESS) ? EXIT_SUCCESS : EXIT_FAILURE);
 }

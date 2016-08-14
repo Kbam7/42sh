@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/13 02:00:06 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/13 14:49:07 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/14 17:31:34 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ int		child_output_redir(char *str, t_shell *s)
 	i = get_pos(str, '>');
 	if (str[i] == '>')
 	{
+
+dprintf(2, "child_output_redir() -- START\n"); // debug
+
 		s->redir.pre_fd = STDOUT_FILENO; 
 		if (i == 1 && str[i - 1] == '&')	// ('&>')
 		{
@@ -54,8 +57,14 @@ int		child_output_redir(char *str, t_shell *s)
 		{
 	//		dup2(s->redir.pipe[i + 1][1], s->redir.pre_fd);
 	//		close(s->redir.pipe[i + 1][1]);
-			dup2(s->redir.pipe[i][1], STDOUT_FILENO);
+dprintf(2, "child_output_redir() -- '>..' -- s->pipe.n_pipes = '%d'\n", s->pipe.n_pipes); // debug
+			if (s->pipe.n_pipes && s->redir.rdr_i == 0)
+			{
+dprintf(2, "child_output_redir() -- STDIN reads from pipe[i][0]\n"); // debug
+				dup2(s->pipe.pipes[s->pipe.pipe_i][0], STDIN_FILENO);
+			}
 			close(s->redir.pipe[i][0]);		// not reading
+			dup2(s->redir.pipe[i][1], STDOUT_FILENO);
 			close(s->redir.pipe[i][1]);		// writing to duplicate
 		}
 		if (str[i + 1] == '>')	// ('>>')
@@ -72,6 +81,9 @@ int		child_output_redir(char *str, t_shell *s)
 				dup2(s->redir.post_fd, s->redir.pre_fd);
 			}
 		}
+
+dprintf(2, "child_output_redir() -- END\n"); // debug
+
 	}
 	return (EXIT_SUCCESS);
 }
@@ -101,6 +113,9 @@ int		parent_output_redir(char *str, t_shell *s)
 	i = s->redir.rdr_i;
 	if (str[pos] == '>')
 	{
+
+dprintf(2, "parent_output_redir() -- START\n");
+
 		s->redir.appnd = (str[pos + 1] == '>') ? 1 : 0;
 		if (pos == 1 && str[pos - 1] == '&')	// ('&>')
 		{// redirected STDOUT && STDERR of s->redir.cmd[i] to pipe, write to s->redir.cmd[i + 1]
@@ -133,14 +148,23 @@ int		parent_output_redir(char *str, t_shell *s)
 			if (fd < 0)
 				return (err(ERR_CREATE, s->redir.cmd[i + 1]));
 				
+
+//dprintf(2, "parent_output_redir() -- Start writing to file '%s'\n", s->redir.cmd[i + 1]);
+
+			close(s->redir.pipe[i][1]);
 			while (read(s->redir.pipe[i][0], &buf, 1) > 0)
 				write(fd, &buf, 1);
+
+//dprintf(2, "parent_output_redir() -- Finished writing to file '%s'\n", s->redir.cmd[i + 1]);
+
 			close(s->redir.pipe[i][0]);
-			close(s->redir.pipe[i][1]);
 			close(fd);
 		}
 	}
 	// successfully completed the child command, the redirect and the parents path
+
+dprintf(2, "parent_output_redir() -- END\n");
+
 	return (EXIT_SUCCESS);
 }
 

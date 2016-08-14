@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/13 14:16:23 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/14 14:26:17 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ int		child_output_redir(char *str, t_shell *s);
 */
 void			shell_loop(t_shell *s);
 int				run_shell(t_shell *s);
-void			free_t_shell(t_shell *s);
+int				free_t_shell(t_shell *s);
 
 /*
 **	init.c
@@ -184,6 +184,13 @@ int				store_commands(char *str, t_shell *s);
 **	pipes.c
 */
 int				process_pipes(char *cmd, t_shell *s);
+
+/*
+**	pipetab_funcs.c
+*/
+int				**ft_pipedup(int **pipe, int len);
+int				ft_pipelen(int **pipes);
+void			free_pipes(int **pipes, int len);
 
 /*
 **	redirs.c

@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:25:22 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/13 14:44:57 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/14 16:07:35 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ dprintf(2, "----------  process_redir() - execute_redirs() -- Output redir\n"
 		}
 		else if (ft_strchr(s->redir.rdr[i], '<'))
 		{
-dprintf(2, "----------  process_redir() - execute_redirs() -- Input redir\n"
-			"s->redir.cmd[%d] = >%s<\ns->redir.rdr[%d] = >%s<\n", i, s->redir.cmd[i], i, s->redir.rdr[i]);	// debug
+//dprintf(2, "----------  process_redir() - execute_redirs() -- Input redir\n"
+//			"s->redir.cmd[%d] = >%s<\ns->redir.rdr[%d] = >%s<\n", i, s->redir.cmd[i], i, s->redir.rdr[i]);	// debug
 			s->redir.dir = '<';
 			ret = process_input(s->redir.cmd[i], s);
 		}
@@ -109,7 +109,7 @@ dprintf(1, "process_redir() -- NO REDIR in this string, save to existing cmd -- 
 			oldcmd = (cmd == NULL) ? ft_strnew(1) : cmd;
 			cmd = ft_strjoinstr(oldcmd, sp.strings[i], " ");
 
-dprintf(1, "process_redir() -- oldcmd = >%s<\tnew cmd = >%s<\n", oldcmd, cmd); // debug
+//dprintf(1, "process_redir() -- oldcmd = >%s<\tnew cmd = >%s<\n", oldcmd, cmd); // debug
 
 			ft_strdel(&oldcmd);
 			if (s->redir.nxt_cmd)
