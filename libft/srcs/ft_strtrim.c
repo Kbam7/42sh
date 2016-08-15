@@ -6,11 +6,13 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/15 11:23:58 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/10 15:11:21 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/14 23:31:31 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+#include <stdio.h> // debug
 
 char	*ft_strtrim(char const *s)
 {

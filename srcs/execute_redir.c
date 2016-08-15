@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/13 02:00:06 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/14 17:31:34 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/15 00:41:48 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,12 @@ dprintf(2, "child_output_redir() -- START\n"); // debug
 		s->redir.pre_fd = STDOUT_FILENO; 
 		if (i == 1 && str[i - 1] == '&')	// ('&>')
 		{
+dprintf(2, "child_output_redir() -- '&>..' -- s->pipe.n_pipes = '%d'\n", s->pipe.n_pipes); // debug
 			// redir STDOUT && STDERR to pipe. 
-//			dup2(s->redir.pipe[i + 1][1], STDOUT_FILENO);
-//			dup2(s->redir.pipe[i + 1][1], STDERR_FILENO);
-//			close(s->redir.pipe[i + 1][1]);	// not needed, dupliated and redirected STDOUT to duplicate pipe
 			dup2(s->redir.pipe[i][1], STDOUT_FILENO);
 			dup2(s->redir.pipe[i][1], STDERR_FILENO);
-			close(s->redir.pipe[i][0]);		// not reading from current pipe
 			close(s->redir.pipe[i][1]);		// using duped end
+			close(s->redir.pipe[i][0]);		// not reading from current pipe
 		}
 		else if (i > 0 && ft_isdigit(str[i - 1])) // ('2>' || '43>')
 		{
@@ -47,16 +45,12 @@ dprintf(2, "child_output_redir() -- START\n"); // debug
 			tmp = ft_strsub(str, 0, i);
 			s->redir.pre_fd = ft_atoi(tmp);
 			ft_strdel(&tmp);
-	//		dup2(s->redir.pipe[i + 1][1], s->redir.pre_fd);
-	//		close(s->redir.pipe[i + 1][1]);	// not needed, duplicated and redirected the FD to duplicate pipe
 			dup2(s->redir.pipe[i][1], s->redir.pre_fd);
 			close(s->redir.pipe[i][0]);		// not reading from current pipe
 			close(s->redir.pipe[i][1]);		// not writing to current pipe
 		}
 		else if (i == 0)	// ('>..')
 		{
-	//		dup2(s->redir.pipe[i + 1][1], s->redir.pre_fd);
-	//		close(s->redir.pipe[i + 1][1]);
 dprintf(2, "child_output_redir() -- '>..' -- s->pipe.n_pipes = '%d'\n", s->pipe.n_pipes); // debug
 			if (s->pipe.n_pipes && s->redir.rdr_i == 0)
 			{
@@ -122,9 +116,9 @@ dprintf(2, "parent_output_redir() -- START\n");
 			if (s->redir.cmd[i + 1] == NULL)
 				return (err(ERR_BAD_TOKEN, "newline"));
 			if (s->redir.appnd)
-				fd = open(s->redir.cmd[i + 1], O_CREAT | O_APPEND);
+				fd = open(s->redir.cmd[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0664); // S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
 			else
-				fd = open(s->redir.cmd[i + 1], O_CREAT | O_TRUNC);
+				fd = open(s->redir.cmd[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0664); // S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
 			if (fd < 0)
 				return (err(ERR_CREATE, s->redir.cmd[i + 1]));
 			while (read(s->redir.pipe[i][0], &buf, 1) > 0)

@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 18:03:53 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/14 16:00:44 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/14 18:46:52 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ dprintf(2, "----------  process_input() -- START\n");	// debug
 	dprintf(2, "----------  executing\n");	// debug
 		get_input(cmd, s);
 		error = execute_cmd(s); // exucutes the function
-		free_tab((void **)s->input, ft_tablen(s->input));
+		free_tab((void ***)&s->input, ft_tablen(s->input));
 	}
 dprintf(2, "----------  process_input() -- END\n");	// debug
 	return (error);

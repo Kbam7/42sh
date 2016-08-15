@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/07 14:32:15 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/13 22:38:25 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/14 18:47:18 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int		store_commands(char *str, t_shell *s)
 			ret = add_cmd(&s->commands, args.strings[i]);
 			++i;
 		}
-		free_tab((void **)args.strings, args.words);
+		free_tab((void ***)&args.strings, args.words);
 	}
 	else
 		ret = add_cmd(&s->commands, str);
@@ -75,5 +75,5 @@ void	get_input(char *cmd, t_shell *s)
 	data = ft_nstrsplit(tmp, ' ');
 	ft_strdel(&tmp);
 	s->input = ft_tabdup(data.strings, data.words);
-	free_tab((void **)data.strings, data.words);
+	free_tab((void ***)&data.strings, data.words);
 }

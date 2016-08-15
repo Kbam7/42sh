@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:47 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/04 18:04:25 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/14 18:51:05 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	new_env_var(char *name, char *value, char ***env)
 
 	len = ft_tablen(*env);
 	tab = ft_tabdup(*env, len + 1);
-	free_tab((void **)*env, len);
+	free_tab((void ***)env, len);
 	tmp = ft_strjoin("=", value);
 	tab[len] = ft_strjoin(name, tmp);
 	ft_strdel(&tmp);
@@ -44,10 +44,10 @@ static int	variable_exists(char *name, char *value, char ***env)
 			tmp = ft_strjoin("=", value);
 			(*env)[i] = ft_strjoin(name, tmp);
 			ft_strdel(&tmp);
-			free_tab((void **)tab.strings, tab.words);
+			free_tab((void ***)&tab.strings, tab.words);
 			return (EXIT_SUCCESS);
 		}
-		free_tab((void **)tab.strings, tab.words);
+		free_tab((void ***)&tab.strings, tab.words);
 		++i;
 	}
 	return (EXIT_FAILURE);
@@ -74,7 +74,7 @@ static int	get_and_set_values(char *str, char ***env)
 		status = ft_set_env(args.strings[0], "", env);
 	else
 		status = ft_set_env(args.strings[0], args.strings[1], env);
-	free_tab((void **)args.strings, args.words);
+	free_tab((void ***)&args.strings, args.words);
 	return (status);
 }
 

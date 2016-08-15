@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/11 16:02:44 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/13 02:16:26 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/15 01:08:22 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,21 +29,35 @@ int			get_pos(char *str, char ch)
 /*
 ** This function checks if there are chars before or after the redir symbol.
 */
-char		*analyze_redir(char *str, char dir, char **cmd, t_shell *s)
+char		*analyze_redir(char **str, char dir, char **cmd, t_shell *s)
 {
-	int	pos;
+	int		pos;
 
 	s->redir.dir = dir;
-	if ((pos = get_pos(str, dir)) == -1) // no redir symbol
-		return (str);
+	if ((pos = get_pos(*str, dir)) == -1) // no redir symbol
+		return (*str);
+
+
+dprintf(2, "analyze_redir() -- pos = %d *str = '%s'\n\tstr[%d] = >%c<\tstr[%d] = >%c\n", 
+										pos, *str, pos-1,(*str)[pos-1],pos, (*str)[pos]); // debug
+
 	if (pos > 0)
-		str = check_prefix(str, pos, cmd, s);
-	if ((pos = get_pos(str, dir)) == -1) // no redir symbol
-		return (str);
-	if (str && str[pos + 1] == dir)
-		++pos;
-	if (str && str[pos + 1] != '\0')
-		str = check_postfix(str, pos, s);
-	// return rdr_str
-	return (str);
+		*str = check_prefix(str, pos, cmd, s);
+	
+if ((*str) == NULL) // debug
+	dprintf(2,  "analyze_redir() -- *str == NULL -->> >'%s'<\n", *str);	// debug
+
+	if ((pos = get_pos(*str, dir)) == -1) // no redir symbol
+		return (*str);
+
+//dprintf(2, "analyze_redir() -- pos = %d *str = >'%s'<\n\tstr[%d] = >%s<\tstr[%d] = >%s<\tstr[%d] = >%s<\n", 
+//										pos, *str, pos-1,str[pos-1],pos, str[pos],pos+1,str[pos+1]); // debug
+//dprintf(2, "analyze_redir() -- *str[pos + 1] == '%d' || '%c'  ---\n", *str[pos+1], *str[pos+1]);
+
+//	if (*str[pos + 1] && *str[pos + 1] == dir)
+//		++pos;
+	if (*str && (*str)[pos + 1] != '\0')
+		*str = check_postfix(str, pos, s);
+	// return malloc'd rdr_str
+	return (ft_strdup(*str));
 }

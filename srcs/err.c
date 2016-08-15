@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:50 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/12 21:32:45 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/14 18:35:47 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int			err(int errno, char *msg)
 	char		*err_msg;
 	char		*tmp;
 
+	if (errno == EXIT_SH)
+		return (errno);
 	check_errno(&tmp, errno, msg);
 	err_msg = ft_strjoin(err, tmp);
 	ft_putendl_fd(err_msg, STDERR_FILENO);

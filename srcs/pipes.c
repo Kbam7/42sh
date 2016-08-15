@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:24:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/14 12:23:08 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/14 18:48:01 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static void	reset_and_free_vars(char **cmds, size_t n_cmds, t_shell *s)
 dprintf(2, "process_pipes() -- START reset_and_free_vars()\tpid = %d\n", getpid()); // debug
 	s->pipe.n_pipes = 0;
 	s->pipe.pipe_i = 0;
-	free_tab((void **)s->pipe.pipes, n_cmds);
-	free_tab((void **)cmds, n_cmds);
+	free_tab((void ***)&s->pipe.pipes, n_cmds);
+	free_tab((void ***)&cmds, n_cmds);
 dprintf(2, "process_pipes() -- END reset_and_free_vars()\tpid = %d\n", getpid()); // debug
 }
 
@@ -29,9 +29,9 @@ static int	init_pipes(char *cmd, char ***cmds,  t_shell *s)
 
 	split = ft_nstrsplit(cmd, '|');
 	tmp = tab_trim(split.strings, (int)split.words);
-	free_tab((void **)split.strings, split.words);
+	free_tab((void ***)&split.strings, split.words);
 	*cmds = ft_tabdup(tmp, split.words);
-	free_tab((void **)tmp, split.words);
+	free_tab((void ***)&tmp, split.words);
 	// Create int **array for pipes
 	if ((s->pipe.pipes = (int **)malloc(sizeof(int *) * split.words)) == NULL)
 		return (err(ERR_MALLOC, "process_pipes() -- init_pipes()"));

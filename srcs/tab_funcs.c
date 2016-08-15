@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 20:32:13 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/05 08:22:39 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/14 20:36:40 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,18 @@ int		ft_tablen(char **tab)
 	return (i);
 }
 
-void	free_tab(void **tab, int len)
+void	free_tab(void ***tab, int len)
 {
 	int	i;
 
 	i = 0;
 	while (i < len)
 	{
-		ft_memdel(&tab[i]);
+		ft_memdel(&(*tab)[i]);
 		++i;
 	}
-	free(tab);
-	tab = NULL;
+	free(*tab);
+	*tab = NULL;
 }
 
 char	**tab_trim(char **tab, int len)
@@ -61,7 +61,7 @@ char	**tab_trim(char **tab, int len)
 	i = 0;
 	if (len > 0)
 	{
-		trimmed = (char **)malloc(sizeof(char *) * len + 1);
+		trimmed = (char **)ft_memalloc(sizeof(char *) * len + 1);
 		while (i < len)
 		{
 			trimmed[i] = ft_strtrim(tab[i]);

@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:25:22 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/14 16:07:35 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/15 00:47:29 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 static void	reset_and_free_vars(t_shell *s)
 {
-	free_tab((void **)s->redir.rdr, ft_tablen(s->redir.rdr));
-	free_tab((void **)s->redir.cmd, ft_tablen(s->redir.cmd));
+	free_tab((void ***)&s->redir.rdr, ft_tablen(s->redir.rdr));
+	free_tab((void ***)&s->redir.cmd, ft_tablen(s->redir.cmd));
+	if (s->redir.pipe != NULL)
+		free_pipes(&s->redir.pipe, ft_pipelen(s->redir.pipe));
 	s->redir.n_rdr = 0;
 	s->redir.rdr_i = 0;
 }
@@ -73,9 +75,10 @@ int		process_redir(char *str, t_shell *s)
 	int				i;
 
 	sp = ft_nstrsplit(str, ' ');
-	tmp = tab_trim(sp.strings, (int)sp.words);
-	free_tab((void **)sp.strings, sp.words);
-	sp.strings = ft_tabdup(tmp, sp.words);
+	tmp = sp.strings;
+	sp.strings = tab_trim(tmp, (int)sp.words);
+	free_tab((void ***)&tmp, sp.words);
+//	sp.strings = ft_tabdup(tmp, sp.words);
 
 	cmd = ft_strnew(1);
 	rdr_str = NULL;
@@ -83,28 +86,37 @@ int		process_redir(char *str, t_shell *s)
 	while (i < (int)sp.words)
 	{
 
-dprintf(1, "process_redir() -- after split by ' ' -- sp.strings[%d] = >%s< -- "
+dprintf(2, "process_redir() -- after split by ' ' -- sp.strings[%d] = >%s< -- "
 		"rdr_str == >%s< && cmd == >%s<\n", i, sp.strings[i], rdr_str, cmd); // debug
 
-//		if (cmd == NULL)
-//			cmd = ft_strnew(1);
 		if (ft_strchr(sp.strings[i], '>'))
 		{
 			// check chars before and after redir, and return only the redir string.
-			rdr_str = analyze_redir(sp.strings[i], '>', &cmd, s);
+			rdr_str = analyze_redir(&sp.strings[i], '>', &cmd, s);
 			if (!rdr_str || add_redir(&rdr_str, &cmd, s) == EXIT_FAILURE)
+			{
+				ft_strdel(&rdr_str);
 				return (EXIT_FAILURE);
+			}
+			ft_strdel(&rdr_str);
 		}
 		else if (ft_strchr(sp.strings[i], '<'))
-		{
-		//  MAKE THIS RUN THE SAME CODE AS '>'
+		{//  MAKE THIS RUN THE SAME CODE AS '>'
+			// check chars before and after redir, and return only the redir string.
+			rdr_str = analyze_redir(&sp.strings[i], '<', &cmd, s);
+			if (!rdr_str || add_redir(&rdr_str, &cmd, s) == EXIT_FAILURE)
+			{
+				ft_strdel(&rdr_str);
+				return (EXIT_FAILURE);
+			}
+			ft_strdel(&rdr_str);
 		}
 		else
 		{
 			// no redir, so concatinate it to the current cmd
 			// join all strings before the current one.
 
-dprintf(1, "process_redir() -- NO REDIR in this string, save to existing cmd -- current cmd = >%s<\n", cmd); // debug
+dprintf(2, "process_redir() -- NO REDIR in this string, save to existing cmd -- current cmd = >%s<\n", cmd); // debug
 
 			oldcmd = (cmd == NULL) ? ft_strnew(1) : cmd;
 			cmd = ft_strjoinstr(oldcmd, sp.strings[i], " ");
@@ -121,7 +133,7 @@ dprintf(1, "process_redir() -- NO REDIR in this string, save to existing cmd -- 
 			}
 			if ((i + 1) == (int)sp.words) // last word? i.e, no redir after this string ... add cmd to list of cmds
 			{
-dprintf(1, "process_redir() -- Adding last cmd -- rdr_str = >%s<\tcmd = >%s<\n", rdr_str, cmd);
+dprintf(2, "process_redir() -- Adding last cmd -- rdr_str = >%s<\tcmd = >%s<\n", rdr_str, cmd);
 				if (add_redir(&rdr_str, &cmd, s) == EXIT_FAILURE)
 					return (EXIT_FAILURE);
 			}
@@ -129,6 +141,7 @@ dprintf(1, "process_redir() -- Adding last cmd -- rdr_str = >%s<\tcmd = >%s<\n",
 		}
 		++i;
 	}
+	free_tab((void ***)&sp.strings, sp.words);
 
 	return (execute_redirs(s));
 }

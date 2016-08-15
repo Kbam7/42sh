@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/14 16:12:50 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/14 19:21:52 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	launch_shell(t_shell *s)
 	if (execve(ft_getenv("21SH_PATH", s), s->argv, s->env_var) != -1)
 		exit(EXIT_SUCCESS);
 	err(ERR_EXEC_SHELL, ft_getenv("21SH_PATH", s));
-	free_tab((void **)s->input, ft_tablen(s->input));
+	free_tab((void ***)&s->input, ft_tablen(s->input));
 	free_t_shell(s);
 	exit(EXIT_FAILURE);
 }
@@ -71,14 +71,21 @@ int			run_shell(t_shell *s)
 
 int			free_t_shell(t_shell *s)
 {
-	if (s->commands)
+	if (s->commands != NULL)
 		free_cmd_list(&s->commands);
-	if (s->input)
-		free_tab((void **)s->input, ft_tablen(s->input));
-	free_tab((void **)s->env_var, ft_tablen(s->env_var));
-	free_tab((void **)s->shell_var, ft_tablen(s->shell_var));
-	free_tab((void **)s->paths, ft_tablen(s->paths));
-	free_tab((void **)s->argv, ft_tablen(s->argv));
+	if (s->input != NULL)
+		free_tab((void ***)&s->input, ft_tablen(s->input));
+	if (s->redir.rdr != NULL)
+		free_tab((void ***)&s->redir.rdr, ft_tablen(s->redir.rdr));
+	if (s->redir.cmd != NULL)
+		free_tab((void ***)&s->redir.cmd, ft_tablen(s->redir.cmd));
+	if (s->redir.pipe != NULL)
+		free_pipes(&s->redir.pipe, ft_pipelen(s->redir.pipe));
+
+	free_tab((void ***)&s->env_var, ft_tablen(s->env_var));
+	free_tab((void ***)&s->shell_var, ft_tablen(s->shell_var));
+	free_tab((void ***)&s->paths, ft_tablen(s->paths));
+	free_tab((void ***)&s->argv, ft_tablen(s->argv));
 	ft_strdel(&s->prompt);
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:27:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/07 14:36:14 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/14 18:51:13 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ static void	remove_var(char *name, char **var)
 			while (var[++i] != NULL)
 				var[i - 1] = var[i];
 			tmp = ft_tabdup(var, ft_tablen(var));
-			free_tab((void **)var, ft_tablen(var));
+			free_tab((void ***)&var, ft_tablen(var));
 			var = ft_tabdup(tmp, ft_tablen(tmp));
-			free_tab((void **)tmp, ft_tablen(tmp));
-			free_tab((void **)data.strings, data.words);
+			free_tab((void ***)&tmp, ft_tablen(tmp));
+			free_tab((void ***)&data.strings, data.words);
 			break ;
 		}
-		free_tab((void **)data.strings, data.words);
+		free_tab((void ***)&data.strings, data.words);
 		++i;
 	}
 }

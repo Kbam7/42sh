@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/14 17:36:38 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/15 00:14:58 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,8 @@ int	execute_cmd(t_shell *s)
 dprintf(2, "--- START -- CHILD PROCESS --- ppid = %d\tpid = %d\n"
 			"execute_cmd() - child -- Trying to execute '%s' with '%s' ...\n", getppid(), getpid(), s->input[0], s->input[1]); // debug
 		// child only
-			if ((status = try_builtin(s)) == ERR_NOTFOUND)
-			{
+//			if ((status = try_builtin(s)) == ERR_NOTFOUND)
+//			{
 				if (s->pipe.n_pipes)
 					child_pipe(s);
 				if (s->redir.n_rdr) // if theres redirs, do them FIRST!
@@ -120,13 +120,14 @@ dprintf(2, "--- START -- CHILD PROCESS --- ppid = %d\tpid = %d\n"
 					//	child_input_redir(s->redir.rdr[i], s);
 					}
 				}
-				status = try_system(s);
-			}
+				if ((status = try_builtin(s)) == ERR_NOTFOUND)
+					status = try_system(s);
+//			}
 		// child has executed and written to the output fd required, whether its for a pipe, redir or screen.
 dprintf(2, "--- CHILD PROCESS returning, not exited --- ppid = %d\tpid = %d\n", getppid(), getpid()); // debug
 dprintf(2, "2 - child -- status = '%d'\tpid = %d\n", status, getpid()); // debug
 			free_t_shell(s);
-			exit((status - 900));
+			exit(status == 0 ? 0 : (status - 900));
 		}
 		
 // -----   Parent only   ------
@@ -146,11 +147,11 @@ dprintf(2, "execute_cmd() -- Finished waiting ------- pid = %d\n", getpid()); //
 // error checks
 		if (WIFEXITED(status) && (status = WEXITSTATUS(status)) != EXIT_SUCCESS)
 		{
-dprintf(2, "1 -- status = '%d'\tpid = %d\n", status, getpid()); // debug
+dprintf(2, "1 -- status = '%d'\tpid = %d\n", status + 900, getpid()); // debug
 			return (err(((status == 1) ? 1 : status + 900), s->input[0]));
 //			return (err(status, s->input[0]));
 		}
-dprintf(2, "2 -- status = '%d'\tpid = %d\n", status, getpid()); // debug
+dprintf(2, "2 -- status = '%d'\tpid = %d\n", status + 900, getpid()); // debug
 
 
 		if (s->redir.n_rdr) // if theres redirs

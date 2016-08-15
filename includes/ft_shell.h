@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/14 14:26:17 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/15 01:08:13 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ int				process_pipes(char *cmd, t_shell *s);
 */
 int				**ft_pipedup(int **pipe, int len);
 int				ft_pipelen(int **pipes);
-void			free_pipes(int **pipes, int len);
+void			free_pipes(int ***pipes, int len);
 
 /*
 **	redirs.c
@@ -201,17 +201,17 @@ int				process_redir(char *cmd, t_shell *s);
 **	analyze_redir.c
 */
 int				get_pos(char *str, char ch);
-char			*analyze_redir(char *str, char dir, char **cmd, t_shell *s);
+char			*analyze_redir(char **str, char dir, char **cmd, t_shell *s);
 
 /*
 **	check_prefix.c
 */
-char			*check_prefix(char *str, int pos, char **cmd, t_shell *s);
+char			*check_prefix(char **str, int pos, char **cmd, t_shell *s);
 
 /*
 **	check_postfix.c
 */
-char			*check_postfix(char *str, int pos, t_shell *s);
+char			*check_postfix(char **str, int pos, t_shell *s);
 
 /*
 **	shell_args.c
@@ -249,7 +249,7 @@ int				parent_output_redir(char *str, t_shell *s);
 */
 char			**ft_tabdup(char **tab, int len);
 int				ft_tablen(char **envp);
-void			free_tab(void **tab, int len);
+void			free_tab(void ***tab, int len);
 char			**tab_trim(char **tab, int len);
 
 /*
