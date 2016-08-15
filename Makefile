@@ -1,4 +1,4 @@
-PROG		= 21sh
+PROG		= 42sh
 FLAGS		= -Wall -Wextra -Werror -g
 LIBFT		= -L libft -lft
 INCLUDES	= -I includes -I libft/includes

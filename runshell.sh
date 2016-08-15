@@ -1,3 +1,3 @@
-echo "./21sh -u\n";
+echo "./42sh -u\n";
 make run;
-./21sh -u;
+./42sh -u;

@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 00:47:04 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/15 00:45:38 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/15 19:42:54 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ dprintf(1, "add_redir() - init_redir() -- "
 	s->redir.rdr[1] = NULL;
 	ft_strdel(rdr_str);
 // setup pipe for this redir
-	if ((s->redir.pipe = (int **)malloc(sizeof(int *) * 2)) == NULL)
-		return (err(ERR_MALLOC, "add_redir() -- init_redir(pipe)"));
-	if ((s->redir.pipe[0] = (int *)malloc(sizeof(int) * 2)) == NULL)
-		return (err(ERR_MALLOC, "add_redir() -- init_redir(pipe)"));
-	if ((pipe(s->redir.pipe[0]) == -1))
-		return (err(ERR_CREATE_PIPE, "add_redir() -- init_redir()"));
-	s->redir.pipe[1] = NULL;
+//	if ((s->redir.pipe = (int **)malloc(sizeof(int *) * 2)) == NULL)
+//		return (err(ERR_MALLOC, "add_redir() -- init_redir(pipe)"));
+//	if ((s->redir.pipe[0] = (int *)malloc(sizeof(int) * 2)) == NULL)
+//		return (err(ERR_MALLOC, "add_redir() -- init_redir(pipe)"));
+//	if ((pipe(s->redir.pipe[0]) == -1))
+//		return (err(ERR_CREATE_PIPE, "add_redir() -- init_redir()"));
+//	s->redir.pipe[1] = NULL;
 
 	s->redir.n_rdr++;
 
@@ -47,7 +47,7 @@ dprintf(1, "add_redir() - init_redir() -- Finished adding redir\n");
 static int	addto_redir(char **rdr_str, char **cmd, t_shell *s)
 {
 	char	**tmp;
-	int		**new_pipe;
+//	int		**new_pipe;
 
 dprintf(1, "add_redir() - addto_redir() - redir list exists, adding redir -- "
 			"rdr_str = >%s<\tcmd = >%s<\n", *rdr_str, *cmd); // debug
@@ -66,18 +66,18 @@ dprintf(1, "add_redir() - addto_redir() - redir list exists, adding redir -- "
 	s->redir.rdr = tmp;
 	s->redir.rdr[s->redir.n_rdr] = !(*rdr_str) ? NULL : ft_strdup(*rdr_str);
 	ft_strdel(rdr_str);
-// pipes
 	if (*rdr_str != NULL)
-	{
-		if ((new_pipe = ft_pipedup(s->redir.pipe, s->redir.n_rdr + 1)) == NULL)
-			return (err(ERR_MALLOC, "add_redir() -- ft_pipedup()"));
-		free_pipes(&s->redir.pipe, s->redir.n_rdr + 1);
-		s->redir.pipe = new_pipe;
-		if ((pipe(s->redir.pipe[s->redir.n_rdr]) == -1)) // init new pipe
-			return (err(ERR_CREATE_PIPE, "add_redir()"));
-//dprintf(1, "add_redir() - addto_redir() -- Made pipe for '%s'\n", *rdr_str);
 		s->redir.n_rdr++;
-	}
+// pipes
+//	if (*rdr_str != NULL)
+//	{
+//		if ((new_pipe = ft_pipedup(s->redir.pipe, s->redir.n_rdr + 1)) == NULL)
+//			return (err(ERR_MALLOC, "add_redir() -- ft_pipedup()"));
+//		free_pipes(&s->redir.pipe, s->redir.n_rdr + 1);
+//		s->redir.pipe = new_pipe;
+//		if ((pipe(s->redir.pipe[s->redir.n_rdr]) == -1)) // init new pipe
+//			return (err(ERR_CREATE_PIPE, "add_redir()"));
+//dprintf(1, "add_redir() - addto_redir() -- Made pipe for '%s'\n", *rdr_str);
 
 dprintf(1, "add_redir() - Finished adding redir\n");
 

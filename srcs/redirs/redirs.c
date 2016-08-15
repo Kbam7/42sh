@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:25:22 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/15 00:47:29 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/15 19:18:37 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,21 @@ static int	execute_redirs(t_shell *s)
 	i = 0;
 	while (i < s->redir.n_rdr)
 	{
+		if (s->redir.cmd[i + 1] == NULL) // error, nothing after redir symbol
+		{
+			break ;
+			err(ERR_BAD_TOKEN, "newline");
+		}
 		s->redir.rdr_i = i;
 		if (ft_strchr(s->redir.rdr[i], '>'))
 		{
 dprintf(2, "----------  process_redir() - execute_redirs() -- Output redir\n"
-			"s->redir.cmd[%d] = >%s<\ns->redir.rdr[%d] = '%s'\ns->redir.cmd[%d] = >%s<\n",
+			"s->redir.cmd[%d] = '%s'\ns->redir.rdr[%d] = '%s'\ns->redir.cmd[%d] = '%s'\n",
 											i, s->redir.cmd[i], i, s->redir.rdr[i], i+1, s->redir.cmd[i+1]);// debug
 			s->redir.dir = '>';
+
+			// create file here and open it for writing, then execute the process
+
 			ret = process_input(s->redir.cmd[i], s);
 		}
 		else if (ft_strchr(s->redir.rdr[i], '<'))
@@ -44,6 +52,9 @@ dprintf(2, "----------  process_redir() - execute_redirs() -- Output redir\n"
 //dprintf(2, "----------  process_redir() - execute_redirs() -- Input redir\n"
 //			"s->redir.cmd[%d] = >%s<\ns->redir.rdr[%d] = >%s<\n", i, s->redir.cmd[i], i, s->redir.rdr[i]);	// debug
 			s->redir.dir = '<';
+
+			// open file for reading here, then execute cmd.
+
 			ret = process_input(s->redir.cmd[i], s);
 		}
 		if (ret != EXIT_SUCCESS)
@@ -89,6 +100,7 @@ int		process_redir(char *str, t_shell *s)
 dprintf(2, "process_redir() -- after split by ' ' -- sp.strings[%d] = >%s< -- "
 		"rdr_str == >%s< && cmd == >%s<\n", i, sp.strings[i], rdr_str, cmd); // debug
 
+		
 		if (ft_strchr(sp.strings[i], '>'))
 		{
 			// check chars before and after redir, and return only the redir string.
@@ -115,29 +127,31 @@ dprintf(2, "process_redir() -- after split by ' ' -- sp.strings[%d] = >%s< -- "
 		{
 			// no redir, so concatinate it to the current cmd
 			// join all strings before the current one.
-
 dprintf(2, "process_redir() -- NO REDIR in this string, save to existing cmd -- current cmd = >%s<\n", cmd); // debug
-
 			oldcmd = (cmd == NULL) ? ft_strnew(1) : cmd;
 			cmd = ft_strjoinstr(oldcmd, sp.strings[i], " ");
-
 //dprintf(1, "process_redir() -- oldcmd = >%s<\tnew cmd = >%s<\n", oldcmd, cmd); // debug
-
 			ft_strdel(&oldcmd);
-			if (s->redir.nxt_cmd)
-			{
-				oldcmd = cmd;
-				cmd = ft_strjoinstr(s->redir.nxt_cmd, " ", oldcmd);
-				ft_strdel(&oldcmd);
-				ft_strdel(&s->redir.nxt_cmd);
-			}
-			if ((i + 1) == (int)sp.words) // last word? i.e, no redir after this string ... add cmd to list of cmds
-			{
+//			if (s->redir.nxt_cmd)
+//			{
+//				oldcmd = cmd;
+//				cmd = ft_strjoinstr(s->redir.nxt_cmd, " ", oldcmd);
+//				ft_strdel(&oldcmd);
+//				ft_strdel(&s->redir.nxt_cmd);
+//			}
+		}
+		if (s->redir.nxt_cmd)
+		{
+			oldcmd = (cmd == NULL) ? ft_strnew(1) : cmd;
+			cmd = ft_strjoinstr(s->redir.nxt_cmd, " ", oldcmd);
+			ft_strdel(&oldcmd);
+			ft_strdel(&s->redir.nxt_cmd);
+		}
+		if ((i + 1) == (int)sp.words && cmd) // last word? i.e, no redir after this string ... add cmd to list of cmds
+		{
 dprintf(2, "process_redir() -- Adding last cmd -- rdr_str = >%s<\tcmd = >%s<\n", rdr_str, cmd);
-				if (add_redir(&rdr_str, &cmd, s) == EXIT_FAILURE)
-					return (EXIT_FAILURE);
-			}
-
+			if (add_redir(&rdr_str, &cmd, s) == EXIT_FAILURE)
+				return (EXIT_FAILURE);
 		}
 		++i;
 	}

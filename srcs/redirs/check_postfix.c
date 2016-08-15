@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/12 22:08:50 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/15 01:23:20 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/15 18:44:17 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*saveto_nxt_cmd(char **cmd, char **str, int strt, int len)
 		ft_strdel(&tmp);
 		ft_strdel(&oldcmd);
 	} 
-	tmp = ft_strsub(*str, 0, strt + 1);
+	tmp = ft_strsub(*str, 0, strt);
 	ft_strdel(str);
 	*str = tmp;
 	return(*str);
@@ -75,10 +75,10 @@ char		*check_postfix(char **str, int pos, t_shell *s)
 	}
 	else
 	{
-dprintf(2, "check_postfix() -- Here\n"); //debug
+dprintf(2, "check_postfix() -- HERE -- strt = '%d'\tlen = '%ld'\n", pos+1, ft_strlen(*str) - (pos+1)); //debug
 //		s->redir.nxt_cmd = ft_strsub(*str, pos + 1, (ft_strlen(*str) - pos + 1));
 		// save to nxt_cmd
-		saveto_nxt_cmd(&s->redir.nxt_cmd, str, pos + 1, (ft_strlen(*str) - pos + 1));
+		saveto_nxt_cmd(&s->redir.nxt_cmd, str, pos + 1, (ft_strlen(*str) - (pos + 1)));
 dprintf(2, "check_postfix() -- s->redir.nxt_cmd = '%s'\n", s->redir.nxt_cmd); //debug
 	}
 
