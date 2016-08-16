@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:24:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/14 18:48:01 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/16 18:35:40 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int			process_pipes(char *cmd, t_shell *s)
 			if ((i = process_input(cmds[s->pipe.pipe_i], s)) != EXIT_SUCCESS)
 			{
 dprintf(2, "process_pipes() -- process_input() NOT SUCCESSFULL!\ti = %d\tpid = %d\n", i, getpid()); // debug
-				break ;
+		//		break ;
 			}
 // At this point, the output has been read into the pipe or to the screen if its the last command.
 		++s->pipe.pipe_i;

@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:50 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/14 18:35:47 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/16 18:01:22 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ static void	check_errno(char **tmp, int errno, char *msg)
 	else if ((*tmp = check_file_error(errno, msg)) != NULL)
 		*tmp = *tmp;
 	else
-		*tmp = ft_strdup("No further details");
+		*tmp = NULL;
+//		*tmp = ft_strdup("No further details");
 }
 
 int			err(int errno, char *msg)
@@ -69,9 +70,12 @@ int			err(int errno, char *msg)
 	if (errno == EXIT_SH)
 		return (errno);
 	check_errno(&tmp, errno, msg);
-	err_msg = ft_strjoin(err, tmp);
-	ft_putendl_fd(err_msg, STDERR_FILENO);
-	free(tmp);
-	free(err_msg);
+	if (tmp != NULL)
+	{
+		err_msg = ft_strjoin(err, tmp);
+		ft_putendl_fd(err_msg, STDERR_FILENO);
+		free(tmp);
+		free(err_msg);
+	}
 	return (errno);
 }

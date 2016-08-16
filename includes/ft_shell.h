@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/16 13:16:33 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/16 22:34:43 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,7 +257,7 @@ char			**tab_trim(char **tab, int len);
 */
 int				check_rights(char *path, int r, int w, int x);
 char			***check_env_type(int type, t_shell *s);
-void			print_variables(char **env);
+void			print_variables(char **env, t_shell *s);
 
 /*
 **	err.c

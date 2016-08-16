@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/13 01:56:59 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/14 17:31:14 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/16 18:16:42 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ dprintf(2, "child_pipe() -- first_pipe -- n_pipes == '%d'\n", s->pipe.n_pipes); 
 	}
 	else 
 	{
-if (s->pipe.n_pipes == 1) /*last pipe*/ dprintf(2, "child_pipe() -- last_pipe -- n_pipes == '%d'\n", s->pipe.n_pipes); // debug
+		if (s->pipe.n_pipes == 1) /*last pipe*/ dprintf(2, "child_pipe() -- last_pipe -- n_pipes == '%d'\n", s->pipe.n_pipes); // debug
 
 		close(s->pipe.pipes[i][1]);	// close last write-end, STDOUT used
 		dup2(s->pipe.pipes[i][0], STDIN_FILENO); // read from current pipe

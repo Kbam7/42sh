@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/16 13:22:00 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/16 20:01:45 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void		shell_loop(t_shell *s)
 	{
 //dprintf(2, "shell_loop() -- START -- \tpid = %d\n", getpid()); // debug
 		set_prompt(s);
-		ft_putstr(s->prompt);
+		ft_printf("%s%s%s%s", C_BOLD, C_BROWN, s->prompt, C_NONE);
 //dprintf(2, "shell_loop() -- printed prompt -- \tpid = %d\n", getpid()); // debug
 		if ((ret = get_commands(s) > 0))
 		{
@@ -75,6 +75,8 @@ int			free_t_shell(t_shell *s)
 		free_cmd_list(&s->commands);
 	if (s->input != NULL)
 		free_tab((void ***)&s->input, ft_tablen(s->input));
+	if (s->pipe.pipes != NULL)
+		free_tab((void ***)&s->pipe.pipes, (s->pipe.n_pipes + s->pipe.pipe_i));
 	if (s->redir.rdr != NULL)
 		free_tab((void ***)&s->redir.rdr, ft_tablen(s->redir.rdr));
 	if (s->redir.cmd != NULL)
