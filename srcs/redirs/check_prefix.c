@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/12 22:05:17 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/15 00:25:09 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/16 12:09:09 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,33 +62,20 @@ static int	check_ampersand(char **str, char **cmd, t_shell *s)
 	int pos;
 
 	if (ft_strchr(ft_strchr(*str, '&') + 1, '&'))
-		return (err(ERR_BAD_TOKEN, "&")); // ('&>&' || '&<&')
-/*
-	if ((tmp = ft_strchr(*str, '&')))
-	{
-dprintf(2, "check_prefix() -- check_ampersand() -- found an ampersand '&' --- str = >%s<\n", tmp); // debug
-
-		if (ft_strchr(tmp, '&'))
-			return (err(ERR_BAD_TOKEN, "&")); // ('&>&' || '&<&')
-	}
-
-*/
-
-
-dprintf(2, "check_prefix() -- check_ampersand() -- Theres only one '&'\n"); // debug
-
+		return (err(ERR_BAD_TOKEN, "&")); // ('&>&' || '&<&' ...)
+//dprintf(2, "check_prefix() -- check_ampersand() -- Theres only one '&'\n"); // debug
 	amp = get_pos(*str, '&'); // find amp ('&')
 	pos = get_pos(*str, s->redir.dir); // find redir symbol
-dprintf(2, "check_prefix() -- check_ampersand() -- found positions for amp(%d) and pos(%d)\n", amp, pos); // debug
-dprintf(2, "check_prefix() -- check_ampersand() -- *str = '%s'\t*str[amp] = '%c'\t*str[amp+1] = '%c'\n", *str, (*str)[amp], (*str)[amp+1]); // debug
+//dprintf(2, "check_prefix() -- check_ampersand() -- found positions for amp(%d) and pos(%d)\n", amp, pos); // debug
+//dprintf(2, "check_prefix() -- check_ampersand() -- *str = '%s'\t*str[amp] = '%c'\t*str[amp+1] = '%c'\n", *str, (*str)[amp], (*str)[amp+1]); // debug
 	if (amp < pos && (*str)[amp + 1] == '<')
 	{
-dprintf(2, "check_prefix() -- check_ampersand() -- found '&<'\n"); // debug
+//dprintf(2, "check_prefix() -- check_ampersand() -- found '&<'\n"); // debug
 		*str = saveto_cmd(cmd, str, 0, pos); // go to redir symbol and save everything before it as a cmd
 	}
 	else if (amp < pos && (*str)[amp + 1] == '>')
 	{
-dprintf(2, "check_prefix() -- check_ampersand() -- found '&>'\n"); // debug
+//dprintf(2, "check_prefix() -- check_ampersand() -- found '&>'\n"); // debug
 		if (amp > 0 && (*str = saveto_cmd(cmd, str, 0, amp)))  //	if theres something before '&>', save it to cmd
 			amp = get_pos(*str, '&'); // find amp ('&')
 		if ((*str)[amp + 2] == '>')
@@ -96,7 +83,7 @@ dprintf(2, "check_prefix() -- check_ampersand() -- found '&>'\n"); // debug
 		if ((*str)[amp + 2] != '\0' && (pos = amp + 2)) 	 //	if theres something after '&>' || '&>>', save it to nxt_cmd
 			*str = saveto_nxt_cmd(&s->redir.nxt_cmd, str, pos, (ft_strlen(*str) - pos));
 	}
-dprintf(2, "check_prefix() -- check_ampersand() -- END\n"); // debug
+//dprintf(2, "check_prefix() -- check_ampersand() -- END\n"); // debug
 	return (EXIT_SUCCESS);
 }
 
@@ -118,7 +105,7 @@ char		*check_prefix(char **str, int pos, char **cmd, t_shell *s)
 		if ( j > 0 && !ft_isdigit((*str)[j - 1])) // if theres anything before the int, save it to cmd
 			*str = saveto_cmd(cmd, str, 0, j);
 	}
-	else if (pos > 0 && (*str)[pos - 1] != '&') // Not '&' and not integer, save it to cmd
+	else if (pos > 0 && (*str)[pos - 1] != '&') // Not '&>..' and not integer, save it to cmd
 		*str = saveto_cmd(cmd, str, 0, pos);
 	return (*str);
 }

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/15 01:08:13 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/16 13:16:33 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,9 @@ typedef struct			s_redirs
 	char			**cmd;		// holds each command/path
 	char			*nxt_cmd;	// holds left over chars from after the redir string
 	char			**rdr;		// for redir operator strings
-	int				**pipe;		// for redir pipes
+//	int				**pipe;		// for redir pipes
 	int				dir;
-	int				appnd;		// append/prepend or not?
+	int				appnd;		// append or not?
 	int				n_rdr;
 	int				rdr_i;		// current redir index
 	// These are for the redirect fd's defined next to the '<'|'>'

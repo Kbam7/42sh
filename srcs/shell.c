@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/14 19:21:52 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/16 13:22:00 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ int			free_t_shell(t_shell *s)
 		free_tab((void ***)&s->redir.rdr, ft_tablen(s->redir.rdr));
 	if (s->redir.cmd != NULL)
 		free_tab((void ***)&s->redir.cmd, ft_tablen(s->redir.cmd));
-	if (s->redir.pipe != NULL)
-		free_pipes(&s->redir.pipe, ft_pipelen(s->redir.pipe));
+//	if (s->redir.pipe != NULL)
+//		free_pipes(&s->redir.pipe, ft_pipelen(s->redir.pipe));
 
 	free_tab((void ***)&s->env_var, ft_tablen(s->env_var));
 	free_tab((void ***)&s->shell_var, ft_tablen(s->shell_var));

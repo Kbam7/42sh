@@ -6,12 +6,97 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/13 02:00:06 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/15 21:38:05 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/16 00:49:25 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
+static int	open_output_file(int append, t_shell *s)
+{
+	int	path;
+	int	i;
+
+	i = s->redir.rdr_i;
+	if (append)
+		path = open(s->redir.cmd[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0664); // S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
+	else
+		path = open(s->redir.cmd[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0664); // S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
+	if (path < 0)
+		err(ERR_CREATE, s->redir.cmd[i + 1]);
+	return (path);
+}
+
+static int	check_ampersand(char *str, int pos, t_shell *s)
+{
+	char	*tmp;
+
+	if (str[pos + 1] == '&')	// ('>&')
+	{
+		if (str[pos + 2] == '-')	// ('>&-')
+			close(s->redir.pre_fd);
+		else
+		{ // duplicate fd defined after '&', ('2>&1') -- this will redir stderr to stdout
+			tmp = ft_strsub(str, (pos + 2), (ft_strlen(str) - (pos + 2)));
+			s->redir.post_fd = ft_atoi(tmp);
+			ft_strdel(&tmp);
+			dup2(s->redir.post_fd, s->redir.pre_fd);
+		}
+		return (1);
+	}
+	else
+		return (0);
+}
+
+int		child_output_redir(char *str, t_shell *s)
+{
+	int		pos;
+	int		path;
+	char	*tmp;
+
+	pos = get_pos(str, '>');
+	s->redir.appnd = (str[pos + 1] == '>') ? 1 : 0;
+	if (str[pos] == '>')
+	{
+		s->redir.pre_fd = STDOUT_FILENO; 
+
+		if (s->pipe.n_pipes && s->redir.rdr_i == 0)
+			dup2(s->pipe.pipes[s->pipe.pipe_i][0], STDIN_FILENO);
+
+		if (pos == 0)	// ('>..')
+			if (!check_ampersand(str, pos, s))
+				if ((path = open_output_file(s->redir.appnd, s)) > -1)
+				{
+					dup2(path, STDOUT_FILENO);
+					close(path);
+				}
+		if (pos > 0 && ft_isdigit(str[pos - 1])) // ('2>' || '43>')
+		{
+			tmp = ft_strsub(str, 0, pos);
+			s->redir.pre_fd = ft_atoi(tmp);
+			ft_strdel(&tmp);
+		//	check if theres an ampersand after the redir symbol, if there is, then check whats after the ampersand
+			if (!check_ampersand(str, pos, s))
+				if ((path = open_output_file(s->redir.appnd, s)) > -1)
+				{
+					dup2(path, s->redir.pre_fd);
+					close(path);
+				}
+		}
+		if (pos == 1 && str[pos - 1] == '&')	// ('&>')
+		{
+			if ((path = open_output_file(s->redir.appnd, s)) > -1)
+			{
+				dup2(path, STDOUT_FILENO);
+				dup2(path, STDERR_FILENO);
+				close(path);
+			}
+		}
+	}
+	return (EXIT_SUCCESS);
+}
+
+/*
 int		child_output_redir(char *str, t_shell *s)
 {
 	// execute this inside child process
@@ -29,73 +114,34 @@ int		child_output_redir(char *str, t_shell *s)
 	pos = get_pos(str, '>');
 	if (str[pos] == '>')
 	{
+		s->redir.pre_fd = STDOUT_FILENO; 
 
-dprintf(2, "child_output_redir() -- START\n"); // debug
-/*//////////////////////////////////////
-
-			if (s->redir.appnd)
-				fd = open(s->redir.cmd[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0664); // S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
-			else
-				fd = open(s->redir.cmd[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0664); // S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
-			if (fd < 0)
-				return (err(ERR_CREATE, s->redir.cmd[i + 1]));
-			while (read(s->redir.pipe[i][0], &buf, 1) > 0)
-				write(fd, &buf, 1);
-			close(s->redir.pipe[i][0]);
-			close(s->redir.pipe[i][1]);
-			close(fd);
-
-
-			fd = open(s->redir.cmd[i + 1], O_WRONLY | O_CREAT | 
-							(str[pos + 1] == '>') ? O_APPEND : O_TRUNC, 0664); // S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
-
-////////////////////////////////////////
-*/
 		if ((path = open(s->redir.cmd[i + 1], O_WRONLY | O_CREAT |
 					((str[pos + 1] == '>') ? O_APPEND : O_TRUNC), 0664)) < 0) // S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
 			return (err(ERR_CREATE, s->redir.cmd[i + 1]));
 
-		s->redir.pre_fd = STDOUT_FILENO; 
 		if (pos == 1 && str[pos - 1] == '&')	// ('&>')
 		{
-dprintf(2, "child_output_redir() -- '&>..' -- s->pipe.n_pipes = '%d'\n", s->pipe.n_pipes); // debug
-			// redir STDOUT && STDERR to pipe. 
 			dup2(path, STDOUT_FILENO);
 			dup2(path, STDERR_FILENO);
-//			dup2(s->redir.pipe[i][1], STDOUT_FILENO);
-//			dup2(s->redir.pipe[i][1], STDERR_FILENO);
-//			close(s->redir.pipe[i][1]);		// using duped end
-//			close(s->redir.pipe[i][0]);		// not reading from current pipe
 		}
 		else if (pos > 0 && ft_isdigit(str[pos - 1])) // ('2>' || '43>')
 		{
-		// use as fd to read from, if not defined, its STDOUT
 			tmp = ft_strsub(str, 0, pos);
 			s->redir.pre_fd = ft_atoi(tmp);
-dprintf(2, "child_output_redir() -- '5>' -- s->redir.pre_fd = '%d'\n", s->redir.pre_fd); // debug
 			ft_strdel(&tmp);
 			dup2(path, s->redir.pre_fd);
-//			dup2(s->redir.pipe[i][1], s->redir.pre_fd);
-//			close(s->redir.pipe[i][0]);		// not reading from current pipe
-//			close(s->redir.pipe[i][1]);		// not writing to current pipe
 		}
 		else if (pos == 0)	// ('>..')
 		{
-dprintf(2, "child_output_redir() -- '>..' -- s->pipe.n_pipes = '%d'\n", s->pipe.n_pipes); // debug
 			if (s->pipe.n_pipes && s->redir.rdr_i == 0)
-			{
-dprintf(2, "child_output_redir() -- STDIN reads from pipe[i][0]\n"); // debug
 				dup2(s->pipe.pipes[s->pipe.pipe_i][0], STDIN_FILENO);
-			}
-//			close(s->redir.pipe[i][0]);		// not reading
 			dup2(path, STDOUT_FILENO);
-//			dup2(s->redir.pipe[i][1], STDOUT_FILENO);
-//			close(s->redir.pipe[i][1]);		// writing to duplicate
 		}
 		if (str[pos + 1] == '>')	// ('>>')
 			++pos;
 		if (str[pos + 1] == '&')	// ('>&')
-		{ // MAKE SURE TO LEAVE FD's on both sides ATTACHED TO rdr_str.
+		{
 			if (str[pos + 2] == '-')	// ('>&-')
 				close(s->redir.pre_fd);
 			else
@@ -106,92 +152,8 @@ dprintf(2, "child_output_redir() -- STDIN reads from pipe[i][0]\n"); // debug
 				dup2(s->redir.post_fd, s->redir.pre_fd);
 			}
 		}
-
 		close(path);
-
-dprintf(2, "child_output_redir() -- END\n"); // debug
-
 	}
 	return (EXIT_SUCCESS);
 }
-
-int		parent_output_redir(char *str, t_shell *s)
-{
-	// execute this inside parent process after child has written to the pipe
-	// The parent must now write to the path defined at s->redir.cmd[i + 1] as to complete the redir.
-
-// NOTE !!:
-//	The first command of a redir is the current index (i.e. s->redir.rdr_i ==> s->redir.cmd[i] && s->redir.rdr[i])
-//	The second command that a redir executes is s->redir.cmd[i + 1].
-//	 and it is ONLY A PATH TO A FILE, if its == NULL, then we ended on a redir
-//	  without a cmd and an error is printed 
-//
-//	  If the path (cmd[i + 1]) does not exist, 
-//	  then create it if you have the rights and write to the file.
-//	  If s->redir.appnd > 0, then append to file, else truncate to zero(if it already exists),
-//	  and write to it from the current pipe. (i.e. s->redir.pipe[i])
-
-//	int		i;
-	int		pos;
-//	int		fd;
-//	char	buf;
-
-	pos = get_pos(str, '>');
-//	i = s->redir.rdr_i;
-	if (str[pos] == '>')
-	{
-
-dprintf(2, "parent_output_redir() -- START\n");
-
-		s->redir.appnd = (str[pos + 1] == '>') ? 1 : 0;
-		if (pos == 1 && str[pos - 1] == '&')	// ('&>')
-		{// redirected STDOUT && STDERR of s->redir.cmd[i] to pipe, write to s->redir.cmd[i + 1]
-//			if (s->redir.cmd[i + 1] == NULL)
-//				return (err(ERR_BAD_TOKEN, "newline"));
-/*			if (s->redir.appnd)
-				fd = open(s->redir.cmd[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0664); // S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
-			else
-				fd = open(s->redir.cmd[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0664); // S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
-			if (fd < 0)
-				return (err(ERR_CREATE, s->redir.cmd[i + 1]));
-			while (read(s->redir.pipe[i][0], &buf, 1) > 0)
-				write(fd, &buf, 1);
-			close(s->redir.pipe[i][0]);
-			close(s->redir.pipe[i][1]);
-			close(fd);
-*/		}
-		else if (pos > 0 && ft_isdigit(str[pos - 1])) // ('2>')
-		{
-		// use as fd to read from, if not defined, its STDOUT
-		//	 read from pipe, into
-		}
-		if (pos == 0)	// ('>..')
-		{
-			// no FD defined, redir STDOUT fd(1), to destination
-/*			if (s->redir.appnd)
-				fd = open(s->redir.cmd[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0664); // S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
-			else
-				fd = open(s->redir.cmd[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0664); // S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
-			if (fd < 0)
-				return (err(ERR_CREATE, s->redir.cmd[i + 1]));
-				
-
-//dprintf(2, "parent_output_redir() -- Start writing to file '%s'\n", s->redir.cmd[i + 1]);
-
-			close(s->redir.pipe[i][1]);
-			while (read(s->redir.pipe[i][0], &buf, 1) > 0)
-				write(fd, &buf, 1);
-
-//dprintf(2, "parent_output_redir() -- Finished writing to file '%s'\n", s->redir.cmd[i + 1]);
-
-			close(s->redir.pipe[i][0]);
-			close(fd);
-*/		}
-	}
-	// successfully completed the child command, the redirect and the parents path
-
-dprintf(2, "parent_output_redir() -- END\n");
-
-	return (EXIT_SUCCESS);
-}
-
+*/

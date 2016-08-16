@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/11 16:02:44 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/15 18:57:04 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/16 13:21:37 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,26 +34,24 @@ char		*analyze_redir(char **str, char dir, char **cmd, t_shell *s)
 	int		pos;
 
 	s->redir.dir = dir;
-	if ((pos = get_pos(*str, dir)) == -1) // no redir symbol
-		return (*str);
-
-dprintf(2, "analyze_redir() -- pos = %d *str = '%s'\tstr[%d] = '%c'\tstr[%d] = '%c'\n", 
-										pos, *str, pos,(*str)[pos],pos+1, (*str)[pos+1]); // debug
-
+	if (*str == NULL || (pos = get_pos(*str, dir)) == -1) // no redir symbol
+		return (NULL);
+//dprintf(2, "analyze_redir() -- pos = %d *str = '%s'\tstr[%d] = '%c'\tstr[%d] = '%c'\n", 
+//										pos, *str, pos,(*str)[pos],pos+1, (*str)[pos+1]); // debug
 	if (pos > 0)
 		*str = check_prefix(str, pos, cmd, s);
 	
-	if ((*str) == NULL) // debug
-		dprintf(2,  "analyze_redir() -- *str == NULL -->> >'%s'<\n", *str);	// debug
-
-	if ((pos = get_pos(*str, dir)) == -1) // no redir symbol
-		return (*str);
+	if (*str == NULL || (pos = get_pos(*str, dir)) == -1) // no redir symbol
+		return (NULL);
 //dprintf(2, "analyze_redir() -- *str[pos + 1] == '%d' || '%c'  ---\n", *str[pos+1], *str[pos+1]);
 	if ((*str)[pos + 1] && (*str)[pos + 1] == dir)
 		++pos;
 	if (*str && (*str)[pos + 1] != '\0')
 		*str = check_postfix(str, pos, s);
-dprintf(2, "analyze_redir() -- END -- *str ='%s'\n", *str); //debug
+
+	if ((*str) == NULL)
+		return (NULL);
+//dprintf(2, "analyze_redir() -- END -- *str ='%s'\n", *str); //debug
 	// return malloc'd rdr_str
 	return (ft_strdup(*str));
 }
