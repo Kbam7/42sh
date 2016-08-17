@@ -6,13 +6,13 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 20:32:13 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/14 20:36:40 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/17 07:47:16 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-char	**ft_tabdup(char **tab, int len)
+char	**ft_tabdup(char **table, int len)
 {
 	int		i;
 	char	**tmp;
@@ -20,8 +20,8 @@ char	**ft_tabdup(char **tab, int len)
 	i = -1;
 	if ((tmp = (char **)malloc(sizeof(char *) * (len + 1))) != NULL)
 	{
-		while (++i < len && tab[i])
-			tmp[i] = ft_strdup(tab[i]);
+		while (++i < len && table[i])
+			tmp[i] = ft_strdup(table[i]);
 		while (++i < len)
 			tmp[i] = "\0";
 		tmp[len] = NULL;
@@ -29,31 +29,31 @@ char	**ft_tabdup(char **tab, int len)
 	return (tmp);
 }
 
-int		ft_tablen(char **tab)
+int		ft_tablen(char **table)
 {
 	int	i;
 
 	i = 0;
-	while (tab[i] != NULL)
+	while (table[i] != NULL)
 		++i;
 	return (i);
 }
 
-void	free_tab(void ***tab, int len)
+void	free_tab(void ***table, int len)
 {
 	int	i;
 
 	i = 0;
 	while (i < len)
 	{
-		ft_memdel(&(*tab)[i]);
+		ft_memdel(&(*table)[i]);
 		++i;
 	}
-	free(*tab);
-	*tab = NULL;
+	free(*table);
+	*table = NULL;
 }
 
-char	**tab_trim(char **tab, int len)
+char	**tab_trim(char **table, int len)
 {
 	int		i;
 	char	**trimmed;
@@ -64,10 +64,10 @@ char	**tab_trim(char **tab, int len)
 		trimmed = (char **)ft_memalloc(sizeof(char *) * len + 1);
 		while (i < len)
 		{
-			trimmed[i] = ft_strtrim(tab[i]);
+			trimmed[i] = ft_strtrim(table[i]);
 			++i;
 		}
 		return (trimmed);
 	}
-	return (tab);
+	return (table);
 }

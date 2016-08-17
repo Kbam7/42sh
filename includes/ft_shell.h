@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/16 22:34:43 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/17 07:46:28 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,9 +188,9 @@ int				process_pipes(char *cmd, t_shell *s);
 /*
 **	pipetab_funcs.c
 */
-int				**ft_pipedup(int **pipe, int len);
-int				ft_pipelen(int **pipes);
-void			free_pipes(int ***pipes, int len);
+//int				**ft_pipedup(int **pipe, int len);
+//int				ft_pipelen(int **pipes);
+//void			free_pipes(int ***pipes, int len);
 
 /*
 **	redirs.c
@@ -247,10 +247,10 @@ int				parent_output_redir(char *str, t_shell *s);
 /*
 **	tab_funcs.c
 */
-char			**ft_tabdup(char **tab, int len);
+char			**ft_tabdup(char **table, int len);
 int				ft_tablen(char **envp);
-void			free_tab(void ***tab, int len);
-char			**tab_trim(char **tab, int len);
+void			free_tab(void ***table, int len);
+char			**tab_trim(char **table, int len);
 
 /*
 **	utils.c
