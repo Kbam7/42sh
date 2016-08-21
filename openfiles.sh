@@ -1,1 +1,1 @@
-vim -p  includes/*.h srcs/t_redirs.c srcs/init.c srcs/shell.c srcs/input.c srcs/redirs/*.c srcs/commands.c srcs/execute.c srcs/execute_redir.c
+vim -p  includes/*.h srcs/t_redirs.c srcs/init.c srcs/shell.c srcs/input.c srcs/redirs/*.c srcs/commands.c srcs/execute.c srcs/execute_output_redir.c srcs/execute_input_redir.c

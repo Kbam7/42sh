@@ -19,7 +19,8 @@ SRCS		=	srcs/main.c				\
 				srcs/environ.c			\
 				srcs/execute.c			\
 				srcs/execute_pipe.c		\
-				srcs/execute_redir.c	\
+				srcs/execute_output_redir.c	\
+				srcs/execute_input_redir.c	\
 				srcs/tab_funcs.c		\
 				srcs/utils.c			\
 				srcs/err.c				\

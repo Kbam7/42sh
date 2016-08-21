@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/16 22:29:14 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/21 18:48:58 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ dprintf(2, "--- START -- CHILD PROCESS --- ppid = %d\tpid = %d\n"
 						child_output_redir(s->redir.rdr[i], s);
 					else if (s->redir.dir == '<')
 					{
-//						child_input_redir(s->redir.rdr[i], s);
+						child_input_redir(s->redir.rdr[i], s);
 					}
 				}
 //				if ((status = try_builtin(s)) == ERR_NOTFOUND)

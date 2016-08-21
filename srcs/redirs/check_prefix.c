@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/12 22:05:17 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/16 12:09:09 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/19 16:35:23 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,10 @@ char		*check_prefix(char **str, int pos, char **cmd, t_shell *s)
 {
 	int		j;
 
-
-// MAKE SURE TO LEAVE FD's on both sides ATTACHED TO rdr_str.
-
 	if (ft_strchr(*str, '&') && (check_ampersand(str, cmd, s) != EXIT_SUCCESS))
 		return (NULL);
 	pos = get_pos(*str, s->redir.dir);
-	if (ft_isdigit((*str)[pos - 1])) // if theres a number directly before the redir symbol, leave it in the rdr_str. add to cmd anything before the number (0 -> num_strt - 1)
+	if (ft_isdigit((*str)[pos - 1])) // if theres a number directly before the redir symbol, leave it in the rdr_str. add anything before the number (0 -> num_strt - 1)
 	{
 		j = pos - 1;
 		while (j > 0 && ft_isdigit((*str)[j - 1]))

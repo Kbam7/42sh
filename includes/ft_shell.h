@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/17 07:46:28 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/21 19:16:13 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ typedef struct			s_redirs
 	char			*nxt_cmd;	// holds left over chars from after the redir string
 	char			**rdr;		// for redir operator strings
 //	int				**pipe;		// for redir pipes
+	t_split_string	sp;			// redir string split by spaces
 	int				dir;
 	int				appnd;		// append or not?
 	int				n_rdr;
@@ -142,13 +143,6 @@ typedef struct	s_shell
 /*
 ** --[ FUNCTION PROTOTYPES ]--
 */
-
-
-int		child_output_redir(char *str, t_shell *s);
-
-
-
-
 /*
 **	shell.c
 */
@@ -184,13 +178,6 @@ int				store_commands(char *str, t_shell *s);
 **	pipes.c
 */
 int				process_pipes(char *cmd, t_shell *s);
-
-/*
-**	pipetab_funcs.c
-*/
-//int				**ft_pipedup(int **pipe, int len);
-//int				ft_pipelen(int **pipes);
-//void			free_pipes(int ***pipes, int len);
 
 /*
 **	redirs.c
@@ -267,7 +254,6 @@ int				err(int errno, char *msg);
 /*
 ** --[ FUNCTION PROTOTYPES -- TYPEDEFS ]--
 */
-
 /*
 **	t_cmd_list.c
 */
@@ -283,7 +269,6 @@ int				add_redir(char **rdr_str, char **cmd, t_shell *s);
 /*
 **	--[ BUILTIN FUNCTIONS ]--
 */
-
 /*
 **	ft_cd.c
 */

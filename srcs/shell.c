@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/16 20:01:45 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/19 12:58:28 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,26 +20,21 @@ void		shell_loop(t_shell *s)
 	ret = 0;
 	while (ret != EXIT_SH)
 	{
-//dprintf(2, "shell_loop() -- START -- \tpid = %d\n", getpid()); // debug
 		set_prompt(s);
 		ft_printf("%s%s%s%s", C_BOLD, C_BROWN, s->prompt, C_NONE);
-//dprintf(2, "shell_loop() -- printed prompt -- \tpid = %d\n", getpid()); // debug
 		if ((ret = get_commands(s) > 0))
 		{
 			cmd_list = s->commands;
 			while (cmd_list != NULL)
 			{
 				ret = process_input(cmd_list->cmd, s);
-//dprintf(2, "shell_loop() -- ret = %d\tpid = %d\n", ret, getpid()); // debug
 				if (ret == EXIT_SH || ret == EXIT_FAILURE)
 					break ;
 				cmd_list = cmd_list->next;
 			}
-//dprintf(2, "shell_loop() -- break cmd loop, freeing cmds\tpid = %d\n", getpid()); // debug
 			free_cmd_list(&s->commands);
 		}
 	}
-//dprintf(2, "shell_loop() -- Ending --\tppid = %d\tpid = %d\n", getppid(), getpid()); // debug
 }
 
 static int	launch_shell(t_shell *s)
@@ -81,9 +76,6 @@ int			free_t_shell(t_shell *s)
 		free_tab((void ***)&s->redir.rdr, ft_tablen(s->redir.rdr));
 	if (s->redir.cmd != NULL)
 		free_tab((void ***)&s->redir.cmd, ft_tablen(s->redir.cmd));
-//	if (s->redir.pipe != NULL)
-//		free_pipes(&s->redir.pipe, ft_pipelen(s->redir.pipe));
-
 	free_tab((void ***)&s->env_var, ft_tablen(s->env_var));
 	free_tab((void ***)&s->shell_var, ft_tablen(s->shell_var));
 	free_tab((void ***)&s->paths, ft_tablen(s->paths));
