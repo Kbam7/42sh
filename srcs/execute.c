@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/21 18:48:58 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/22 17:46:00 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	try_system(t_shell *s)
 	char	*path;
 	char	**var;
 
+dprintf(2, "try_system() -- trying '%s'\n", s->input[0]); // debug
 	var = (ft_strcmp(s->input[0], "printenv") == 0) ?
 													s->env_var : s->shell_var;
 	i = -1;

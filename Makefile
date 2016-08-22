@@ -3,29 +3,44 @@ FLAGS		= -Wall -Wextra -Werror -g
 LIBFT		= -L libft -lft
 INCLUDES	= -I includes -I libft/includes
 
-SRCS		=	srcs/main.c				\
-				srcs/shell.c			\
-				srcs/init.c				\
-				srcs/prompt.c			\
-				srcs/input.c			\
-				srcs/commands.c			\
-				srcs/pipes.c			\
-				srcs/pipetab_funcs.c	\
-				srcs/redirs/redirs.c	\
-				srcs/redirs/analyze_redir.c	\
-				srcs/redirs/check_prefix.c	\
-				srcs/redirs/check_postfix.c	\
-				srcs/shell_args.c		\
-				srcs/environ.c			\
-				srcs/execute.c			\
-				srcs/execute_pipe.c		\
-				srcs/execute_output_redir.c	\
-				srcs/execute_input_redir.c	\
-				srcs/tab_funcs.c		\
-				srcs/utils.c			\
-				srcs/err.c				\
-				srcs/t_redirs.c			\
-				srcs/t_cmd_list.c
+SRCS		=	srcs/main.c						\
+				srcs/shell.c					\
+				srcs/init.c						\
+				srcs/prompt.c					\
+				srcs/input.c					\
+				srcs/commands.c					\
+				srcs/pipes.c					\
+				srcs/pipetab_funcs.c			\
+				srcs/redirs/redirs.c			\
+				srcs/redirs/analyze_redir.c		\
+				srcs/redirs/check_prefix.c		\
+				srcs/redirs/check_postfix.c		\
+				srcs/shell_args.c				\
+				srcs/environ.c					\
+				srcs/execute.c					\
+				srcs/execute_pipe.c				\
+				srcs/execute_output_redir.c		\
+				srcs/execute_input_redir.c		\
+				srcs/tab_funcs.c				\
+				srcs/utils.c					\
+				srcs/err.c						\
+				srcs/t_redirs.c					\
+				srcs/t_cmd_list.c				\
+				srcs/line_editing/ft_exe2.c			\
+				srcs/line_editing/ft_keys3.c 		\
+				srcs/line_editing/ft_back_space.c	\
+				srcs/line_editing/ft_history.c		\
+				srcs/line_editing/ft_keys2.c		\
+				srcs/line_editing/ft_execmd.c		\
+				srcs/line_editing/ft_env_grep.c		\
+				srcs/line_editing/ft_keys1.c		\
+				srcs/line_editing/ft_print_char.c	\
+				srcs/line_editing/ft_semi.c			\
+				srcs/line_editing/ft_init_terminal.c\
+				srcs/line_editing/ft_exe.c			\
+				srcs/line_editing/ft_exe_env.c		\
+				srcs/line_editing/ft_cd.c			\
+				srcs/line_editing/ft_echo.c
 
 BUILTIN		=	srcs/builtin/ft_cd.c			\
 				srcs/builtin/ft_cd_utils.c		\

@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_list_set.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/07/28 20:35:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/30 23:34:55 by kbamping         ###   ########.fr       */
+/*   Created: 2016/07/15 10:35:28 by tmack             #+#    #+#             */
+/*   Updated: 2016/08/07 12:04:37 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_shell.h"
+#include "shell.h"
 
-int			main(int argc, char **argv, char **envp)
+t_list	*ft_list_set(char *data)
 {
-	t_shell	s;
+	t_list	*new_list;
 
-	init_env(&s, argc, argv, envp);
-	init_terminal_data(&s, env);
-	ft_clear_screen();
-	shell_loop(&s);
-	free_t_shell(&s);
-	return (EXIT_SUCCESS);
+	new_list = (t_list *)malloc(sizeof(t_list));
+	new_list->data = data;
+	new_list->prev = NULL;
+	new_list->next = NULL;
+	return (new_list);
 }

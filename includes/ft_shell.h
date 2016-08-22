@@ -16,6 +16,8 @@
 # include "libft.h"
 # include <sys/wait.h>
 # include <fcntl.h>
+# include <termios.h>
+# include <term.h>
 
 	#include <stdio.h> // debug
 
@@ -140,7 +142,64 @@ typedef struct	s_shell
 	t_redirs	redir;
 	t_pipes		pipe;
 //
+// Line_editing
+    int             cols;
+	int				curs_col;
+	int				curs_pos;
+	int				c_semi;
+    int             hight;
+	int				h_index;
+	int				h_pos;
+	int				nbr_semi;
+	int				nbr_space;
+	int				on;
+	int				str_len;
+    int             width;
+	char			**commands;
+	char			**env;
+	char			**history;
+    char            **path;
+    char            **semi;
+    char            *home_path;
+	char			*new_line;
+    char            *oldpwd;
+    char            *pwd;
+	char			*term_type;
+    char            *user;
+	struct termios	new_term;
+	struct termios	old_term;
 }				t_shell;
+
+/*
+** --[ FUNCTION PROTOTYPES -- LINE EDITING]--
+*/
+void					ft_backspace(t_shell *shell, char *buff);
+void					buffer(t_shell *shell);
+int						ft_curs_pos(t_shell *shell);
+void					ft_clear_screen();
+void					ft_curs_col(t_shell *shell);
+void					ft_enter(char *buff, t_shell *shell);
+void					ft_end_left(t_shell *shell, char *buff);
+void					ft_end_right(t_shell *shell, char *buff);
+void					ft_history_up(t_shell *shell, char *buff);
+void					ft_history_down(t_shell *shell, char *buff);
+void					ft_insert(t_shell *shell, char buff);
+void					ft_left_word(t_shell *shell, char *buff);
+void					ft_line_back_space(t_shell *shell);
+void					ft_move_down(t_shell *shell, char *buff);
+void					ft_move_up(t_shell *shell, char *buff);
+void					ft_move_cur(char *buff, t_shell *shell);
+void					ft_move_right(t_shell *shell, char *buff);
+void					ft_move_left(t_shell *shell, char *buff);
+void					ft_nbr_cols(t_shell *shell);
+void					ft_new_history(t_shell *shell);
+void                    ft_put_string(t_shell *shell);
+void                    ft_put_curs(t_shell *shell);
+int						ft_putchar_re(int c);
+void					ft_print_char(char *buff, t_shell *shell);
+void					ft_right_word(t_shell *shell, char *buff);
+char					**ft_semi(t_shell *shell);
+int						init_terminal_data (t_shell *shell, char **env);
 
 /*
 ** --[ FUNCTION PROTOTYPES ]--
