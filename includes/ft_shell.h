@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/22 14:55:47 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/22 23:43:47 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include <sys/wait.h>
+# include <sys/types.h>
 # include <fcntl.h>
 # include <termios.h>
 # include <term.h>
@@ -115,6 +116,39 @@ typedef struct			s_pipes
 	int				pipe_i;
 }						t_pipes;
 
+
+/*
+** --[ STRUCTS -- LINE EDITING ]--
+*/
+/*typedef struct			s_line_edit
+{
+    int             cols;
+	int				curs_col;
+	int				curs_pos;
+	int				c_semi;
+    int             hight;
+	int				h_index;
+	int				h_pos;
+	int				nbr_semi;
+	int				nbr_space;
+	int				on;
+	int				str_len;
+    int             width;
+	char			**commands;
+	char			**env;
+	char			**history;
+    char            **path;
+    char            **semi;
+    char            *home_path;
+	char			*new_line;
+    char            *oldpwd;
+    char            *pwd;
+	char			*term_type;
+    char            *user;
+	struct termios	new_term;
+	struct termios	old_term;
+}						t_line;
+*/
 /*
 ** --[ STRUCTS -- SHELL ]--
 */
@@ -141,25 +175,26 @@ typedef struct	s_shell
 	t_cmd_list	*commands;
 	t_redirs	redir;
 	t_pipes		pipe;
+//	t_line		*line;
 //
-// Line_editing
+// Line editing
     int             cols;
 	int				curs_col;
 	int				curs_pos;
-	int				c_semi;
+//	int				c_semi;
     int             hight;
 	int				h_index;
 	int				h_pos;
-	int				nbr_semi;
+//	int				nbr_semi;
 	int				nbr_space;
 	int				on;
 	int				str_len;
     int             width;
-	char			**commands;
+//	char			**commands;
 	char			**env;
 	char			**history;
     char            **path;
-    char            **semi;
+//    char            **semi;
     char            *home_path;
 	char			*new_line;
     char            *oldpwd;
@@ -173,6 +208,10 @@ typedef struct	s_shell
 /*
 ** --[ FUNCTION PROTOTYPES -- LINE EDITING]--
 */
+
+char    **ft_strdup_2(char **src);
+
+
 void					ft_backspace(t_shell *shell, char *buff);
 void					buffer(t_shell *shell);
 int						ft_curs_pos(t_shell *shell);

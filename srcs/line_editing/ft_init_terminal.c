@@ -6,11 +6,11 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 16:48:49 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/22 17:40:41 by tmack            ###   ########.fr       */
+/*   Updated: 2016/08/22 23:44:44 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "ft_shell.h"
 
 void	ft_clear_screen(void)
 {
@@ -27,35 +27,35 @@ int		ft_putchar_re(int c)
 	return (write(0, &c, 1));
 }
 
-int		init_terminal_data(t_shell *shell, char **env)
+int		init_terminal_data(t_shell *s, char **env)
 {
-	shell->env = NULL;
-	shell->env = ft_strdup_2(env);
-    shell->pwd = NULL;
-    shell->oldpwd = NULL;
-	shell->curs_pos = 0;
-	shell->str_len = 0;
-	shell->cols = 0;
-	shell->curs_col = 0;
-	shell->on = 0;
-    shell->nbr_space = 0;
-	shell->h_index = 0;
-	shell->h_pos = 0;
-	shell->nbr_semi = 0;
+	s->env = NULL;
+	s->env = ft_strdup_2(env);
+    s->pwd = NULL;
+    s->oldpwd = NULL;
+	s->curs_pos = 0;
+	s->str_len = 0;
+	s->cols = 0;
+	s->curs_col = 0;
+	s->on = 0;
+    s->nbr_space = 0;
+	s->h_index = 0;
+	s->h_pos = 0;
+//	s->nbr_semi = 0;
 	if (tgetent(0, getenv("TERM")) < 1)
 		return (-1);
-    shell->hight = tgetnum("li");
-    shell->width = tgetnum("co");
-    ft_path(shell);
-    ft_home_path(shell);
-    ft_user(shell);
-	shell->new_line = NULL;
-	shell->history = (char **)malloc(sizeof(char *) * 1024);
-	tcgetattr(0, &shell->new_term);
-	shell->new_term.c_lflag &= ~(ICANON | ECHO);
-	shell->new_term.c_cc[VMIN] = 1;
-	shell->new_term.c_cc[VTIME] = 0;
-	tcsetattr(0, 0, &shell->new_term);
+    s->hight = tgetnum("li");
+    s->width = tgetnum("co");
+//    ft_path(s);
+    s->home_path = ft_getenv("HOME", s);
+    s->user = ft_getenv("USER", s);
+	s->new_line = NULL;
+	s->history = (char **)malloc(sizeof(char *) * 1024);
+	tcgetattr(0, &s->new_term);
+	s->new_term.c_lflag &= ~(ICANON | ECHO);
+	s->new_term.c_cc[VMIN] = 1;
+	s->new_term.c_cc[VTIME] = 0;
+	tcsetattr(0, 0, &s->new_term);
 	tputs(tgetstr("ti", 0), 1, ft_putchar_re);
 	return (1);
 }

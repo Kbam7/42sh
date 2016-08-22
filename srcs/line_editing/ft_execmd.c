@@ -6,13 +6,13 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 14:05:37 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/22 16:53:33 by tmack            ###   ########.fr       */
+/*   Updated: 2016/08/22 23:17:45 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "ft_shell.h"
 
-void	shorter(t_shell *shell, char **commands)
+void	shorter(t_shell *s, char **commands)
 {
 	int     i;
 
@@ -20,39 +20,39 @@ void	shorter(t_shell *shell, char **commands)
 	if (commands[0] != NULL)
 	{
 		if (ft_strcmp(commands[0], "exit") == 0)
-			ft_exit();
+			exit(EXIT_SUCCESS); // ft_exit();
 		else if (ft_strcmp(commands[0], "cd") == 0)
-			i = ft_cd(commands, shell);
+			i = ft_cd(commands, s);
 		else if (ft_strcmp(commands[0], "env") == 0)
-			ft_env(shell, commands);
+			ft_env(s, commands);
 		else if (ft_strcmp(commands[0], "setenv") == 0)
-			ft_setenv(shell, commands);
+			ft_setenv(s, commands);
 		else if (ft_strcmp(commands[0], "unsetenv") == 0)
-			ft_unsetenv(shell, commands[1]);
-		else if (ft_launch(commands, shell) == 1)
+			ft_unsetenv(s, commands[1]);
+		else if (ft_launch(commands, s) == 1)
 			;
-		else if (ft_launch_own(commands, shell) == 1)
+		else if (ft_launch_own(commands, s) == 1)
 			;
 		else
 			ft_putendl("error, program not found");
 	}
 }
 
-void	ft_execmd(t_shell *shell)
+void	ft_execmd(t_shell *s)
 {
 	int		k;
 	char	**commands;
 	char	**semi;
 
 	k = 0;
-	semi = ft_semi(shell);
+	semi = ft_semi(s);
 	commands = NULL;
-	while (k < shell->nbr_semi)
+	while (k < s->line->nbr_semi)
 	{
 		commands = ft_strsplit(semi[k], ' ');
 	ft_putendl(commands[0]);
 		if (commands != NULL)
-			shorter(shell, commands);
+			shorter(s, commands);
 		if (commands != NULL)
 		{
 			ft_free_2(commands);

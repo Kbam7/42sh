@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/19 13:05:19 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/22 17:59:37 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/23 00:00:50 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ static int	check_duplicate(char *str, int pos, t_shell *s)
 
 	if (str[pos + 1] == '&')	// ('<&')
 	{
-dprintf(2, "child_input_redir() -- check_duplicate() -- s->redir.pre_fd = '%d'\n", s->redir.pre_fd);
+//dprintf(2, "child_input_redir() -- check_duplicate() -- s->redir.pre_fd = '%d'\n", s->redir.pre_fd);
 		if (str[pos + 2] == '-')	// ('>&-' || '<&-')
 		{
-dprintf(2, "child_input_redir() -- check_duplicate() -- Found '%d>&-' CLOSING s->redir.pre_fd = '%d'\n", s->redir.pre_fd, s->redir.pre_fd);
+//dprintf(2, "child_input_redir() -- check_duplicate() -- Found '%d>&-' CLOSING s->redir.pre_fd = '%d'\n", s->redir.pre_fd, s->redir.pre_fd);
 			close(s->redir.pre_fd);
 		}
 		else
@@ -58,7 +58,7 @@ int		child_input_redir(char *str, t_shell *s)
 	int		path;
 	char	*tmp;
 
-dprintf(2, "child_input_redir() -- \n");
+//dprintf(2, "child_input_redir() -- \n");
 	pos = get_pos(str, '<');
 	if (str[pos] == '<')
 	{
@@ -79,7 +79,7 @@ dprintf(2, "child_input_redir() -- \n");
 			tmp = ft_strsub(str, 0, pos);
 			s->redir.pre_fd = ft_atoi(tmp);
 			ft_strdel(&tmp);
-dprintf(2, "child_input_redir() -- '5>' -- \n");
+//dprintf(2, "child_input_redir() -- '5>' -- \n");
 			if (!check_duplicate(str, pos, s))
 				if ((path = open_input_file(s)) > -1)
 				{

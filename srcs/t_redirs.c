@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 00:47:04 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/22 13:32:41 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/22 23:55:11 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,6 @@ static int	init_redir(char **rdr_str, char **cmd, t_shell *s)
 		ft_strdel(rdr_str);
 		s->redir.n_rdr++;
 	}
-
-dprintf(2, "add_redir() - init_redir() END -- ADDED --> rdr_str = '%s' - cmd = '%s'\n", *rdr_str, *cmd); // debug
-
 	return (EXIT_SUCCESS);
 }
 
@@ -62,17 +59,12 @@ static int	addto_redir(char **rdr_str, char **cmd, t_shell *s)
 			s->redir.n_rdr++;
 		ft_strdel(rdr_str);
 	}
-
-dprintf(2, "add_redir() - addto_redir() END -- ADDED --> rdr_str = '%s' - cmd = '%s'\n", *rdr_str, *cmd); // debug
-
 	return (EXIT_SUCCESS);
 }
 
 int			add_redir(char **rdr_str, char **cmd, t_shell *s)
 {
 	char	*trim;
-
-dprintf(2, "add_redir() -- START -- rdr_str = '%s' - cmd = '%s'\n", *rdr_str, *cmd); // debug
 
 	trim = *cmd;
 	*cmd = ft_strtrim(trim);

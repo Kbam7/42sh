@@ -6,64 +6,64 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/08 12:04:04 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/22 15:38:06 by tmack            ###   ########.fr       */
+/*   Updated: 2016/08/22 23:42:11 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "ft_shell.h"
 
-void	ft_nbr_cols(t_shell *shell)
+void	ft_nbr_cols(t_shell *s)
 {
 	int		temp;
 	int		i;
 
 	i = 0; 
-	temp = shell->str_len + 2;
-	shell->width = tgetnum("co");
+	temp = s->str_len + 2;
+	s->width = tgetnum("co");
 	while (1)
 	{
-		temp = temp - shell->width;
+		temp = temp - s->width;
 		if (temp  >= 0)
 			i++;
 		else
 			break ;
 	}
-	shell->cols = i;
+	s->cols = i;
 }
 
-void	ft_curs_col(t_shell *shell)
+void	ft_curs_col(t_shell *s)
 {
 	int		temp;
 	int		i;
 
 	i = 0;
-	temp = shell->curs_pos + 2;
+	temp = s->curs_pos + 2;
 	while (1)
 	{
-		temp = temp - shell->width;
+		temp = temp - s->width;
 		if (temp >= 0)
 			i++;
 		else
 			break ;
 	}
-	shell->curs_col = i;
+	s->curs_col = i;
 }
 
-int		ft_curs_pos(t_shell *shell)
+int		ft_curs_pos(t_shell *s)
 {
 	int		temp;
 
-	temp = shell->curs_pos + 3;
-	ft_nbr_cols(shell);
-	if (shell->cols == 0)
-		temp = shell->curs_pos;
+	temp = s->curs_pos + 3;
+	ft_nbr_cols(s);
+	if (s->cols == 0)
+		temp = s->curs_pos;
 	else
-		while (temp - shell->width > 0)
-			temp = temp - shell->width;
+		while (temp - s->width > 0)
+			temp = temp - s->width;
 	return (temp);
 }
 
-void	ft_end_right(t_shell *shell, char *buff)
+void	ft_end_right(t_shell *s, char *buff)
 {
 	int		i;
 	int		j;
@@ -71,36 +71,36 @@ void	ft_end_right(t_shell *shell, char *buff)
 	j = -1;
 	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 70)
 	{ 
-		ft_nbr_cols(shell);
-		ft_curs_col(shell);
-		i = shell->cols - shell->curs_col;
+		ft_nbr_cols(s);
+		ft_curs_col(s);
+		i = s->cols - s->curs_col;
 		while (i-- > 0)
 			tputs(tgetstr("do", 0), 1, ft_putchar_re);
-		shell->curs_pos = shell->str_len;
+		s->curs_pos = s->str_len;
 		tputs(tgetstr("cr", 0), 1, ft_putchar_re);
-		if (shell->cols == 0)
+		if (s->cols == 0)
 			i = 2;
 		else
 			i = -1;
-		while (++j < ft_curs_pos(shell) + i)
+		while (++j < ft_curs_pos(s) + i)
 			tputs(tgetstr("nd", 0), 1, ft_putchar_re);
 	}
 }
 
-void	ft_end_left(t_shell *shell, char *buff)
+void	ft_end_left(t_shell *s, char *buff)
 {
 	int		j;
 
 	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 72)
 	{
-		ft_nbr_cols(shell);
-		ft_curs_col(shell);
-		j = shell->curs_col;
-		while (j-- > 0 && shell->curs_pos != 0)
+		ft_nbr_cols(s);
+		ft_curs_col(s);
+		j = s->curs_col;
+		while (j-- > 0 && s->curs_pos != 0)
 			tputs(tgetstr("up", 0), 1, ft_putchar_re);
 		tputs(tgetstr("cr", 0), 1, ft_putchar_re);
 		tputs(tgetstr("nd", 0), 1, ft_putchar_re);
 		tputs(tgetstr("nd", 0), 1, ft_putchar_re);
-		shell->curs_pos = 0;
+		s->curs_pos = 0;
 	}
 }

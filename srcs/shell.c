@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/19 12:58:28 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/22 23:07:36 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,17 @@ void		shell_loop(t_shell *s)
 	{
 		set_prompt(s);
 		ft_printf("%s%s%s%s", C_BOLD, C_BROWN, s->prompt, C_NONE);
-		if ((ret = get_commands(s) > 0))
+		while (s->commands == NULL)
+			buffer(s);
+		cmd_list = s->commands;
+		while (cmd_list != NULL)
 		{
-			cmd_list = s->commands;
-			while (cmd_list != NULL)
-			{
-				ret = process_input(cmd_list->cmd, s);
-				if (ret == EXIT_SH || ret == EXIT_FAILURE)
-					break ;
-				cmd_list = cmd_list->next;
-			}
-			free_cmd_list(&s->commands);
+			ret = process_input(cmd_list->cmd, s);
+			if (ret == EXIT_SH || ret == EXIT_FAILURE)
+				break ;
+			cmd_list = cmd_list->next;
 		}
+		free_cmd_list(&s->commands);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:25:22 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/22 13:23:21 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/22 23:59:15 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ static int	execute_redirs(t_shell *s)
 		s->redir.rdr_i = i;
 		if (ft_strchr(s->redir.rdr[i], '>'))
 		{
-dprintf(2, "----------  process_redir() - execute_redirs() -- Output redir\n"
-			"s->redir.cmd[%d] = '%s'\ns->redir.rdr[%d] = '%s'\ns->redir.cmd[%d] = '%s'\n",
-											i, s->redir.cmd[i], i, s->redir.rdr[i], i+1, s->redir.cmd[i+1]);// debug
+//dprintf(2, "----------  process_redir() - execute_redirs() -- Output redir\n"
+//			"s->redir.cmd[%d] = '%s'\ns->redir.rdr[%d] = '%s'\ns->redir.cmd[%d] = '%s'\n",
+//											i, s->redir.cmd[i], i, s->redir.rdr[i], i+1, s->redir.cmd[i+1]);// debug
 
 			s->redir.dir = '>';
 			// create file here and open it for writing, then execute the process
@@ -42,8 +42,8 @@ dprintf(2, "----------  process_redir() - execute_redirs() -- Output redir\n"
 		}
 		else if (ft_strchr(s->redir.rdr[i], '<'))
 		{
-dprintf(2, "----------  process_redir() - execute_redirs() -- Input redir\n"
-			"s->redir.cmd[%d] = >%s<\ns->redir.rdr[%d] = >%s<\n", i, s->redir.cmd[i], i, s->redir.rdr[i]);	// debug
+//dprintf(2, "----------  process_redir() - execute_redirs() -- Input redir\n"
+//			"s->redir.cmd[%d] = >%s<\ns->redir.rdr[%d] = >%s<\n", i, s->redir.cmd[i], i, s->redir.rdr[i]);	// debug
 
 			s->redir.dir = '<';
 			// open file for reading here, then execute cmd.
@@ -64,8 +64,8 @@ static int	get_redir_string(char **str, char **cmd, int dir, t_shell *s)
 	rdr_str = NULL;
 	rdr_str = analyze_redir(str, dir, cmd, s);
 
-dprintf(2, "process_redir() - get_redir_string() -- str = '%s' -- "
-		"rdr_str == >%s< && cmd == >%s<\n", *str, rdr_str, *cmd); // debug
+//dprintf(2, "process_redir() - get_redir_string() -- str = '%s' -- "
+//		"rdr_str == >%s< && cmd == >%s<\n", *str, rdr_str, *cmd); // debug
 
 	if (!rdr_str || add_redir(&rdr_str, cmd, s) != EXIT_SUCCESS) // cmd must == '-' IF ('>-' || '<-')
 		return (EXIT_FAILURE);
@@ -122,10 +122,10 @@ int		process_redir(char *str, t_shell *s)
 		}
 		else
 		{
-dprintf(2, "process_redir() -- NO REDIR in '%s', save to existing cmd -- current cmd = >%s<\n", s->redir.sp.strings[i], cmd); // debug
+//dprintf(2, "process_redir() -- NO REDIR in '%s', save to existing cmd -- current cmd = >%s<\n", s->redir.sp.strings[i], cmd); // debug
 			tmp = (cmd == NULL) ? ft_strnew(1) : cmd;
 			cmd = ft_strjoinstr(tmp, s->redir.sp.strings[i], " ");
-dprintf(1, "process_redir() -- oldcmd = >%s<\tnew cmd = >%s<\n", tmp, cmd); // debug
+//dprintf(1, "process_redir() -- oldcmd = >%s<\tnew cmd = >%s<\n", tmp, cmd); // debug
 			ft_strdel(&tmp);
 		}
 /*		if (s->redir.nxt_cmd)
@@ -138,7 +138,7 @@ dprintf(1, "process_redir() -- oldcmd = >%s<\tnew cmd = >%s<\n", tmp, cmd); // d
 		}
 */		if ((i + 1) == (int)s->redir.sp.words && cmd) // last word? i.e, no redir after this string ... add cmd to list of cmds
 		{
-dprintf(2, "process_redir() -- Adding last cmd -- cmd = >%s<\n", cmd);
+//dprintf(2, "process_redir() -- Adding last cmd -- cmd = >%s<\n", cmd);
 			tmp = ft_strnew(1);
 			if (add_redir(&tmp, &cmd, s) == EXIT_FAILURE)
 				return (EXIT_FAILURE);

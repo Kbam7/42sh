@@ -6,33 +6,33 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/06 13:32:12 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/22 13:01:03 by tmack            ###   ########.fr       */
+/*   Updated: 2016/08/22 23:15:25 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "ft_shell.h"
 
-void	ft_env(t_shell *shell, char **command)
+void	ft_env(t_shell *s, char **command)
 {
 	int		i;
 
 	i = 0;
 	if (command[1] == NULL)
-		while (shell->env[i])
+		while (s->line->env[i])
 		{
-			ft_putstr(shell->env[i++]);
+			ft_putstr(s->line->env[i++]);
 			ft_putchar('\n');
 		}
 	else if (ft_strcmp(command[1], "-i") == 0)
 	{
-		ft_free_2(shell->env);
-		shell->env[i] = NULL;
+		ft_free_2(s->line->env);
+		s->line->env[i] = NULL;
 	}
 	else if (ft_strcmp(command[1], "-u") == 0)
-		ft_unsetenv(shell, command[2]);
+		ft_unsetenv(s, command[2]);
 }
 
-void	ft_unsetenv(t_shell *shell, char *commands)
+void	ft_unsetenv(t_shell *s, char *commands)
 {
 	char	**newenv;
 	int		last;
@@ -41,7 +41,7 @@ void	ft_unsetenv(t_shell *shell, char *commands)
 
 	i = -1;
 	j = -1;
-	last = ft_nbr_y(shell->env);
+	last = ft_nbr_y(s->line->env);
 	while (commands[++i] != '\0')
 		if (commands[i] == '=')
 		{
@@ -50,13 +50,13 @@ void	ft_unsetenv(t_shell *shell, char *commands)
 		}
 	i = -1;
 	newenv = (char **)malloc(sizeof(char *) * (last + 1));
-	while (shell->env[++i] != NULL)
-		if (ft_strncmp(commands, shell->env[i], ft_strlen(commands)) != 0)
-			newenv[++j] = ft_strdup(shell->env[i]);
+	while (s->line->env[++i] != NULL)
+		if (ft_strncmp(commands, s->line->env[i], ft_strlen(commands)) != 0)
+			newenv[++j] = ft_strdup(s->line->env[i]);
 	newenv[j + 1] = NULL;
-	ft_free_2(shell->env);
-	free(shell->env);
-	shell->env = ft_strdup_2(newenv);
+	ft_free_2(s->line->env);
+	free(s->line->env);
+	s->line->env = ft_strdup_2(newenv);
 	ft_free_2(newenv);
 	free(newenv);
 }
@@ -76,7 +76,7 @@ int		ft_setenvi_short(char **newenv, char **commands, char *temp)
 	return (i);
 }
 
-void	ft_setenv(t_shell *shell, char **commands)
+void	ft_setenv(t_shell *s, char **commands)
 {
 	char	**newenv;
 	int		last;
@@ -87,18 +87,18 @@ void	ft_setenv(t_shell *shell, char **commands)
 	i = -1;
 	temp1 = ft_strjoin(commands[1], "=");
 	temp = ft_strjoin(temp1, commands[2]);
-	last = ft_nbr_y(shell->env);
+	last = ft_nbr_y(s->line->env);
 	newenv = (char **)malloc(sizeof(char *) * (last + 2));
-	while (shell->env[++i])
-		newenv[i] = ft_strdup(shell->env[i]);
+	while (s->line->env[++i])
+		newenv[i] = ft_strdup(s->line->env[i]);
 	newenv[i] = NULL;
 	i = ft_setenvi_short(newenv, commands, temp);
 	if (i == last)
 		newenv[last] = ft_strdup(temp);
 	newenv[i + 1] = NULL;
-	ft_free_2(shell->env);
-	free(shell->env);
-	shell->env = ft_strdup_2(newenv);
+	ft_free_2(s->line->env);
+	free(s->line->env);
+	s->line->env = ft_strdup_2(newenv);
 	free(temp);
 	free(temp1);
 	ft_free_2(newenv);

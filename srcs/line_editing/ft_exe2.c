@@ -6,13 +6,13 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 10:56:37 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/22 16:21:07 by tmack            ###   ########.fr       */
+/*   Updated: 2016/08/22 23:16:49 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "ft_shell.h"
 
-void    ft_path(t_shell *shell)
+void    ft_path(t_shell *s)
 {
 	char	**line;
 	char	**line2;
@@ -21,27 +21,27 @@ void    ft_path(t_shell *shell)
 	line2 = NULL;
 	line = NULL;
 	i = 0;
-	while (shell->env[i])
+	while (s->line->env[i])
 	{
-		if (ft_strncmp(shell->env[i], "PATH=", 5) == 0)
+		if (ft_strncmp(s->line->env[i], "PATH=", 5) == 0)
 		{
-			line2 = ft_strsplit(shell->env[i], '=');
+			line2 = ft_strsplit(s->line->env[i], '=');
 			line = ft_strsplit(line2[1], ':');
 			break ;
 		}
 		i++;
 	}
-    shell->path = ft_strdup_2(line);
+    s->line->path = ft_strdup_2(line);
 	if (line2 != NULL)
 	{
-		ft_free_2(line2);
-		ft_free_2(line);
+//		ft_free_2(line2);
+//		ft_free_2(line);
 		free(line2);
 		free(line);
 	}
 }
 
-int		ft_check_exec(char *path, char **args, t_shell *shell)
+int		ft_check_exec(char *path, char **args, t_shell *s)
 {
 	char	*file;
 	char	*temp;
@@ -50,7 +50,7 @@ int		ft_check_exec(char *path, char **args, t_shell *shell)
 	file = ft_strjoin(temp, args[0]);
 	if (access(file, X_OK) != -1)
 	{
-		if (execve(file, args, shell->env) != -1)
+		if (execve(file, args, s->line->env) != -1)
 			return (1);
 	}
 	free(file);
@@ -58,26 +58,26 @@ int		ft_check_exec(char *path, char **args, t_shell *shell)
 	return (0);
 }
 
-int     ft_own_dir(char **args, t_shell *shell)
+int     ft_own_dir(char **args, t_shell *s)
 {
 	if (access(args[0], X_OK) != -1)
-		if (execve(args[0], args, shell->env) != -1)
+		if (execve(args[0], args, s->line->env) != -1)
 			return (1);
 	return (0);
 }
 
-int     ft_launch_own(char **args, t_shell *shell)
+int     ft_launch_own(char **args, t_shell *s)
 {
 	pid_t   pid;
-	pid_t   wpid;
+//	pid_t   wpid;
 	int     status;
-	int     i;
+//	int     i;
 
 	pid = fork();
-	i = -1;
+//	i = -1;
 	if (pid == 0)
 	{
-			if (ft_own_dir(args, shell) == 1)
+			if (ft_own_dir(args, s) == 1)
 				exit (1);
 		exit (10);
 	}
@@ -90,10 +90,10 @@ int     ft_launch_own(char **args, t_shell *shell)
 	return (0);
 }
 
-int		ft_launch(char **args, t_shell *shell)
+int		ft_launch(char **args, t_shell *s)
 {
 	pid_t	pid;
-	pid_t	wpid;
+//	pid_t	wpid;
 	int		status;
 	int		i;
 
@@ -101,8 +101,8 @@ int		ft_launch(char **args, t_shell *shell)
 	i = -1;
 	if (pid == 0)
 	{
-		while (shell->path[++i])
-			if (ft_check_exec(shell->path[i], args, shell) == 1)
+		while (s->line->path[++i])
+			if (ft_check_exec(s->line->path[i], args, s) == 1)
 				exit (1);
 		exit (10);
 	}

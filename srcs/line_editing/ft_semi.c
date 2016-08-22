@@ -6,13 +6,13 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 13:43:50 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/22 17:29:03 by tmack            ###   ########.fr       */
+/*   Updated: 2016/08/22 22:19:15 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "ft_shell.h"
 
-char	**ft_semi(t_shell *shell)
+char	**ft_semi(t_shell *s)
 {
 	char	**semi;
 	int		i;
@@ -20,9 +20,9 @@ char	**ft_semi(t_shell *shell)
 
 	semi = NULL;
 	i = 0;
-	if ((semi = ft_strsplit(shell->new_line, ';')) == NULL)
+	if ((semi = ft_strsplit(s->line->new_line, ';')) == NULL)
 	{
-		shell->c_semi = 0;
+		s->line->c_semi = 0;
 		return (NULL);
 	}
 	else
@@ -36,7 +36,7 @@ char	**ft_semi(t_shell *shell)
             i++;
         }
         semi[i] = NULL;
-		shell->nbr_semi = i;
+		s->line->nbr_semi = i;
 		return (semi);
 	}
 }

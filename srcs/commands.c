@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/07 14:32:15 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/14 18:47:18 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/22 23:45:00 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,26 +43,19 @@ int		store_commands(char *str, t_shell *s)
 int		get_commands(t_shell *s)
 {
 	char			*cmd;
-	int				ret;
 	char			*tmp;
-
-	if ((ret = ft_gnl(0, &tmp)) > 0)
-	{
 
 //dprintf(2, "get_commands(), tmp >%s<\n", tmp); // debug
 
-		cmd = ft_strtrim(tmp);
-		ft_strdel(&tmp);
-		if (store_commands(cmd, s) != EXIT_SUCCESS)
-		{
-			ft_strdel(&cmd);
-			return (0);
-		}
+	cmd = ft_strtrim(s->new_line);
+	ft_strdel(&tmp);
+	if (store_commands(cmd, s) != EXIT_SUCCESS)
+	{
 		ft_strdel(&cmd);
+		return (0);
 	}
-	if (ret < 0)
-		return (err(ERR_GNL, "ft_gnl Error!"));
-	return (ret);
+	ft_strdel(&cmd);
+	return (1);
 }
 
 // This will get the string of the command and make it into input[](argv for executing commands)

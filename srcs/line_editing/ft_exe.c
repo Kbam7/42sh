@@ -6,13 +6,13 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/04 15:42:07 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/22 12:59:20 by tmack            ###   ########.fr       */
+/*   Updated: 2016/08/22 22:53:25 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "ft_shell.h"
 
-void	ft_exit(t_shell *shell)
+void	ft_exit(t_shell *s)
 {
     tputs(tgetstr("vi", 0), 1, ft_putchar_re);
     tputs(tgetstr("ve", 0), 1, ft_putchar_re);

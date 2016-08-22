@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "ft_shell.h"
 
 t_list	*ft_list_insert_head(char *data, t_list **head)
 {
