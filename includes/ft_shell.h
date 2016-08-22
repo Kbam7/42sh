@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/21 19:16:13 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/22 10:00:31 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct			s_redirs
 	char			**rdr;		// for redir operator strings
 //	int				**pipe;		// for redir pipes
 	t_split_string	sp;			// redir string split by spaces
+	int				sp_i;		// index of current string in sp
 	int				dir;
 	int				appnd;		// append or not?
 	int				n_rdr;
@@ -226,7 +227,12 @@ void			child_pipe(t_shell *s);
 void			parent_pipe(t_shell *s);
 
 /*
-**	execute_redir.c
+**	execute_input_redir.c
+*/
+int				child_input_redir(char *str, t_shell *s);
+
+/*
+**	execute_output_redir.c
 */
 int				child_output_redir(char *str, t_shell *s);
 int				parent_output_redir(char *str, t_shell *s);

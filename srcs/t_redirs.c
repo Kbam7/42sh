@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 00:47:04 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/19 12:57:49 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/21 20:56:34 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,23 @@
 
 static int	init_redir(char **rdr_str, char **cmd, t_shell *s)
 {
-
-	if ((s->redir.cmd = (char **)malloc(sizeof(char *) * 2)) == NULL)
-		return (err(ERR_MALLOC, "add_redir() -- init_redir(cmd)"));
-	s->redir.cmd[0] = !(*cmd) ? NULL : ft_strdup(*cmd);
-	s->redir.cmd[1] = NULL;
-	ft_strdel(cmd);
-	if ((s->redir.rdr = (char **)malloc(sizeof(char *) * 2)) == NULL)
-		return (err(ERR_MALLOC, "add_redir() -- init_redir(rdr)"));
-	s->redir.rdr[0] = !(*rdr_str) ? NULL : ft_strdup(*rdr_str);
-	s->redir.rdr[1] = NULL;
-	ft_strdel(rdr_str);
-	s->redir.n_rdr++;
+	if (((s->redir.cmd = (char **)malloc(sizeof(char *) * 2)) == NULL) || 
+				((s->redir.rdr = (char **)malloc(sizeof(char *) * 2)) == NULL))
+	{
+		ft_strdel(cmd);
+		ft_strdel(rdr_str);
+		return (err(ERR_MALLOC, "add_redir() -- init_redir()"));
+	}
+	else
+	{
+		s->redir.cmd[0] = !(*cmd) ? NULL : ft_strdup(*cmd);
+		s->redir.cmd[1] = NULL;
+		ft_strdel(cmd);
+		s->redir.rdr[0] = !(*rdr_str) ? NULL : ft_strdup(*rdr_str);
+		s->redir.rdr[1] = NULL;
+		ft_strdel(rdr_str);
+		s->redir.n_rdr++;
+	}
 	return (EXIT_SUCCESS);
 }
 
@@ -33,20 +38,26 @@ static int	addto_redir(char **rdr_str, char **cmd, t_shell *s)
 {
 	char	**tmp;
 
-	if ((tmp = ft_tabdup(s->redir.cmd, s->redir.n_rdr + 1)) == NULL)
+	if (((tmp = ft_tabdup(s->redir.cmd, s->redir.n_rdr + 1)) == NULL) ||
+				((tmp = ft_tabdup(s->redir.rdr, s->redir.n_rdr + 1)) == NULL))
+	{
+		ft_strdel(cmd);
+		ft_strdel(rdr_str);
 		return (err(ERR_MALLOC, "add_redir() -- ft_tabdup()"));
-	free_tab((void ***)&s->redir.cmd, ft_tablen(s->redir.cmd));
-	s->redir.cmd = tmp;
-	s->redir.cmd[s->redir.n_rdr] = !(*cmd) ? NULL : ft_strdup(*cmd);
-	ft_strdel(cmd);
-	if ((tmp = ft_tabdup(s->redir.rdr, s->redir.n_rdr + 1)) == NULL)
-		return (err(ERR_MALLOC, "add_redir() -- ft_tabdup()"));
-	free_tab((void ***)&s->redir.rdr, ft_tablen(s->redir.rdr));
-	s->redir.rdr = tmp;
-	s->redir.rdr[s->redir.n_rdr] = !(*rdr_str) ? NULL : ft_strdup(*rdr_str);
-	ft_strdel(rdr_str);
-	if (*rdr_str != NULL)
-		s->redir.n_rdr++;
+	}
+	else
+	{
+		free_tab((void ***)&s->redir.cmd, ft_tablen(s->redir.cmd));
+		s->redir.cmd = tmp;
+		s->redir.cmd[s->redir.n_rdr] = !(*cmd) ? NULL : ft_strdup(*cmd);
+		ft_strdel(cmd);
+		free_tab((void ***)&s->redir.rdr, ft_tablen(s->redir.rdr));
+		s->redir.rdr = tmp;
+		s->redir.rdr[s->redir.n_rdr] = !(*rdr_str) ? NULL : ft_strdup(*rdr_str);
+		if (*rdr_str != NULL)
+			s->redir.n_rdr++;
+		ft_strdel(rdr_str);
+	}
 	return (EXIT_SUCCESS);
 }
 
