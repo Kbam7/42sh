@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:25:22 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/22 09:59:02 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/22 13:23:21 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ static int	get_string_words(char *str, t_shell *s)
 int		process_redir(char *str, t_shell *s)
 {
 	char			*cmd;
-	char			*oldcmd;
+	char			*tmp;
 	int				i;
 
 	cmd = ft_strnew(1);
@@ -122,24 +122,25 @@ int		process_redir(char *str, t_shell *s)
 		}
 		else
 		{
-dprintf(2, "process_redir() -- NO REDIR in this string, save to existing cmd -- current cmd = >%s<\n", cmd); // debug
-			oldcmd = (cmd == NULL) ? ft_strnew(1) : cmd;
-			cmd = ft_strjoinstr(oldcmd, s->redir.sp.strings[i], " ");
-dprintf(1, "process_redir() -- oldcmd = >%s<\tnew cmd = >%s<\n", oldcmd, cmd); // debug
-			ft_strdel(&oldcmd);
+dprintf(2, "process_redir() -- NO REDIR in '%s', save to existing cmd -- current cmd = >%s<\n", s->redir.sp.strings[i], cmd); // debug
+			tmp = (cmd == NULL) ? ft_strnew(1) : cmd;
+			cmd = ft_strjoinstr(tmp, s->redir.sp.strings[i], " ");
+dprintf(1, "process_redir() -- oldcmd = >%s<\tnew cmd = >%s<\n", tmp, cmd); // debug
+			ft_strdel(&tmp);
 		}
 /*		if (s->redir.nxt_cmd)
 		{
 		// save as cmd[i], and make current
-			oldcmd = (cmd == NULL) ? ft_strnew(1) : cmd;
-			cmd = ft_strjoinstr(s->redir.nxt_cmd, " ", oldcmd);
-			ft_strdel(&oldcmd);
+			tmp = (cmd == NULL) ? ft_strnew(1) : cmd;
+			cmd = ft_strjoinstr(s->redir.nxt_cmd, " ", tmp);
+			ft_strdel(&tmp);
 			ft_strdel(&s->redir.nxt_cmd);
 		}
 */		if ((i + 1) == (int)s->redir.sp.words && cmd) // last word? i.e, no redir after this string ... add cmd to list of cmds
 		{
 dprintf(2, "process_redir() -- Adding last cmd -- cmd = >%s<\n", cmd);
-			if (add_redir(NULL, &cmd, s) == EXIT_FAILURE)
+			tmp = ft_strnew(1);
+			if (add_redir(&tmp, &cmd, s) == EXIT_FAILURE)
 				return (EXIT_FAILURE);
 		}
 

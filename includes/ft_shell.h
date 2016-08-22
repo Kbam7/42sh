@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/22 10:00:31 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/22 14:55:47 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 # define ERR_GNL				1014
 # define ERR_MALLOC				1015
 # define ERR_BAD_TOKEN			1016
+# define ERR_BADFD				1017
 
 
 

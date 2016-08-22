@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:50 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/16 18:01:22 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/22 14:55:24 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static char	*check_file_error(int errno, char *msg)
 		return (ft_strjoinstr("User hasn't got write rights for '", msg, "'"));
 	else if (errno == ERR_NO_EXEC)
 		return (ft_strjoinstr("User hasn't got exec rights for '", msg, "'"));
+	else if (errno == ERR_BADFD)
+		return (ft_strjoinstr("Bad file descriptor '", msg, "'"));
 	else
 		return (NULL);
 }

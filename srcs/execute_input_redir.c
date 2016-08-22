@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/19 13:05:19 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/22 10:02:52 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/22 14:54:17 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,23 @@ static int	check_duplicate(char *str, int pos, t_shell *s)
 {
 	char	*tmp;
 
-	if (str[pos + 1] == '&')	// ('>&')
+	if (str[pos + 1] == '&')	// ('<&')
 	{
 
-dprintf(2, "child_output_redir() -- check_duplicate() -- s->redir.pre_fd = '%d'\n", s->redir.pre_fd);
+dprintf(2, "child_input_redir() -- check_duplicate() -- s->redir.pre_fd = '%d'\n", s->redir.pre_fd);
 
-		if (str[pos + 2] == '-')	// ('>&-')
+		if (str[pos + 2] == '-')	// ('>&-' || '<&-')
 		{
-dprintf(2, "child_output_redir() -- check_duplicate() -- Found '%d>&-' CLOSING s->redir.pre_fd = '%d'\n", s->redir.pre_fd, s->redir.pre_fd);
+dprintf(2, "child_input_redir() -- check_duplicate() -- Found '%d>&-' CLOSING s->redir.pre_fd = '%d'\n", s->redir.pre_fd, s->redir.pre_fd);
 			close(s->redir.pre_fd);
 		}
 		else
 		{ // duplicate fd defined after '&', ('2>&1') -- this will redir stderr to stdout
 			tmp = ft_strsub(str, (pos + 2), (ft_strlen(str) - (pos + 2)));
 			s->redir.post_fd = ft_atoi(tmp);
+		//	check if s->redir.post_fd is open for reading
+			if (fcntl(s->redir.post_fd) < 0)
+				return (err(ERR_BADFD, tmp));
 			ft_strdel(&tmp);
 			dup2(s->redir.post_fd, s->redir.pre_fd);
 		}
@@ -66,8 +69,8 @@ dprintf(2, "child_input_redir() -- \n");
 	{
 		s->redir.pre_fd = STDIN_FILENO; 
 
-		if (s->pipe.n_pipes)
-			dup2(s->pipe.pipes[s->pipe.pipe_i][0], STDIN_FILENO);
+//		if (s->pipe.n_pipes)
+//			dup2(s->pipe.pipes[s->pipe.pipe_i][0], STDIN_FILENO);
 
 		if (pos == 0)								// ('<..')
 			if (!check_duplicate(str, pos, s))
@@ -82,7 +85,7 @@ dprintf(2, "child_input_redir() -- \n");
 			s->redir.pre_fd = ft_atoi(tmp);
 			ft_strdel(&tmp);
 
-dprintf(2, "child_output_redir() -- '5>' -- \n");
+dprintf(2, "child_input_redir() -- '5>' -- \n");
 
 		//	check if theres an ampersand after the redir symbol, if there is, then check whats after the ampersand
 			if (!check_duplicate(str, pos, s))

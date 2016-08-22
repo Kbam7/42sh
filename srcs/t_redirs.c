@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 00:47:04 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/21 20:56:34 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/22 13:32:41 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,19 @@ static int	init_redir(char **rdr_str, char **cmd, t_shell *s)
 		ft_strdel(rdr_str);
 		s->redir.n_rdr++;
 	}
+
+dprintf(2, "add_redir() - init_redir() END -- ADDED --> rdr_str = '%s' - cmd = '%s'\n", *rdr_str, *cmd); // debug
+
 	return (EXIT_SUCCESS);
 }
 
 static int	addto_redir(char **rdr_str, char **cmd, t_shell *s)
 {
 	char	**tmp;
+	char	**tmp2;
 
 	if (((tmp = ft_tabdup(s->redir.cmd, s->redir.n_rdr + 1)) == NULL) ||
-				((tmp = ft_tabdup(s->redir.rdr, s->redir.n_rdr + 1)) == NULL))
+				((tmp2 = ft_tabdup(s->redir.rdr, s->redir.n_rdr + 1)) == NULL))
 	{
 		ft_strdel(cmd);
 		ft_strdel(rdr_str);
@@ -52,18 +56,23 @@ static int	addto_redir(char **rdr_str, char **cmd, t_shell *s)
 		s->redir.cmd[s->redir.n_rdr] = !(*cmd) ? NULL : ft_strdup(*cmd);
 		ft_strdel(cmd);
 		free_tab((void ***)&s->redir.rdr, ft_tablen(s->redir.rdr));
-		s->redir.rdr = tmp;
+		s->redir.rdr = tmp2;
 		s->redir.rdr[s->redir.n_rdr] = !(*rdr_str) ? NULL : ft_strdup(*rdr_str);
 		if (*rdr_str != NULL)
 			s->redir.n_rdr++;
 		ft_strdel(rdr_str);
 	}
+
+dprintf(2, "add_redir() - addto_redir() END -- ADDED --> rdr_str = '%s' - cmd = '%s'\n", *rdr_str, *cmd); // debug
+
 	return (EXIT_SUCCESS);
 }
 
 int			add_redir(char **rdr_str, char **cmd, t_shell *s)
 {
 	char	*trim;
+
+dprintf(2, "add_redir() -- START -- rdr_str = '%s' - cmd = '%s'\n", *rdr_str, *cmd); // debug
 
 	trim = *cmd;
 	*cmd = ft_strtrim(trim);
