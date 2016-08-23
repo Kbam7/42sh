@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:47 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/03 14:07:39 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/22 23:34:01 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 static int	new_env_var(char *name, char *value, char ***env)
 {
-	char	**tab;
+	char	**table;
 	char	*tmp;
 	int		len;
 
 	len = ft_tablen(*env);
-	tab = ft_tabdup(*env, len + 1);
-	free_tab((void **)*env, len);
+	table = ft_tabdup(*env, len + 1);
+	free_tab((void ***)env, len);
 	tmp = ft_strjoin("=", value);
-	tab[len] = ft_strjoin(name, tmp);
+	table[len] = ft_strjoin(name, tmp);
 	ft_strdel(&tmp);
-	*env = tab;
+	*env = table;
 	return (EXIT_SUCCESS);
 }
 
@@ -32,22 +32,22 @@ static int	variable_exists(char *name, char *value, char ***env)
 {
 	int				i;
 	char			*tmp;
-	t_split_string	tab;
+	t_split_string	table;
 
 	i = 0;
 	while ((*env)[i] != NULL)
 	{
-		tab = ft_nstrsplit((*env)[i], '=');
-		if (ft_strcmp(name, tab.strings[0]) == 0)
+		table = ft_nstrsplit((*env)[i], '=');
+		if (ft_strcmp(name, table.strings[0]) == 0)
 		{
 			ft_strdel(&(*env)[i]);
 			tmp = ft_strjoin("=", value);
 			(*env)[i] = ft_strjoin(name, tmp);
 			ft_strdel(&tmp);
-			free_tab((void **)tab.strings, tab.words);
+			free_tab((void ***)&table.strings, table.words);
 			return (EXIT_SUCCESS);
 		}
-		free_tab((void **)tab.strings, tab.words);
+		free_tab((void ***)&table.strings, table.words);
 		++i;
 	}
 	return (EXIT_FAILURE);
@@ -74,7 +74,7 @@ static int	get_and_set_values(char *str, char ***env)
 		status = ft_set_env(args.strings[0], "", env);
 	else
 		status = ft_set_env(args.strings[0], args.strings[1], env);
-	free_tab((void **)args.strings, args.words);
+	free_tab((void ***)&args.strings, args.words);
 	return (status);
 }
 

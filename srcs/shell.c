@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/03 13:43:34 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/23 20:49:30 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,18 @@ void		shell_loop(t_shell *s)
 	while (ret != EXIT_SH)
 	{
 		set_prompt(s);
-		ft_putstr(s->prompt);
-		if ((ret = get_commands(s) > 0)) // THIS MUST ONLY GET THE COMMANDS> It must not save any other list of pipes or redir. 
+		ft_printf("%s%s%s%s", C_BOLD, C_BROWN, s->prompt, C_NONE);
+		while (s->commands == NULL)
+			buffer(s);
+		cmd_list = s->commands;
+		while (cmd_list != NULL)
 		{
-//printf("shell_loop() -- added cmd_list\n"); // debug
-			cmd_list = s->commands;
-			while (cmd_list != NULL) // ! end of cmd_list
-			{
-				ret = process_input(cmd_list->cmd, s); // this will run until all commands have been executed, "exit" was input, or there was an error.
-				if (ret == EXIT_SH || ret == EXIT_FAILURE)
-					break ;
-//				free_tab((void **)s->input, ft_tablen(s->input));
-				cmd_list = cmd_list->next;
-			}
-//print_cmd_list(s->commands); // debug
-//printf("shell_loop() -- free_cmd_list()\n"); // debug
-			free_cmd_list(&s->commands);
+			ret = process_input(cmd_list->cmd, s);
+			if (ret == EXIT_SH || ret == EXIT_FAILURE)
+				break ;
+			cmd_list = cmd_list->next;
 		}
-//		if ret == 0, nothin input
-//		if ret < 0, gnl error gets printed, prompt is reprinted
+		free_cmd_list(&s->commands);
 	}
 }
 
@@ -48,7 +41,7 @@ static int	launch_shell(t_shell *s)
 	if (execve(ft_getenv("21SH_PATH", s), s->argv, s->env_var) != -1)
 		exit(EXIT_SUCCESS);
 	err(ERR_EXEC_SHELL, ft_getenv("21SH_PATH", s));
-	free_tab((void **)s->input, ft_tablen(s->input));
+	free_tab((void ***)&s->input, ft_tablen(s->input));
 	free_t_shell(s);
 	exit(EXIT_FAILURE);
 }
@@ -70,11 +63,31 @@ int			run_shell(t_shell *s)
 	return (status);
 }
 
-void	free_t_shell(t_shell *s)
+static void	ft_exit(void)
 {
-	free_tab((void **)s->env_var, ft_tablen(s->env_var));
-	free_tab((void **)s->shell_var, ft_tablen(s->shell_var));
-	free_tab((void **)s->paths, ft_tablen(s->paths));
-	free_tab((void **)s->argv, ft_tablen(s->argv));
+    tputs(tgetstr("ve", 0), 1, ft_putchar_re);
+    tputs(tgetstr("te", 0), 1, ft_putchar_re);
+//    tputs(tgetstr("rs", 0), 1, ft_putchar_re);
+	exit(1);
+}
+
+int			free_t_shell(t_shell *s)
+{
+	if (s->commands != NULL)
+		free_cmd_list(&s->commands);
+	if (s->input != NULL)
+		free_tab((void ***)&s->input, ft_tablen(s->input));
+	if (s->pipe.pipes != NULL)
+		free_tab((void ***)&s->pipe.pipes, (s->pipe.n_pipes + s->pipe.pipe_i));
+	if (s->redir.rdr != NULL)
+		free_tab((void ***)&s->redir.rdr, ft_tablen(s->redir.rdr));
+	if (s->redir.cmd != NULL)
+		free_tab((void ***)&s->redir.cmd, ft_tablen(s->redir.cmd));
+	free_tab((void ***)&s->env_var, ft_tablen(s->env_var));
+	free_tab((void ***)&s->shell_var, ft_tablen(s->shell_var));
+	free_tab((void ***)&s->paths, ft_tablen(s->paths));
+	free_tab((void ***)&s->argv, ft_tablen(s->argv));
 	ft_strdel(&s->prompt);
+	ft_exit();
+	return (EXIT_SUCCESS);
 }

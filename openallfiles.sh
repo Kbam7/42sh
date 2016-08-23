@@ -1,1 +1,1 @@
-vim -p  includes/ft_shell.h srcs/*.c srcs/builtin/*.c;
+vim -p  includes/*.h srcs/*.c srcs/builtin/*.c;

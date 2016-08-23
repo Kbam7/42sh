@@ -6,13 +6,11 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:24:20 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/03 14:07:21 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/23 20:47:54 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
-
-/* START -- Add to check_path.c */
 
 int		check_rights(char *path, int r, int w, int x)
 {
@@ -30,9 +28,6 @@ int		check_rights(char *path, int r, int w, int x)
 	return (ret);
 }
 
-/* END   -- Add to check_path.c */
-
-
 char	***check_env_type(int type, t_shell *s)
 {
 	if (type == 1)
@@ -45,10 +40,22 @@ void	print_variables(char **env, t_shell *s)
 {
 	int	i;
 
+	if (s->pipe.n_pipes)
+		child_pipe(s);
+	if (s->redir.n_rdr)
+	{
+		i = s->redir.rdr_i;
+		if (s->redir.dir == '>')
+			child_output_redir(s->redir.rdr[i], s);
+		else if (s->redir.dir == '<')
+		{
+//			child_input_redir(s->redir.rdr[i], s);
+		}
+	}
 	i = 0;
 	while (env[i] != NULL)
 	{
-		write(s->write_fd, env[i], ft_strlen(env[i]));
+		ft_putendl_fd(env[i], STDOUT_FILENO);
 		++i;
 	}
 }

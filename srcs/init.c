@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 02:28:26 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/03 14:00:56 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/23 15:06:32 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,21 @@ static void	init_builtin_func_options(t_shell *s)
 	s->func_opt.cd.p = 1;
 }
 
-void	init_env(t_shell *s, int argc, char **argv, char **envp)
+void		init_pipes_redirs(t_shell *s)
+{
+	s->pipe.pipes = NULL;
+	s->pipe.n_pipes = 0;
+	s->pipe.pipe_i = 0;
+	s->redir.cmd = NULL;
+	s->redir.nxt_cmd = NULL;
+	s->redir.rdr = NULL;
+	s->redir.n_rdr = 0;
+	s->redir.rdr_i = 0;
+	s->redir.pre_fd = -1;
+	s->redir.post_fd = -1;
+}
+
+void		init_env(t_shell *s, int argc, char **argv, char **envp)
 {
 	t_split_string	tmp;
 	char			*tmpstr;
@@ -35,7 +49,7 @@ void	init_env(t_shell *s, int argc, char **argv, char **envp)
 	tmpstr = ft_getenv("PATH", s);
 	tmp = ft_nstrsplit(tmpstr, ':');
 	s->paths = ft_tabdup(tmp.strings, tmp.words);
-	free_tab((void **)tmp.strings, tmp.words);
+	free_tab((void ***)&tmp.strings, tmp.words);
 	if (ft_getenv("21SH_PATH", s) == NULL)
 	{
 		tmpstr = ft_strjoin(ft_getenv("PWD", s), ft_strchr(argv[0], '/'));
@@ -45,10 +59,5 @@ void	init_env(t_shell *s, int argc, char **argv, char **envp)
 	s->prompt = ft_strnew(1);
 	s->cwd = ft_getenv("PWD", s);
 	s->commands = NULL;
-
-// pipes, redirs and fd's
-	dup2(s->write_fd, STDOUT_FILENO);
-	dup2(s->read_fd, STDIN_FILENO);
-	s->pipe_i = 0;
-
+	init_pipes_redirs(s);
 }

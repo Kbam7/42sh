@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/10 13:29:59 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/01 23:24:44 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/10 15:04:25 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,22 @@
 
 static int	change_dir(char *path, t_shell *s)
 {
+	char	*cwd;
+
+	if ((cwd = (char *)malloc(sizeof(char) * 4096)) == NULL)
+		err(ERR_MALLOC, "ft_cd() - change_dir()\n");
 	if (access(path, F_OK) != 0)
 		return (err(ERR_NO_FILE, path));
 	if ((check_rights(path, 'r', 0, 'x') != EXIT_SUCCESS) || chdir(path) != 0)
 		return (err(ERR_CHDIR, path));
 	ft_set(2, "OLDPWD", ft_getenv("PWD", s), s);
-	ft_set(1, "PWD", getcwd(NULL, 4096), s);
+	ft_set(1, "PWD", getcwd(cwd, 4096), s);
 	s->cwd = ft_getenv("PWD", s);
+	ft_strdel(&cwd);
 	return (EXIT_SUCCESS);
 }
 
-static void	set_arg(char c, t_shell *s)
-{
-	s->func_opt.cd.l = (c == 'l' ? 1 : s->func_opt.cd.l);
-	s->func_opt.cd.l = (c == 'L' ? 1 : s->func_opt.cd.l);
-	if (s->func_opt.cd.l)
-		s->func_opt.cd.p = 0;
-}
-
-int	cd_invalid_input(char *input)
-{
-	char	*tmp;
-
-	tmp = ft_strjoinstr("cd: Invalid option/path -- '", input,"'");
-	err(ERR_INVALID_ARG, tmp);
-	ft_strdel(&tmp);
-	return (ERR_INVALID_ARG);
-}
-
-int	cd_change_to_fullpath(char *input, t_shell *s)
+int			cd_change_to_fullpath(char *input, t_shell *s)
 {
 	char	*tmp;
 	char	*path;
@@ -57,7 +44,7 @@ int	cd_change_to_fullpath(char *input, t_shell *s)
 	return (ret);
 }
 
-int	change_to_home_dir(t_shell *s)
+int			change_to_home_dir(t_shell *s)
 {
 	char	*tmp;
 
@@ -68,7 +55,7 @@ int	change_to_home_dir(t_shell *s)
 	return (EXIT_FAILURE);
 }
 
-int	change_to_oldpwd(t_shell *s)
+int			change_to_oldpwd(t_shell *s)
 {
 	char	*tmp;
 
@@ -90,12 +77,12 @@ int			ft_cd(char **input, t_shell *s)
 		tmp = input[j];
 		if (ft_strcmp(tmp, "-") == 0)
 			return (change_to_oldpwd(s));
-		else if (ft_strcmp(tmp, "--")  == 0 || ft_strcmp(tmp, "~") == 0)
-				 return (change_to_home_dir(s));
+		else if (ft_strcmp(tmp, "--") == 0 || ft_strcmp(tmp, "~") == 0)
+			return (change_to_home_dir(s));
 		else if (tmp[0] == '~' && ft_isprint(tmp[1]))
 			return (cd_change_to_fullpath(tmp, s));
 		else if (tmp[0] == '-' && ft_strchr("pPlL", tmp[1]) != 0)
-			set_arg(tmp[1], s);
+			cd_set_arg(tmp[1], s);
 		else if (change_dir(tmp, s) != EXIT_SUCCESS)
 			return (cd_invalid_input(tmp));
 	}
