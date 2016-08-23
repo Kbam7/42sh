@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 14:12:20 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/22 23:42:15 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/23 15:09:41 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,6 @@ void	buffer(t_shell *s)
 		ft_putnbr(temp[2]);
 		ft_putchar('\n');*/
 	ft_move_cur(temp, s);
-		ft_print_char(temp, s);
-        free(temp);
+	ft_print_char(temp, s);
+	ft_strdel(&temp);
 }
