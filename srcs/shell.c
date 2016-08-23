@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/22 23:07:36 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/23 20:49:30 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,14 @@ int			run_shell(t_shell *s)
 	return (status);
 }
 
+static void	ft_exit(void)
+{
+    tputs(tgetstr("ve", 0), 1, ft_putchar_re);
+    tputs(tgetstr("te", 0), 1, ft_putchar_re);
+//    tputs(tgetstr("rs", 0), 1, ft_putchar_re);
+	exit(1);
+}
+
 int			free_t_shell(t_shell *s)
 {
 	if (s->commands != NULL)
@@ -80,5 +88,6 @@ int			free_t_shell(t_shell *s)
 	free_tab((void ***)&s->paths, ft_tablen(s->paths));
 	free_tab((void ***)&s->argv, ft_tablen(s->argv));
 	ft_strdel(&s->prompt);
+	ft_exit();
 	return (EXIT_SUCCESS);
 }

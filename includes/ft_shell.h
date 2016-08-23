@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/22 23:43:47 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/23 21:12:59 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,39 +116,6 @@ typedef struct			s_pipes
 	int				pipe_i;
 }						t_pipes;
 
-
-/*
-** --[ STRUCTS -- LINE EDITING ]--
-*/
-/*typedef struct			s_line_edit
-{
-    int             cols;
-	int				curs_col;
-	int				curs_pos;
-	int				c_semi;
-    int             hight;
-	int				h_index;
-	int				h_pos;
-	int				nbr_semi;
-	int				nbr_space;
-	int				on;
-	int				str_len;
-    int             width;
-	char			**commands;
-	char			**env;
-	char			**history;
-    char            **path;
-    char            **semi;
-    char            *home_path;
-	char			*new_line;
-    char            *oldpwd;
-    char            *pwd;
-	char			*term_type;
-    char            *user;
-	struct termios	new_term;
-	struct termios	old_term;
-}						t_line;
-*/
 /*
 ** --[ STRUCTS -- SHELL ]--
 */
@@ -175,7 +142,6 @@ typedef struct	s_shell
 	t_cmd_list	*commands;
 	t_redirs	redir;
 	t_pipes		pipe;
-//	t_line		*line;
 //
 // Line editing
     int             cols;
