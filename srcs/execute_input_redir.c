@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/19 13:05:19 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/23 00:00:50 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/24 18:36:36 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,15 @@ static int	check_duplicate(char *str, int pos, t_shell *s)
 
 	if (str[pos + 1] == '&')	// ('<&')
 	{
-//dprintf(2, "child_input_redir() -- check_duplicate() -- s->redir.pre_fd = '%d'\n", s->redir.pre_fd);
+dprintf(2, "child_input_redir() -- check_duplicate() -- s->redir.pre_fd = '%d'\n", s->redir.pre_fd); // debug
 		if (str[pos + 2] == '-')	// ('>&-' || '<&-')
 		{
-//dprintf(2, "child_input_redir() -- check_duplicate() -- Found '%d>&-' CLOSING s->redir.pre_fd = '%d'\n", s->redir.pre_fd, s->redir.pre_fd);
+dprintf(2, "child_input_redir() -- check_duplicate() -- Found '%d>&-' CLOSING s->redir.pre_fd = '%d'\n", s->redir.pre_fd, s->redir.pre_fd); // debug
 			close(s->redir.pre_fd);
 		}
 		else
 		{ // duplicate fd defined after '&', ('<&fd') -- and overwrite it with the pre_fd
+dprintf(2, "child_input_redir() -- check_duplicate() -- DUPLICATING INPUT FD -- s->redir.pre_fd = '%d'\n", s->redir.pre_fd); // debug
 			tmp = ft_strsub(str, (pos + 2), (ft_strlen(str) - (pos + 2)));
 			s->redir.post_fd = ft_atoi(tmp);
 		//	check if s->redir.post_fd is open for reading
@@ -67,35 +68,25 @@ int		child_input_redir(char *str, t_shell *s)
 //		if (s->pipe.n_pipes)
 //			dup2(s->pipe.pipes[s->pipe.pipe_i][0], STDIN_FILENO);
 
-		if (pos == 0)								// ('<..')
-			if (!check_duplicate(str, pos, s))
-				if ((path = open_input_file(s)) > -1)
-				{
-					dup2(path, STDIN_FILENO);
-					close(path);
-				}
 		if (pos > 0 && ft_isdigit(str[pos - 1])) 	// ('2<' || '43<')
 		{
 			tmp = ft_strsub(str, 0, pos);
 			s->redir.pre_fd = ft_atoi(tmp);
 			ft_strdel(&tmp);
 //dprintf(2, "child_input_redir() -- '5>' -- \n");
-			if (!check_duplicate(str, pos, s))
+/*			if (!check_duplicate(str, pos, s))
 				if ((path = open_input_file(s)) > -1)
 				{
 					dup2(path, s->redir.pre_fd);
 					close(path);
 				}
-		}
-		if (pos == 1 && str[pos - 1] == '&')	// ('&>')
-		{
+*/		}
+		if (!check_duplicate(str, pos, s))
 			if ((path = open_input_file(s)) > -1)
 			{
-				dup2(path, STDOUT_FILENO);
-				dup2(path, STDERR_FILENO);
+				dup2(path, s->redir.pre_fd);
 				close(path);
 			}
-		}
 	}
 	return (EXIT_SUCCESS);
 }
