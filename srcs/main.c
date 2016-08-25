@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 20:35:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/23 15:06:05 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/25 09:26:42 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@ int			main(int argc, char **argv, char **envp)
 	t_shell	s;
 
 	init_env(&s, argc, argv, envp);
-	init_terminal_data(&s, s.env_var);
+	init_terminal_data(&s, envp);
 	ft_clear_screen();
+//	write(1, "$> ", 2);
 	shell_loop(&s);
 	free_t_shell(&s);
 	return (EXIT_SUCCESS);

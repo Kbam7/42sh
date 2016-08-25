@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 16:48:49 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/22 23:44:44 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/25 09:13:53 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ int		init_terminal_data(t_shell *s, char **env)
 //    ft_path(s);
     s->home_path = ft_getenv("HOME", s);
     s->user = ft_getenv("USER", s);
+	s->history = NULL;
 	s->new_line = NULL;
+	s->new_line = (char *)malloc(sizeof(char) + 2);
+	ft_bzero(s->new_line, 2);
 	s->history = (char **)malloc(sizeof(char *) * 1024);
 	tcgetattr(0, &s->new_term);
 	s->new_term.c_lflag &= ~(ICANON | ECHO);

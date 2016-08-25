@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 14:08:49 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/22 23:52:18 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/25 09:18:33 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@ void	ft_insert(t_shell *s, char buff)
 	int		i;
 	char	*temp;
 
-	temp = NULL;
+	i = 0;
 	temp = (char *)malloc(sizeof(char) * (s->str_len + 2));
+	ft_bzero(temp, s->str_len + 2);
 	if (s->new_line != NULL)
 		temp = ft_strcpy(temp, s->new_line);
 	if (s->curs_pos != s->str_len)
@@ -33,7 +34,8 @@ void	ft_insert(t_shell *s, char buff)
 	}
 	else if (buff)
 		temp[s->str_len] = buff;
-	temp[s->str_len + 1] = '\0';
+	free(s->new_line);
+	s->new_line = NULL;
 	s->new_line = ft_strdup(temp);
 	free(temp);
 }
@@ -50,7 +52,7 @@ void	ft_put_string(t_shell *s)
 	}
 	tputs(tgetstr("cr", 0), 1, ft_putchar_re);
 	tputs(tgetstr("cd", 0), 1, ft_putchar_re);
-//	write(1, "$> ", 2);
+	write(1, "$> ", 2);
 	write(1, s->prompt, ft_strlen(s->prompt));
 	ft_putstr(s->new_line);
 }
@@ -96,18 +98,19 @@ void	ft_enter(char *buff, t_shell *s)
 	if (buff[0] == 10 && buff[1] == 0 && buff[2] == 0)
 	{
 		ft_putchar('\n');
-		s->new_line[s->str_len + 1] = '\0';
 		ft_new_history(s);
 		s->h_index++;
 		s->curs_pos = 0;
 		s->str_len = 0;
 		s->h_pos = 0;
-//		ft_execmd(s);
+		//		ft_execmd(s);
 		get_commands(s);
-		if (s->new_line != NULL)
+		if (s->new_line != NULL || s->new_line[0] == '\0')
 			free(s->new_line);
 		s->new_line = NULL;
-//		write(1, "$> ", 2);
-		write(1, s->prompt, ft_strlen(s->prompt));
+		s->new_line = (char *)malloc(sizeof(char) + 1);
+		s->new_line[0] = '\0';
+		write(1, "$> ", 2);
+		//write(1, s->prompt, ft_strlen(s->prompt));
 	}	
 }
