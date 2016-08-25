@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/11 16:02:44 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/19 16:39:48 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/24 19:47:12 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,11 @@ char		*analyze_redir(char **str, char dir, char **cmd, t_shell *s)
 	
 	if (*str == NULL || (pos = get_pos(*str, dir)) == -1)
 		return (NULL);
-	if ((*str)[pos + 1] && (*str)[pos + 1] == dir)
+	if ((*str)[pos + 1] && (*str)[pos + 1] == dir)			// ('>>' || '<<')
+		++pos;
+	if ((*str)[pos + 1] && (*str)[pos + 1] == '>')			// ('>>>')
+		return (err(ERR_BAD_TOKEN, ">") ? NULL : NULL);
+	if ((*str)[pos + 1] && (*str)[pos + 1] == '<')			// ('<<<')
 		++pos;
 	if (*str && (*str)[pos + 1] && (*str)[pos + 1] != '\0')
 		*str = check_postfix(str, pos, s);

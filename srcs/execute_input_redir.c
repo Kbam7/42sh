@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/19 13:05:19 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/24 18:36:36 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/24 20:19:11 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	open_input_file(t_shell *s)
 	int	i;
 
 	i = s->redir.rdr_i;
-		path = open(s->redir.cmd[i + 1], O_RDONLY | O_APPEND, 0664); // S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
+		path = open(s->redir.cmd[i + 1], O_RDONLY, 0664); // S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
 	if (path < 0)
 		err(ERR_NO_READ, s->redir.cmd[i + 1]);
 	return (path);
@@ -53,6 +53,40 @@ dprintf(2, "child_input_redir() -- check_duplicate() -- DUPLICATING INPUT FD -- 
 		return (0);
 }
 
+static int	heredocs(char *str, int pos, t_shell *s)
+{
+	char	*line;
+	int		path;
+	int		ret;
+	int		i;
+
+	i = s->redir.rdr_i;
+	if (str[pos] == str[pos + 2])			// '<<<'
+	{
+		// herestring
+	}
+	else
+	{
+		path = open(".42sh_heredoc", O_RDWR | O_CREAT, 0664); // S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
+		if (path < 0)
+			return (err(ERR_CREATE, "heredoc"));
+		ft_putstr(" heredoc> ");
+		while ((ret = ft_gnl(path, &line)) >= 0 &&
+									ft_strcmp(line, s->redir.cmd[i + 1]) != 0)
+		{
+			write(path, line, ft_strlen(line));
+			ft_strdel(&line);
+			ft_putstr(" heredoc> ");
+		}
+		ft_strdel(&line);
+		dup2(path, STDIN_FILENO);
+		close(path);
+		if (unlink(".42sh_heredoc") < 0)
+			ft_putstr_fd("Cannot remove .42sh_heredoc\n", 2);
+	}
+	return (EXIT_SUCCESS);
+}
+
 int		child_input_redir(char *str, t_shell *s)
 {
 	int		pos;
@@ -68,11 +102,15 @@ int		child_input_redir(char *str, t_shell *s)
 //		if (s->pipe.n_pipes)
 //			dup2(s->pipe.pipes[s->pipe.pipe_i][0], STDIN_FILENO);
 
-		if (pos > 0 && ft_isdigit(str[pos - 1])) 	// ('2<' || '43<')
+		if (str[pos] == str[pos + 1])				// '<<'
+			heredocs(str, pos, s);	
+		else
 		{
-			tmp = ft_strsub(str, 0, pos);
-			s->redir.pre_fd = ft_atoi(tmp);
-			ft_strdel(&tmp);
+			if (pos > 0 && ft_isdigit(str[pos - 1])) 	// ('2<' || '43<')
+			{
+				tmp = ft_strsub(str, 0, pos);
+				s->redir.pre_fd = ft_atoi(tmp);
+				ft_strdel(&tmp);
 //dprintf(2, "child_input_redir() -- '5>' -- \n");
 /*			if (!check_duplicate(str, pos, s))
 				if ((path = open_input_file(s)) > -1)
@@ -80,13 +118,14 @@ int		child_input_redir(char *str, t_shell *s)
 					dup2(path, s->redir.pre_fd);
 					close(path);
 				}
-*/		}
-		if (!check_duplicate(str, pos, s))
-			if ((path = open_input_file(s)) > -1)
-			{
-				dup2(path, s->redir.pre_fd);
-				close(path);
-			}
+*/			}
+			if (!check_duplicate(str, pos, s))
+				if ((path = open_input_file(s)) > -1)
+				{
+					dup2(path, s->redir.pre_fd);
+					close(path);
+				}
+		}
 	}
 	return (EXIT_SUCCESS);
 }
