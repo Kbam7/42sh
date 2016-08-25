@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/23 21:12:59 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/24 20:07:50 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,12 @@
 # include "libft.h"
 # include <sys/wait.h>
 # include <sys/types.h>
+# include <sys/stat.h>
 # include <fcntl.h>
 # include <termios.h>
 # include <term.h>
+
+# define _GNU_SOURCE		// for O_TMPFILE in heredocs
 
 	#include <stdio.h> // debug
 
