@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/25 14:55:30 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/25 15:10:02 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,34 +39,7 @@ dprintf(2, "shell_loop() -- HERE\n"); // debug
 		free_cmd_list(&s->commands);
 	}
 }
-/*
-static int	launch_shell(t_shell *s)
-{
-	if (execve(ft_getenv("21SH_PATH", s), s->argv, s->env_var) != -1)
-		exit(EXIT_SUCCESS);
-	err(ERR_EXEC_SHELL, ft_getenv("21SH_PATH", s));
-	free_tab((void ***)&s->input, ft_tablen(s->input));
-	free_t_shell(s);
-	exit(EXIT_FAILURE);
-}
 
-int			run_shell(t_shell *s)
-{
-	pid_t	pid;
-	int		status;
-
-	status = EXIT_FAILURE;
-	pid = fork();
-	if (pid < 0)
-		return (err(ERR_FORK_FAILED, ""));
-	if (pid == 0)
-		launch_shell(s);
-	wait(&status);
-	if (WIFEXITED(status))
-		status = WEXITSTATUS(status);
-	return (status);
-}
-*/
 static void	ft_exit(void)
 {
     tputs(tgetstr("ve", 0), 1, ft_putchar_re);
