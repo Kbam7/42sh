@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/24 20:07:50 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/25 14:45:55 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,8 +285,8 @@ char			*check_shell_variables(char *name, t_shell *s);
 **	execute.c
 */
 int				execute_cmd(t_shell *s);
-int				try_builtin(t_shell *s);
-int				try_system(t_shell *s);
+//int				try_builtin(t_shell *s);
+//int				try_system(t_shell *s);
 
 /*
 **	execute_pipe.c

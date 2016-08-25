@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/25 09:30:28 by tmack            ###   ########.fr       */
+/*   Updated: 2016/08/25 14:55:30 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,14 @@ void		shell_loop(t_shell *s)
 	ret = 0;
 	while (ret != EXIT_SH)
 	{
+//		set_prompt(s);
 	//	ft_printf("%s%s%s%s", C_BOLD, C_BROWN, s->prompt, C_NONE);
 		write(1, "$> ", 2);
 		while (s->commands == NULL)
 			buffer(s);
+
+dprintf(2, "shell_loop() -- HERE\n"); // debug
+	
 		cmd_list = s->commands;
 		while (cmd_list != NULL)
 		{
@@ -35,7 +39,7 @@ void		shell_loop(t_shell *s)
 		free_cmd_list(&s->commands);
 	}
 }
-
+/*
 static int	launch_shell(t_shell *s)
 {
 	if (execve(ft_getenv("21SH_PATH", s), s->argv, s->env_var) != -1)
@@ -62,7 +66,7 @@ int			run_shell(t_shell *s)
 		status = WEXITSTATUS(status);
 	return (status);
 }
-
+*/
 static void	ft_exit(void)
 {
     tputs(tgetstr("ve", 0), 1, ft_putchar_re);
