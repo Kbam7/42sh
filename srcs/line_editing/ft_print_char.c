@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 14:08:49 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/25 09:18:33 by tmack            ###   ########.fr       */
+/*   Updated: 2016/08/25 15:05:55 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,8 @@ void	ft_enter(char *buff, t_shell *s)
 		s->curs_pos = 0;
 		s->str_len = 0;
 		s->h_pos = 0;
-		//		ft_execmd(s);
-		get_commands(s);
+		if (s->new_line != NULL && ft_strlen(s->new_line) > 0)
+			get_commands(s);
 		if (s->new_line != NULL || s->new_line[0] == '\0')
 			free(s->new_line);
 		s->new_line = NULL;

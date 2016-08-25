@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 02:28:26 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/25 08:56:33 by tmack            ###   ########.fr       */
+/*   Updated: 2016/08/25 14:51:35 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,6 @@ void		init_env(t_shell *s, int argc, char **argv, char **envp)
 	tmp = ft_nstrsplit(tmpstr, ':');
 	s->paths = ft_tabdup(tmp.strings, tmp.words);
 	free_tab((void ***)&tmp.strings, tmp.words);
-	if (ft_getenv("21SH_PATH", s) == NULL)
-	{
-		tmpstr = ft_strjoin(ft_getenv("PWD", s), ft_strchr(argv[0], '/'));
-		ft_set(1, "21SH_PATH", tmpstr, s);
-		ft_strdel(&tmpstr);
-	}
 	s->prompt = ft_strnew(1);
 	s->cwd = ft_getenv("PWD", s);
 	s->commands = NULL;
