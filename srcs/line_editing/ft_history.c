@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/11 09:33:16 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/22 23:42:15 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/25 08:20:13 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 
 void    ft_new_history(t_shell *s)
 {
-   s->history[s->h_index] = ft_strnew(s->str_len + 1);
-   ft_bzero(s->history[s->h_index], s->str_len + 1);
-   s->history[s->h_index] = ft_strcpy(s->history[s->h_index],
-           s->new_line);
+   s->history[s->h_index] = ft_strdup(s->new_line);
 }
 
 void    ft_history_up(t_shell *s, char *buff)
@@ -32,7 +29,9 @@ void    ft_history_up(t_shell *s, char *buff)
 		tputs(tgetstr("ce", 0), 1, ft_putchar_re);
 		s->h_pos++;
 		i = s->h_index - s->h_pos;
-		s->new_line = s->history[i];
+		if (s->new_line != NULL)
+			free(s->new_line);
+		s->new_line = ft_strdup(s->history[i]);
 		ft_putstr(s->new_line);
 		s->curs_pos = ft_strlen(s->new_line);
 		s->str_len = ft_strlen(s->new_line);
@@ -50,6 +49,8 @@ void    ft_history_down(t_shell *s, char *buff)
 		tputs(tgetstr("ce", 0), 1, ft_putchar_re);
 		s->h_pos--;
 		i = s->h_index - s->h_pos;
+		if (s->new_line != NULL)
+			free(s->new_line);
 		s->new_line = s->history[i];
 		ft_putstr(s->new_line);
 		s->curs_pos = ft_strlen(s->new_line);
