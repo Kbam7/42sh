@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/25 15:10:02 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/25 15:31:32 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,6 @@ void		shell_loop(t_shell *s)
 		write(1, "$> ", 2);
 		while (s->commands == NULL)
 			buffer(s);
-
-dprintf(2, "shell_loop() -- HERE\n"); // debug
-	
 		cmd_list = s->commands;
 		while (cmd_list != NULL)
 		{
