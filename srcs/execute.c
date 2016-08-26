@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/25 14:51:39 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/25 17:54:04 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ dprintf(2, "execute_cmd() -- Finished waiting ------- pid = %d\n", getpid()); //
 		if (WIFEXITED(status) && (status = WEXITSTATUS(status)) != EXIT_SUCCESS)
 		{
 dprintf(2, "1 -- status = '%d' status(+900) = '%d'\tpid = %d\n", status , status + 900, getpid()); // debug
+			err(((status == 1) ? 1 : status + 900), s->input[0]);
 			return (err(((status == 1) ? 1 : status + 900), s->input[0]));
 //			return (err(status, s->input[0]));
 		}

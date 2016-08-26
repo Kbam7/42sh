@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/07 14:32:15 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/23 15:58:35 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/25 17:56:33 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,23 @@ int		store_commands(char *str, t_shell *s)
 	if (ft_strchr(str, ';'))
 	{
 		args = ft_nstrsplit(str, ';');
+	// need to loop through strings split by ';' and look for '&&' and '||'
+	// if a '&&' or '||' is found, save the cmd to the linked list with a flag
+	// indicating the this 
 		while (i < args.words)
 		{
 			ret = add_cmd(&s->commands, args.strings[i]);
 			++i;
 		}
 		free_tab((void ***)&args.strings, args.words);
+
 	}
 	else
+	{
+	// check if there is a "&&" or "||" in the full string. 
+
 		ret = add_cmd(&s->commands, str);
+	}
 	return (ret);
 }
 

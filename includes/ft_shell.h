@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/25 14:45:55 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/26 11:24:58 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,20 +150,17 @@ typedef struct	s_shell
     int             cols;
 	int				curs_col;
 	int				curs_pos;
-//	int				c_semi;
     int             hight;
 	int				h_index;
 	int				h_pos;
-//	int				nbr_semi;
 	int				nbr_space;
 	int				on;
 	int				str_len;
     int             width;
-//	char			**commands;
+	int				term_fd;	// test kbamping
 	char			**env;
 	char			**history;
     char            **path;
-//    char            **semi;
     char            *home_path;
 	char			*new_line;
     char            *oldpwd;
@@ -171,6 +168,7 @@ typedef struct	s_shell
 	char			*term_type;
     char            *user;
 	struct termios	new_term;
+	struct termios	default_term;	// test kbamping
 	struct termios	old_term;
 }				t_shell;
 
@@ -227,7 +225,7 @@ void			init_env(t_shell *s, int argc, char **argv, char **envp);
 /*
 **	prompt.c
 */
-void			intro_message();
+void			intro_message(t_shell *s);
 void			set_prompt(t_shell *s);
 
 /*

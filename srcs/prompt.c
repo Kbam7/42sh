@@ -6,16 +6,16 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/16 19:16:43 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/26 11:25:53 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
 
-void	intro_message(void)
+void	intro_message(t_shell *s)
 {
-	ft_printf(C_BOLD C_GREEN"\t-- [Welcome to my version of Bash] --"C_NONE
+	ft_fprintf(s->term_fd, C_BOLD C_GREEN"\t-- [Welcome to my version of Bash] --"C_NONE
 		"\nIf you would like to have you user name and/or"
 		"\ncurrent directory displayed, you will need to "
 		"\nrelaunch with the relevant options."

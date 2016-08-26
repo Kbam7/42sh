@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/25 15:10:02 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/26 11:37:07 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,6 @@ void		shell_loop(t_shell *s)
 		write(1, "$> ", 2);
 		while (s->commands == NULL)
 			buffer(s);
-
-dprintf(2, "shell_loop() -- HERE\n"); // debug
-	
 		cmd_list = s->commands;
 		while (cmd_list != NULL)
 		{
@@ -40,12 +37,13 @@ dprintf(2, "shell_loop() -- HERE\n"); // debug
 	}
 }
 
-static void	ft_exit(void)
+static void	ft_exit(t_shell *s)
 {
     tputs(tgetstr("ve", 0), 1, ft_putchar_re);
     tputs(tgetstr("te", 0), 1, ft_putchar_re);
 //    tputs(tgetstr("rs", 0), 1, ft_putchar_re);
-	exit(1);
+	tcsetattr(STDIN_FILENO, TCSADRAIN, &s->default_term);
+	exit(EXIT_SUCCESS);
 }
 
 int			free_t_shell(t_shell *s)
@@ -65,6 +63,6 @@ int			free_t_shell(t_shell *s)
 	free_tab((void ***)&s->paths, ft_tablen(s->paths));
 	free_tab((void ***)&s->argv, ft_tablen(s->argv));
 	ft_strdel(&s->prompt);
-	ft_exit();
+	ft_exit(s);
 	return (EXIT_SUCCESS);
 }
