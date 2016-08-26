@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 16:48:49 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/26 11:14:57 by tmack            ###   ########.fr       */
+/*   Updated: 2016/08/25 09:13:53 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_clear_screen(void)
 
 	tgetent(buf, getenv("TERM"));
 	str = tgetstr("cl", NULL);
-	ft_putstr(str);
+	ft_putendl(str);
 }
 
 int		ft_putchar_re(int c)
