@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 16:51:31 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/26 11:24:42 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/26 17:48:52 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,6 @@ void	get_arg(int ac, char **argv, t_shell *s)
 			err(ERR_INVALID_ARG, tmp);
 			ft_strdel(&tmp);
 		}
-	if (s->arg_p == 0 && s->arg_u == 0)
-		intro_message(s);
+//	if (s->arg_p == 0 && s->arg_u == 0)
+//		intro_message(s);
 }

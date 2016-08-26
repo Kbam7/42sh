@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/26 10:38:35 by tmack            ###   ########.fr       */
+/*   Updated: 2016/08/26 17:48:55 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,14 @@ void		shell_loop(t_shell *s)
 
 static void	ft_exit(t_shell *s)
 {
-	tputs(tgetstr("ve", 0), 1, ft_putchar_re);
-	tputs(tgetstr("te", 0), 1, ft_putchar_re);
-//	tputs(tgetstr("rs", 0), 1, ft_putchar_re);
-	tcsetattr(STDIN_FILENO, TCSADRAIN, &s->default_term);
+	if (getpid() == (getppid() + 1)) // new instance of shell
+		tputs(tgetstr("ve", 0), 1, ft_putchar_re);
+	else							// original instance of shell
+	{
+		tputs(tgetstr("ve", 0), 1, ft_putchar_re);
+		tputs(tgetstr("te", 0), 1, ft_putchar_re);
+		tcsetattr(STDIN_FILENO, TCSADRAIN, &s->default_term);
+	}
 	exit(EXIT_SUCCESS);
 }
 

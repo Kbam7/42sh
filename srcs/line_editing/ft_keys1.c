@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 14:12:20 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/25 09:16:35 by tmack            ###   ########.fr       */
+/*   Updated: 2016/08/26 17:50:51 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,13 @@ void	ft_move_right(t_shell *s, char *buff)
 }
 
 void	ft_move_cur(char *buff, t_shell *s)
+{/*
+int i = 0;
+while (buff[i]) 
 {
+	dprintf(2, "buff[%d] = int('%d') || char('')\n", i, buff[i]);
+	++i;
+}*/
 	ft_move_down(s, buff);
 	ft_move_up(s, buff);
 	ft_left_word(s, buff);
@@ -66,6 +72,7 @@ void	ft_move_cur(char *buff, t_shell *s)
 	ft_move_left(s, buff);
 	ft_move_right(s, buff);
 	ft_backspace(s, buff);
+	ft_ctrl_l(buff);
 	ft_history_up(s, buff);
 	ft_history_down(s, buff);
 	ft_end_right(s, buff);
@@ -78,9 +85,9 @@ void	buffer(t_shell *s)
 	char	*temp;
 
 	s->width = tgetnum("co");
-    temp = (char *)malloc(sizeof(char) * 4);
-	ft_bzero(temp, 4);
-	read(0, temp, 4);
+    temp = (char *)malloc(sizeof(char) * 4096);
+	ft_bzero(temp, 4096);
+	read(0, temp, 4096);
 	/*	ft_putnbr(temp[0]);
 		ft_putchar(' ');
 		ft_putnbr(temp[1]);

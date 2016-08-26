@@ -1,29 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_keys4.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/07/28 20:35:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/26 17:48:38 by kbamping         ###   ########.fr       */
+/*   Created: 2016/08/26 16:59:06 by kbamping          #+#    #+#             */
+/*   Updated: 2016/08/26 17:50:21 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-int			main(int argc, char **argv, char **envp)
+void	ft_ctrl_l(char *buff)
 {
-	t_shell	s;
-
-	init_env(&s, argc, argv, envp);
-	init_terminal_data(&s, envp);
-	ft_clear_screen();
-
-dprintf(2, "main() -- pid = '%d'\tppid = '%d'\n", getpid(), getppid()); // debug
-
-	write(1, "$> ", 2);
-	shell_loop(&s);
-	free_t_shell(&s);
-	return (EXIT_SUCCESS);
+	if (buff[0] == 12 && buff[1] == 0)
+	{
+		tputs(tgetstr("cl", 0), 1, ft_putchar_re);
+	}
 }
