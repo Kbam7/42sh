@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 14:08:49 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/25 15:05:55 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/26 17:49:02 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	ft_put_string(t_shell *s)
 	tputs(tgetstr("cr", 0), 1, ft_putchar_re);
 	tputs(tgetstr("cd", 0), 1, ft_putchar_re);
 	write(1, "$> ", 2);
-	write(1, s->prompt, ft_strlen(s->prompt));
+//	write(1, s->prompt, ft_strlen(s->prompt));
 	ft_putstr(s->new_line);
 }
 
@@ -99,7 +99,6 @@ void	ft_enter(char *buff, t_shell *s)
 	{
 		ft_putchar('\n');
 		ft_new_history(s);
-		s->h_index++;
 		s->curs_pos = 0;
 		s->str_len = 0;
 		s->h_pos = 0;

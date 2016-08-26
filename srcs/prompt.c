@@ -6,14 +6,14 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/16 19:16:43 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/26 17:48:29 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-
-void	intro_message(void)
+/*
+void	intro_message(t_shell *s)
 {
 	ft_printf(C_BOLD C_GREEN"\t-- [Welcome to my version of Bash] --"C_NONE
 		"\nIf you would like to have you user name and/or"
@@ -25,7 +25,7 @@ void	intro_message(void)
 	C_BOLD"-pu"C_NONE"\tDisplays both the path and your username\n"
 	);
 }
-
+*/
 static char	*get_path(t_shell *s)
 {
 	char	*path;

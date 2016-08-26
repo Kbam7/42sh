@@ -37,12 +37,17 @@ void		shell_loop(t_shell *s)
 	}
 }
 
-static void	ft_exit(void)
+static void	ft_exit(t_shell *s)
 {
-    tputs(tgetstr("ve", 0), 1, ft_putchar_re);
-    tputs(tgetstr("te", 0), 1, ft_putchar_re);
-//    tputs(tgetstr("rs", 0), 1, ft_putchar_re);
-	exit(1);
+	if (getpid() == (getppid() + 1)) // new instance of shell
+		tputs(tgetstr("ve", 0), 1, ft_putchar_re);
+	else							// original instance of shell
+	{
+		tputs(tgetstr("ve", 0), 1, ft_putchar_re);
+		tputs(tgetstr("te", 0), 1, ft_putchar_re);
+		tcsetattr(STDIN_FILENO, TCSADRAIN, &s->default_term);
+	}
+	exit(EXIT_SUCCESS);
 }
 
 int			free_t_shell(t_shell *s)
@@ -62,6 +67,6 @@ int			free_t_shell(t_shell *s)
 	free_tab((void ***)&s->paths, ft_tablen(s->paths));
 	free_tab((void ***)&s->argv, ft_tablen(s->argv));
 	ft_strdel(&s->prompt);
-	ft_exit();
+	ft_exit(s);
 	return (EXIT_SUCCESS);
 }
