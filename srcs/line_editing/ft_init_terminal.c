@@ -19,7 +19,7 @@ void	ft_clear_screen(void)
 
 //	tgetent(buf, getenv("TERM"));
 	str = tgetstr("cl", NULL);
-	ft_putstr(str);
+	ft_putendl(str);
 }
 
 int		ft_putchar_re(int c)

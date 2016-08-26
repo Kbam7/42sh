@@ -109,6 +109,7 @@ void	ft_enter(char *buff, t_shell *s)
 		s->new_line = NULL;
 		s->new_line = (char *)malloc(sizeof(char) + 1);
 		s->new_line[0] = '\0';
+		write(1, "$> ", 2);
 		//write(1, s->prompt, ft_strlen(s->prompt));
 	}	
 }
