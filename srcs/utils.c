@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:24:20 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/23 20:47:54 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/26 22:14:48 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,10 @@ char	***check_env_type(int type, t_shell *s)
 		return (&s->shell_var);
 }
 
-void	print_variables(char **env, t_shell *s)
+void	print_variables(char **env)
 {
 	int	i;
 
-	if (s->pipe.n_pipes)
-		child_pipe(s);
-	if (s->redir.n_rdr)
-	{
-		i = s->redir.rdr_i;
-		if (s->redir.dir == '>')
-			child_output_redir(s->redir.rdr[i], s);
-		else if (s->redir.dir == '<')
-		{
-//			child_input_redir(s->redir.rdr[i], s);
-		}
-	}
 	i = 0;
 	while (env[i] != NULL)
 	{

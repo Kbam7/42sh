@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/25 15:31:32 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/27 00:18:17 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,15 @@ void		shell_loop(t_shell *s)
 
 static void	ft_exit(t_shell *s)
 {
-	if (getpid() == (getppid() + 1)) // new instance of shell
-		tputs(tgetstr("ve", 0), 1, ft_putchar_re);
-	else							// original instance of shell
+	if (getpid() == ft_atoi(ft_getenv("42SH_PID", s)))
 	{
 		tputs(tgetstr("ve", 0), 1, ft_putchar_re);
 		tputs(tgetstr("te", 0), 1, ft_putchar_re);
 		tcsetattr(STDIN_FILENO, TCSADRAIN, &s->default_term);
 	}
-	exit(EXIT_SUCCESS);
 }
 
-int			free_t_shell(t_shell *s)
+void			free_t_shell(t_shell *s)
 {
 	if (s->commands != NULL)
 		free_cmd_list(&s->commands);
@@ -62,11 +59,10 @@ int			free_t_shell(t_shell *s)
 		free_tab((void ***)&s->redir.rdr, ft_tablen(s->redir.rdr));
 	if (s->redir.cmd != NULL)
 		free_tab((void ***)&s->redir.cmd, ft_tablen(s->redir.cmd));
-	free_tab((void ***)&s->env_var, ft_tablen(s->env_var));
-	free_tab((void ***)&s->shell_var, ft_tablen(s->shell_var));
 	free_tab((void ***)&s->paths, ft_tablen(s->paths));
 	free_tab((void ***)&s->argv, ft_tablen(s->argv));
 	ft_strdel(&s->prompt);
 	ft_exit(s);
-	return (EXIT_SUCCESS);
+	free_tab((void ***)&s->env_var, ft_tablen(s->env_var));
+	free_tab((void ***)&s->shell_var, ft_tablen(s->shell_var));
 }

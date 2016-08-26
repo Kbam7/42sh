@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/26 17:50:34 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/27 00:18:45 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ void					ft_ctrl_l(char *buff);
 */
 void			shell_loop(t_shell *s);
 int				run_shell(t_shell *s);
-int				free_t_shell(t_shell *s);
+void			free_t_shell(t_shell *s);
 
 /*
 **	init.c
@@ -315,7 +315,7 @@ char			**tab_trim(char **table, int len);
 */
 int				check_rights(char *path, int r, int w, int x);
 char			***check_env_type(int type, t_shell *s);
-void			print_variables(char **env, t_shell *s);
+void			print_variables(char **env);
 
 /*
 **	err.c

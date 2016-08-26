@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:47 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/22 23:34:01 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/26 23:47:26 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,14 @@ int			ft_set(int env_type, char *name, char *val, t_shell *s)
 	int				status;
 	char			***env;
 
+//dprintf(2, "ft_set() -- START\tname = '%s'\tvalue = '%s'\n", name, val); // debug
 	status = EXIT_FAILURE;
 	env = check_env_type(env_type, s);
 	if (!name && !val)
-		print_variables(*env, s);
+	{
+//dprintf(2, "ft_set() -- NO name and NO value\n"); // debug
+		print_variables(*env);
+	}
 	else if (name && ft_strchr(name, '='))
 		status = get_and_set_values(name, env);
 	else if (val && ft_strchr(val, '='))
@@ -101,5 +105,6 @@ int			ft_set(int env_type, char *name, char *val, t_shell *s)
 		return (err(ERR_INVALID_ARG, "set"));
 	if (env_type == 1)
 		status = ft_set(2, name, val, s);
+//dprintf(2, "ft_set() -- END\n"); // debug
 	return (status);
 }

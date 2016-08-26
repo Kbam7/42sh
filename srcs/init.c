@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 02:28:26 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/26 17:48:35 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/27 00:39:25 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,10 @@ void		init_env(t_shell *s, int argc, char **argv, char **envp)
 	s->cwd = ft_getenv("PWD", s);
 	s->commands = NULL;
 	init_pipes_redirs(s);
+	if (ft_getenv("42SH_PID", s) == NULL)
+	{
+		tmpstr = ft_itoa(getpid());
+		ft_set(1, "42SH_PID", tmpstr, s);
+		ft_strdel(&tmpstr);
+	}
 }

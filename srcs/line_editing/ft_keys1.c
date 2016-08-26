@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 14:12:20 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/26 17:50:51 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/27 01:15:43 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,6 @@ void	ft_move_left(t_shell *s, char *buff)
 
 void	ft_move_right(t_shell *s, char *buff)
 {
-//    int     i;
-
-//    i = s->curs_pos;
 	if ((buff[0] == 27 && buff[1] == 91 && buff[2] == 67 &&
 			s->curs_pos < s->str_len) || s-> on == 1)
 	{

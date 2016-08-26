@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 16:48:49 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/26 17:48:59 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/27 00:46:26 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	ft_clear_screen(void)
 {
-//	char	buf[2048];
+	char	buf[2048];
 	char	*str;
 
-//	tgetent(buf, getenv("TERM"));
+	tgetent(buf, getenv("TERM"));
 	str = tgetstr("cl", NULL);
 	ft_putendl(str);
 }
@@ -47,15 +47,17 @@ static void	init_terminal_vars(t_shell *s)
 
 int		init_terminal_data(t_shell *s, char **env)
 {
-	char	buf[2048];
+	char	*buf;
 	char	*term;
 	int		ret;
 
+	buf = ft_strnew(2048);
 	init_terminal_vars(s);
 	s->env = ft_strdup_2(env);
 	term = ft_getenv("TERM", s);
 	if ((ret = tgetent(buf, term)) < 1)
 			err(/*(ret == 0) ? ERR_NO_ENTRY : ERR_NODB */0, term);
+	ft_strdel(&buf);
     s->hight = tgetnum("li");
     s->width = tgetnum("co");
     s->home_path = ft_getenv("HOME", s);
