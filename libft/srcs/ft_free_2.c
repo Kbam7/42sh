@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_free_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/07/28 20:35:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/26 11:10:22 by tmack            ###   ########.fr       */
+/*   Created: 2016/07/08 15:07:05 by tmack             #+#    #+#             */
+/*   Updated: 2016/08/26 07:59:32 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_shell.h"
+#include "libft.h"
 
-int			main(int argc, char **argv, char **envp)
+void	ft_free_2(char **c)
 {
-	t_shell	s;
+	int		i;
 
-	init_env(&s, argc, argv, envp);
-	init_terminal_data(&s, envp);
-	ft_clear_screen();
-	write(1, "$> ", 2);
-	shell_loop(&s);
-	free_t_shell(&s);
-	return (EXIT_SUCCESS);
+	i = 0;
+	while (c[i] && c != NULL)
+	{
+		free(c[i]);
+		c[i] = NULL;
+		i++;
+	}
+	c = NULL;
 }

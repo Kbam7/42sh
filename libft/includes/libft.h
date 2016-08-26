@@ -47,7 +47,7 @@ typedef struct	s_split_string
 	size_t		words;
 	char		**strings;
 }				t_split_string;
-
+void            ft_free_2(char **str);
 void			*ft_memset(void *s, int c, size_t n);
 void			ft_bzero(void *s, size_t n);
 void			*ft_memcpy(void *dest, const void *src, size_t n);
