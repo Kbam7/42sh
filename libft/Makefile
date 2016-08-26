@@ -6,7 +6,7 @@
 #    By: kbamping <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/28 14:01:24 by kbamping          #+#    #+#              #
-#    Updated: 2016/08/10 14:29:13 by kbamping         ###   ########.fr        #
+#    Updated: 2016/08/26 08:03:29 by tmack            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,8 +42,9 @@ SRCS = srcs/ft_atoi.c srcs/ft_bzero.c srcs/ft_isalnum.c 		\
 	srcs/ft_float_swap.c srcs/ft_strtoupper.c srcs/ft_nstrsplit.c	\
 	srcs/ft_memswap.c srcs/ft_isint.c srcs/ft_sprintf.c			\
 	srcs/ft_fprintf.c srcs/ft_strjoinstr.c srcs/ft_iswhtspc.c	\
+	srcs/ft_free_2.c											\
 
-OBJS = ft_atoi.o ft_bzero.o ft_isalnum.o 					\
+OBJS = ft_atoi.o ft_bzero.o ft_isalnum.o ft_free_2.o		\
 	ft_isalpha.o ft_isascii.o ft_isdigit.o 					\
 	ft_islower.o ft_isprint.o ft_isupper.o 					\
 	ft_itoa_base.o ft_itoa.o ft_memalloc.o 					\
