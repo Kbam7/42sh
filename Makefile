@@ -1,5 +1,5 @@
 PROG		= 42sh
-FLAGS		= -Wall -g
+FLAGS		= -Wall -Wextra -Werror -g
 LIBFT		= -L libft -lft -ltermcap
 INCLUDES	= -I includes -I libft/includes
 
