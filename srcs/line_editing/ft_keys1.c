@@ -36,6 +36,7 @@ void	ft_move_left(t_shell *s, char *buff)
 }
 
 void	ft_move_right(t_shell *s, char *buff)
+
 {
 	if ((buff[0] == 27 && buff[1] == 91 && buff[2] == 67 &&
 			s->curs_pos < s->str_len) || s-> on == 1)
@@ -74,6 +75,7 @@ while (buff[i])
 	ft_history_down(s, buff);
 	ft_end_right(s, buff);
 	ft_end_left(s, buff);
+	ft_autocomplete(s, buff);
 	ft_enter(buff, s);
 }
 

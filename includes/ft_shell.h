@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include <termios.h>
 # include <term.h>
+# include <dirent.h>
 
 # define _GNU_SOURCE		// for O_TMPFILE in heredocs
 
@@ -168,7 +169,27 @@ typedef struct	s_shell
 	struct termios	new_term;
 	struct termios	default_term;
 	struct termios	old_term;
+// rich section
+	char	*curr;	// input string
+	int		cmd_len; // length of input string
+	int		cmd_fork;	//for auto complete
+	char	**tab_options;	//files
+	int		opt_i;		//no of tab_options
+	int		tab_count;
 }				t_shell;
+
+/*
+** --[ FUNCTION PROTOTYPES -- AUTO-COMPLETE]--
+*/
+
+void			ft_autocomplete(t_shell *s, char *buff);
+void			ft_print_options(t_shell *s);
+void			ft_autocomplete_path(t_shell *s, char *buff);
+void			ft_checkcurr(t_shell *s, char *buff);
+int				ft_save_tab_options(char *str, t_shell *s, char *d_name);
+void			ft_sortoptions(t_shell *s);
+void			ft_complete_word(t_shell *s);
+
 
 /*
 ** --[ FUNCTION PROTOTYPES -- LINE EDITING]--
