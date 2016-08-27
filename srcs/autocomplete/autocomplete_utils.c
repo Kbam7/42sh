@@ -1,24 +1,27 @@
 #include "ft_shell.h"
 
-void	ft_checkcurr(t_shell *s, char *buff)	 // to save cmd to curr and see 
+void	ft_checkcurr(t_shell *s)
 {
+	char	*tmp;
+
 	if (s->curr == NULL)
 	{
-		s->curr = s->new_line;		 		// initilise cmd if it does not exist
+		s->curr = ft_strdup(s->new_line);
 		s->tab_count = 1;
 	}
-	else if (s->curr && s->curr != s->new_line)
+	else if (s->curr && ft_strcmp(s->curr, s->new_line) != 0)
 	{
-											// so curr exists but it has been changed
-		s->tab_count = 1;			      	// curr has changed so we reset tab_count
-		s->curr = s->new_line;		 		// set the curr to the new value
+		s->tab_count = 1;
+		tmp = ft_strdup(s->new_line);
+		ft_strdel(&s->curr);
+		s->curr = tmp;
 	}
-	else if (ft_strcmp(s->curr, s->new_line) == 0)
-		s->tab_count = 2; 					// curr is the same so we incrament tab_count
+	else if (s->curr && ft_strcmp(s->curr, s->new_line) == 0)
+		s->tab_count = 2;
 	s->cmd_len = ft_strlen(s->curr);
 }
 
-int	ft_save_tab_options(char *str, t_shell *s, char *d_name)
+int	ft_save_tab_options(t_shell *s, char *d_name)
 {
 	int	i;
 	char	**tmp;

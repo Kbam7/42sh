@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/10 13:29:59 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/10 15:04:25 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/27 17:52:11 by rbromilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,15 @@ static int	change_dir(char *path, t_shell *s)
 	if ((cwd = (char *)malloc(sizeof(char) * 4096)) == NULL)
 		err(ERR_MALLOC, "ft_cd() - change_dir()\n");
 	if (access(path, F_OK) != 0)
+	{
+		ft_strdel(&cwd);
 		return (err(ERR_NO_FILE, path));
+	}
 	if ((check_rights(path, 'r', 0, 'x') != EXIT_SUCCESS) || chdir(path) != 0)
+	{
+		ft_strdel(&cwd);
 		return (err(ERR_CHDIR, path));
+	}
 	ft_set(2, "OLDPWD", ft_getenv("PWD", s), s);
 	ft_set(1, "PWD", getcwd(cwd, 4096), s);
 	s->cwd = ft_getenv("PWD", s);

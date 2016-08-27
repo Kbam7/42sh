@@ -6,11 +6,21 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 02:28:26 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/27 00:39:25 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/27 16:51:15 by rbromilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
+
+static void	init_autocomplete_vars(t_shell *s)
+{
+	s->curr = NULL;
+	s->tab_options = NULL;
+	s->opt_i = 0;
+	s->cmd_len = 0;
+	s->cmd_fork = 0;
+	s->tab_count = 0;
+}
 
 static void	init_builtin_func_options(t_shell *s)
 {
@@ -60,4 +70,5 @@ void		init_env(t_shell *s, int argc, char **argv, char **envp)
 		ft_set(1, "42SH_PID", tmpstr, s);
 		ft_strdel(&tmpstr);
 	}
+	init_autocomplete_vars(s);
 }
