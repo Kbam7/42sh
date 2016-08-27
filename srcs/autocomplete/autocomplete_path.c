@@ -45,11 +45,9 @@ void	ft_print_options(t_shell *s)
 	int	i;
 
 	i = 0;
-	ft_putstr("\n");
 	while (i < s->opt_i)
 	{
-		ft_putstr(s->tab_options[i]);
-		ft_putstr("\n");
+		ft_putendl(s->tab_options[i]);
 		i++;
 	}
 	ft_putstr("$> ");
