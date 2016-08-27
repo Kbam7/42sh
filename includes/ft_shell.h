@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/27 00:18:45 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/27 17:31:52 by rbromilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,9 +184,9 @@ typedef struct	s_shell
 
 void			ft_autocomplete(t_shell *s, char *buff);
 void			ft_print_options(t_shell *s);
-void			ft_autocomplete_path(t_shell *s, char *buff);
-void			ft_checkcurr(t_shell *s, char *buff);
-int				ft_save_tab_options(char *str, t_shell *s, char *d_name);
+void			ft_autocomplete_path(t_shell *s);
+void			ft_checkcurr(t_shell *s);
+int				ft_save_tab_options(t_shell *s, char *d_name);
 void			ft_sortoptions(t_shell *s);
 void			ft_complete_word(t_shell *s);
 
@@ -195,9 +195,7 @@ void			ft_complete_word(t_shell *s);
 ** --[ FUNCTION PROTOTYPES -- LINE EDITING]--
 */
 
-char    **ft_strdup_2(char **src);
-
-
+char					**ft_strdup_2(char **src);
 void					ft_backspace(t_shell *shell, char *buff);
 void					buffer(t_shell *shell);
 int						ft_curs_pos(t_shell *shell);
