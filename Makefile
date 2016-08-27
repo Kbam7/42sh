@@ -1,5 +1,5 @@
 PROG		= 42sh
-FLAGS		= -Wall -Wextra -Werror -g
+FLAGS		= -Wall -g
 LIBFT		= -L libft -lft -ltermcap
 INCLUDES	= -I includes -I libft/includes
 
@@ -26,14 +26,17 @@ SRCS		=	srcs/main.c						\
 				srcs/err.c						\
 				srcs/t_redirs.c					\
 				srcs/t_cmd_list.c				\
-				srcs/line_editing/ft_keys3.c 		\
-				srcs/line_editing/ft_back_space.c	\
-				srcs/line_editing/ft_history.c		\
-				srcs/line_editing/ft_keys2.c		\
-				srcs/line_editing/ft_keys1.c		\
-				srcs/line_editing/ft_print_char.c	\
-				srcs/line_editing/ft_init_terminal.c\
-				srcs/line_editing/ft_strdup_2.c
+				srcs/line_editing/ft_keys3.c 			\
+				srcs/line_editing/ft_back_space.c		\
+				srcs/line_editing/ft_history.c			\
+				srcs/line_editing/ft_keys2.c			\
+				srcs/line_editing/ft_keys1.c			\
+				srcs/line_editing/ft_print_char.c		\
+				srcs/line_editing/ft_init_terminal.c	\
+				srcs/line_editing/ft_strdup_2.c			\
+				srcs/autocomplete/ft_autocomplete.c		\
+				srcs/autocomplete/autocomplete_path.c	\
+				srcs/autocomplete/autocomplete_utils.c	\
 
 BUILTIN		=	srcs/builtin/ft_cd.c			\
 				srcs/builtin/ft_cd_utils.c		\

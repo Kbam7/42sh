@@ -36,6 +36,7 @@ void	ft_move_left(t_shell *s, char *buff)
 }
 
 void	ft_move_right(t_shell *s, char *buff)
+
 {
 //    int     i;
 
@@ -70,6 +71,7 @@ void	ft_move_cur(char *buff, t_shell *s)
 	ft_history_down(s, buff);
 	ft_end_right(s, buff);
 	ft_end_left(s, buff);
+	ft_autocomplete(s, buff);
 	ft_enter(buff, s);
 }
 
