@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/27 00:18:45 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/27 17:31:52 by rbromilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include <termios.h>
 # include <term.h>
+# include <dirent.h>
 
 # define _GNU_SOURCE		// for O_TMPFILE in heredocs
 
@@ -168,15 +169,33 @@ typedef struct	s_shell
 	struct termios	new_term;
 	struct termios	default_term;
 	struct termios	old_term;
+// rich section
+	char	*curr;	// input string
+	int		cmd_len; // length of input string
+	int		cmd_fork;	//for auto complete
+	char	**tab_options;	//files
+	int		opt_i;		//no of tab_options
+	int		tab_count;
 }				t_shell;
+
+/*
+** --[ FUNCTION PROTOTYPES -- AUTO-COMPLETE]--
+*/
+
+void			ft_autocomplete(t_shell *s, char *buff);
+void			ft_print_options(t_shell *s);
+void			ft_autocomplete_path(t_shell *s);
+void			ft_checkcurr(t_shell *s);
+int				ft_save_tab_options(t_shell *s, char *d_name);
+void			ft_sortoptions(t_shell *s);
+void			ft_complete_word(t_shell *s);
+
 
 /*
 ** --[ FUNCTION PROTOTYPES -- LINE EDITING]--
 */
 
-char    **ft_strdup_2(char **src);
-
-
+char					**ft_strdup_2(char **src);
 void					ft_backspace(t_shell *shell, char *buff);
 void					buffer(t_shell *shell);
 int						ft_curs_pos(t_shell *shell);
