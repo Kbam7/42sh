@@ -16,6 +16,7 @@ void	ft_checkcurr(t_shell *s)
 		ft_strdel(&s->curr);
 		s->curr = tmp;
 	}
+
 	else if (s->curr && ft_strcmp(s->curr, s->new_line) == 0)
 		s->tab_count = 2;
 	s->cmd_len = ft_strlen(s->curr);
@@ -23,14 +24,15 @@ void	ft_checkcurr(t_shell *s)
 
 int	ft_save_tab_options(t_shell *s, char *d_name)
 {
-	int	i;
+	int		i;
 	char	**tmp;
 
-	i = s->opt_i;
+	i = s->opt_i;	
+
 	if (i == 0)
 	{
 		if ((s->tab_options = (char **)malloc(sizeof(char *) * 2)) == NULL)
-			return (err(ERR_MALLOC, "ft_save_tab_options()"));
+				return (err(ERR_MALLOC, "ft_save_tab_options()"));
 		else
 		{
 			s->tab_options[0] = ft_strdup(d_name);
@@ -39,14 +41,15 @@ int	ft_save_tab_options(t_shell *s, char *d_name)
 	}
 	else if (i > 0)
 	{
-		if ((tmp = ft_tabdup(s->tab_options, i + 1)) == NULL)
+		if ((tmp = ft_tabdup(s->tab_options, i + 2)) == NULL)
 			return (err(ERR_MALLOC, "ft_save_tab_options()"));
 		else
 		{
-			free_tab((void ***)&s->tab_options, i + 1);
+		free_tab((void ***)&s->tab_options, i);
 			s->tab_options = tmp;
 			s->tab_options[i] = ft_strdup(d_name);
 		}
+//	dprintf(2, "d_name is ----- %s \t tab_options is --------> %s \n", d_name, s->tab_options[i]);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -81,7 +84,7 @@ void	ft_sortoptions(t_shell *s)
 		k++;
 	}
 }
-
+/*
 void	ft_complete_word(t_shell *s)
 {
 	int			i;
@@ -125,3 +128,4 @@ void	ft_complete_word(t_shell *s)
 		}
 	}
 }
+*/
