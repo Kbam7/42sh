@@ -30,9 +30,10 @@ static int		ft_select_path(t_shell *s) // saving files
 	{
 		if (ft_strncmp(tmp, sd->d_name, ft_strlen(tmp)) == 0)
 		{
+
 			ft_save_tab_options(s, sd->d_name);
-//			dprintf(2, "tab-option == %s \t d_name == %s /n", s-tab_options[i]);
 			s->opt_i++;
+
 		}
 	}
 	ft_strdel(&tmp);
@@ -45,14 +46,30 @@ void	ft_print_options(t_shell *s)
 	int	i;
 
 	i = 0;
-	while (i < s->opt_i)
+	while (i <= s->opt_i - 1)
 	{
+//		ft_putnbr(i);
 		ft_putendl(s->tab_options[i]);
+//		ft_putnbr(s->opt_i);
 		i++;
 	}
 
 	ft_putstr("$>");
 	ft_putstr(s->curr);
+}
+
+int		ft_allmatch(t_shell *s, int stop)
+{
+	int	i;
+
+	i = 0;
+	while (s->tab_options[i + 1] != NULL)
+	{
+		 if (s->tab_options[i][stop] != s->tab_options[i + 1][stop])
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 void	ft_print_word(t_shell *s)
@@ -66,7 +83,7 @@ void	ft_print_word(t_shell *s)
 	tmp = ft_strdup(sp.strings[sp.words - 1]);
 	ft_free_split(&sp);
 	i = ft_strlen(tmp);
-	while(s->tab_options[1][i] != '\0')
+	while(s->tab_options[1][i] != '\0' && ft_allmatch(s,i))
 	{
 		rest[0] = s->tab_options[1][i];
 		rest[1] = 0;
@@ -74,15 +91,17 @@ void	ft_print_word(t_shell *s)
 		ft_print_char(rest, s);
 		i++;
 	}
-//	ft_strdel(rest);
 	ft_strdel(&tmp);
 }
-
 void	ft_autocomplete_path(t_shell *s)
 {
 	ft_checkcurr(s);
+//	if (s->tab_count == 0)
+//		ft_select_path(s);
 	if (s->tab_count == 1)
 	{
+//		if (s->tab_options != NULL)											//reinit
+//			free_tab((void ***)&s->tab_options, s->opt_i);
 		ft_select_path(s);
 		ft_sortoptions(s);
 		ft_print_word(s);
@@ -94,4 +113,3 @@ void	ft_autocomplete_path(t_shell *s)
 		ft_print_options(s);
 	}
 }
-

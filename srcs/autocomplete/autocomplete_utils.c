@@ -17,10 +17,26 @@ void	ft_checkcurr(t_shell *s)
 		s->curr = tmp;
 	}
 
+			free_tab((void ***)&s->tab_options, i);
 	else if (s->curr && ft_strcmp(s->curr, s->new_line) == 0)
 		s->tab_count = 2;
 	s->cmd_len = ft_strlen(s->curr);
 }
+/*
+int	copyname(t_shell *s, char *d_name)
+{
+	int	i;
+
+	i = 0;
+	while (s->tab_options[i + 1] != NULL)
+	{
+		if (ft_strcmp(s->tab_options[i],d_name) == 0)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+*/
 
 int	ft_save_tab_options(t_shell *s, char *d_name)
 {
@@ -41,18 +57,19 @@ int	ft_save_tab_options(t_shell *s, char *d_name)
 	}
 	else if (i > 0)
 	{
-		if ((tmp = ft_tabdup(s->tab_options, i + 2)) == NULL)
+		if ((tmp = ft_tabdup(s->tab_options, i + 1)) == NULL)
 			return (err(ERR_MALLOC, "ft_save_tab_options()"));
 		else
 		{
-		free_tab((void ***)&s->tab_options, i);
+			free_tab((void ***)&s->tab_options, i);
 			s->tab_options = tmp;
 			s->tab_options[i] = ft_strdup(d_name);
 		}
-//	dprintf(2, "d_name is ----- %s \t tab_options is --------> %s \n", d_name, s->tab_options[i]);
+//	dprintf(2, "tab_options is --------> %s \n", s->tab_options[s->opt_i]);
 	}
 	return (EXIT_SUCCESS);
 }
+
 
 void	ft_sortoptions(t_shell *s)
 {
@@ -70,13 +87,12 @@ void	ft_sortoptions(t_shell *s)
 		while (i < s->opt_i)
 		{
 			while (s->tab_options[k][j] == s->tab_options[i][j])
-					j++;
+				j++;
 			if (s->tab_options[k][j] < s->tab_options[i][j])
 			{
-					tmp = s->tab_options[k];
-					s->tab_options[k] = s->tab_options[i];
-					s->tab_options[i] = tmp;
-
+				tmp = s->tab_options[k];
+				s->tab_options[k] = s->tab_options[i];
+				s->tab_options[i] = tmp;
 			}
 			j = 0;
 			i++;
