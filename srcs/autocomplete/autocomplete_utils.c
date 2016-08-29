@@ -16,27 +16,10 @@ void	ft_checkcurr(t_shell *s)
 		ft_strdel(&s->curr);
 		s->curr = tmp;
 	}
-
-			free_tab((void ***)&s->tab_options, i);
 	else if (s->curr && ft_strcmp(s->curr, s->new_line) == 0)
 		s->tab_count = 2;
 	s->cmd_len = ft_strlen(s->curr);
 }
-/*
-int	copyname(t_shell *s, char *d_name)
-{
-	int	i;
-
-	i = 0;
-	while (s->tab_options[i + 1] != NULL)
-	{
-		if (ft_strcmp(s->tab_options[i],d_name) == 0)
-			return (0);
-		i++;
-	}
-	return (1);
-}
-*/
 
 int	ft_save_tab_options(t_shell *s, char *d_name)
 {
@@ -70,7 +53,6 @@ int	ft_save_tab_options(t_shell *s, char *d_name)
 	return (EXIT_SUCCESS);
 }
 
-
 void	ft_sortoptions(t_shell *s)
 {
 	char	*tmp;
@@ -88,7 +70,7 @@ void	ft_sortoptions(t_shell *s)
 		{
 			while (s->tab_options[k][j] == s->tab_options[i][j])
 				j++;
-			if (s->tab_options[k][j] < s->tab_options[i][j])
+			if (s->tab_options[k][j] > s->tab_options[i][j])
 			{
 				tmp = s->tab_options[k];
 				s->tab_options[k] = s->tab_options[i];
@@ -100,48 +82,3 @@ void	ft_sortoptions(t_shell *s)
 		k++;
 	}
 }
-/*
-void	ft_complete_word(t_shell *s)
-{
-	int			i;
-	int			k;
-	char		*buff;
-	int			j;
-	int			h;
-
-	i = 0;
-	j = s->cmd_len;
-	k = 0;
-	h = 0;
-	if (s->tab_options[i + 1] == NULL && i == 0)
-	{
-		while (s->tab_options[i][j] != '\0') // up to end of line or up the j(position of fork)
-		{
-			buff = (char *)ft_memalloc(sizeof(char) * 4);
-			ft_print_char(buff, s);
-			j++;
-		}
-	}
-	else
-	{
-		while (s->tab_options[i] && h != 1)
-		{
-			while (s->tab_options[i][k] != '\0' )	// finding value for cmd_fork
-			{
-				if (s->tab_options[i][k] != s->tab_options[i + 1][k])
-				{
-					h = 1;
-					break ;
-				}
-				k++;
-			}
-			if (h == 1)
-			{
-				s->cmd_fork = k;
-				break ;
-			}
-			++i;
-		}
-	}
-}
-*/
