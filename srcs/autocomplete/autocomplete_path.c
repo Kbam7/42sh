@@ -86,14 +86,17 @@ void	ft_print_word(t_shell *s)
 	tmp = ft_strdup(sp.strings[sp.words - 1]);
 	ft_free_split(&sp);
 	i = ft_strlen(tmp);
-	while(s->tab_options[1][i] != '\0' && ft_allmatch(s,i))
+	while(s->tab_options[0][i] != '\0' && ft_allmatch(s,i))
 	{
-		rest[0] = s->tab_options[1][i];
+
+		rest[0] = s->tab_options[0][i];
 		rest[1] = 0;
 		rest[2] = 0;
 		ft_print_char(rest, s);
 		i++;
+
 	}
+
 	ft_strdel(&tmp);
 }
 
