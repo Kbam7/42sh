@@ -23,14 +23,15 @@ void	ft_checkcurr(t_shell *s)
 
 int	ft_save_tab_options(t_shell *s, char *d_name)
 {
-	int	i;
+	int		i;
 	char	**tmp;
 
-	i = s->opt_i;
+	i = s->opt_i;	
+
 	if (i == 0)
 	{
 		if ((s->tab_options = (char **)malloc(sizeof(char *) * 2)) == NULL)
-			return (err(ERR_MALLOC, "ft_save_tab_options()"));
+				return (err(ERR_MALLOC, "ft_save_tab_options()"));
 		else
 		{
 			s->tab_options[0] = ft_strdup(d_name);
@@ -43,10 +44,11 @@ int	ft_save_tab_options(t_shell *s, char *d_name)
 			return (err(ERR_MALLOC, "ft_save_tab_options()"));
 		else
 		{
-			free_tab((void ***)&s->tab_options, i + 1);
+			free_tab((void ***)&s->tab_options, i);
 			s->tab_options = tmp;
 			s->tab_options[i] = ft_strdup(d_name);
 		}
+//	dprintf(2, "tab_options is --------> %s \n", s->tab_options[s->opt_i]);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -67,61 +69,16 @@ void	ft_sortoptions(t_shell *s)
 		while (i < s->opt_i)
 		{
 			while (s->tab_options[k][j] == s->tab_options[i][j])
-					j++;
-			if (s->tab_options[k][j] < s->tab_options[i][j])
+				j++;
+			if (s->tab_options[k][j] > s->tab_options[i][j])
 			{
-					tmp = s->tab_options[k];
-					s->tab_options[k] = s->tab_options[i];
-					s->tab_options[i] = tmp;
-
+				tmp = s->tab_options[k];
+				s->tab_options[k] = s->tab_options[i];
+				s->tab_options[i] = tmp;
 			}
 			j = 0;
 			i++;
 		}
 		k++;
-	}
-}
-
-void	ft_complete_word(t_shell *s)
-{
-	int			i;
-	int			k;
-	char		*buff;
-	int			j;
-	int			h;
-
-	i = 0;
-	j = s->cmd_len;
-	k = 0;
-	h = 0;
-	if (s->tab_options[i + 1] == NULL && i == 0)
-	{
-		while (s->tab_options[i][j] != '\0') // up to end of line or up the j(position of fork)
-		{
-			buff = (char *)ft_memalloc(sizeof(char) * 4);
-			ft_print_char(buff, s);
-			j++;
-		}
-	}
-	else
-	{
-		while (s->tab_options[i] && h != 1)
-		{
-			while (s->tab_options[i][k] != '\0' )	// finding value for cmd_fork
-			{
-				if (s->tab_options[i][k] != s->tab_options[i + 1][k])
-				{
-					h = 1;
-					break ;
-				}
-				k++;
-			}
-			if (h == 1)
-			{
-				s->cmd_fork = k;
-				break ;
-			}
-			++i;
-		}
 	}
 }
