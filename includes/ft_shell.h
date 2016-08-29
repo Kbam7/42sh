@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/27 17:31:52 by rbromilo         ###   ########.fr       */
+/*   Updated: 2016/08/29 22:37:34 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,6 +258,16 @@ int				process_pipes(char *cmd, t_shell *s);
 int				get_commands(t_shell *s);
 void			get_input(char *cmd, t_shell *s);
 int				store_commands(char *str, t_shell *s);
+
+/*
+**	logical_or.c
+*/
+int				process_logical_or(char *cmd, t_shell *s);
+
+/*
+**	logical_and.c
+*/
+int				process_logical_and(char *cmd, t_shell *s);
 
 /*
 **	pipes.c

@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 18:03:53 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/28 16:14:44 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/29 22:36:39 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,16 @@
 
 int	process_input(char *cmd, t_shell *s)
 {
-	int			error;
+	int		error;
+	char 	*ret;
 
 	error = EXIT_FAILURE;
-/* // '&&' '||'
 
---	Add a hook into process_input() for '||' and '&&'..
-
---	If theres a '||', spilt by '||' and run the first item through process_input()
-	and only if it DOES NOT RETURN SUCCESSFULLY will you pass the next item to process_input().
-
---	If theres a '&&', spilt by '&&' and run the first item through process_input()
-	and only if it RETURNS SUCCESSFULLY will you pass the next item to process_input().
-
-
-*/
-
-
-	if (ft_strchr(cmd, '|'))
+	if ((ret = ft_strchr(cmd, '|')) && ret[1] == '|')
+		return (process_logical_or(cmd, s));
+	if ((ret = ft_strchr(cmd, '&')) && ret[1] == '&')
+		return (process_logical_and(cmd, s));
+	else if (ft_strchr(cmd, '|'))
 		return (process_pipes(cmd, s));
 	else if (ft_strchr(cmd, '<') || ft_strchr(cmd, '>'))
 		return (process_redir(cmd, s));
