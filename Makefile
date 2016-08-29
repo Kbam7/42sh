@@ -9,6 +9,8 @@ SRCS		=	srcs/main.c						\
 				srcs/prompt.c					\
 				srcs/input.c					\
 				srcs/commands.c					\
+				srcs/logical_or.c				\
+				srcs/logical_and.c				\
 				srcs/pipes.c					\
 				srcs/pipetab_funcs.c			\
 				srcs/redirs/redirs.c			\
