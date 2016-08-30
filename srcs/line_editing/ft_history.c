@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/11 09:33:16 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/26 17:49:13 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/30 07:31:08 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,10 @@ void    ft_history_up(t_shell *s, char *buff)
 		tputs(tgetstr("ce", 0), 1, ft_putchar_re);
 		s->h_pos++;
 		i = s->h_index - s->h_pos;
-//		if (s->new_line != NULL)
-//			free(s->new_line);
-		s->new_line = (i > -1 && s->history[i]) ? s->history[i] : ft_strnew(1);
-		
-//		s->new_line = ft_strdup(s->history[i]);
+		if (s->new_line != NULL)
+			free(s->new_line);
+//		s->new_line = (i > -1 && s->history[i]) ? s->history[i] : ft_strnew(1);		
+		s->new_line = ft_strdup(s->history[i]);
 		ft_putstr(s->new_line);
 		s->curs_pos = ft_strlen(s->new_line);
 		s->str_len = ft_strlen(s->new_line);
@@ -53,11 +52,11 @@ void    ft_history_down(t_shell *s, char *buff)
 		tputs(tgetstr("ce", 0), 1, ft_putchar_re);
 		s->h_pos--;
 		i = s->h_index - s->h_pos;
-//		if (s->new_line != NULL)
-//			free(s->new_line);
+		if (s->new_line != NULL)
+			free(s->new_line);
 		s->new_line = (i > -1 && s->history[i]) ? s->history[i] : ft_strnew(1);
 
-//		s->new_line = s->history[i];
+		s->new_line = ft_strdup(s->history[i]);
 		ft_putstr(s->new_line);
 		s->curs_pos = ft_strlen(s->new_line);
 		s->str_len = ft_strlen(s->new_line);
