@@ -29,7 +29,7 @@ int		ft_putchar_re(int c)
 
 static void	init_terminal_vars(t_shell *s)
 {
-	s->env = NULL;
+//	s->env = NULL;
     s->pwd = NULL;
     s->oldpwd = NULL;
 	s->curs_pos = 0;
@@ -50,9 +50,12 @@ int		init_terminal_data(t_shell *s, char **env)
 	char	*buf;
 	char	*term;
 	int		ret;
+    char *os = ft_strdup(env[0]);
 
+    free(os);
 	buf = ft_strnew(2048);
 	init_terminal_vars(s);
+	s->env = NULL;
 	s->env = ft_strdup_2(env);
 	term = ft_getenv("TERM", s);
 	if ((ret = tgetent(buf, term)) < 1)
