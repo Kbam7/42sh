@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/01 16:02:34 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/01 23:25:43 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,8 @@ typedef struct	s_shell
 	char		*cwd;
 	char		*prompt;
 	char		**input;
+	char		*hdoc_newstr;	// heredoc
+	int			hdoc_strlen;	// heredoc
 	int			arg_p;
 	int			arg_u;
 	t_cmd_list	*commands;

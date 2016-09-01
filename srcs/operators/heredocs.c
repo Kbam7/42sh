@@ -6,11 +6,35 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/01 14:27:46 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/01 17:44:48 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/02 00:19:51 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
+
+void	ft_heredoc_enter(char *buff, t_shell *s)
+{
+	char	*tmp;
+
+	if (buff[0] == 10 && buff[1] == 0 && buff[2] == 0)
+	{
+		ft_new_history(s);
+		s->curs_pos = 0;
+		s->str_len = 0;
+		s->h_pos = 0;
+		if (s->new_line != NULL && ft_strlen(s->new_line) > 0)
+		{
+			tmp = ft_strjoin(s->new_line, "\n");
+			ft_strdel(&s->new_line);
+			s->hdoc_newstr = ft_strdup(tmp);
+			s->hdoc_strlen = ft_strlen(s->hdoc_newstr);
+		}
+		if (s->new_line != NULL)
+			free(s->new_line);
+		s->new_line = NULL;
+		s->new_line = ft_strnew(1);
+	}	
+}
 
 void	ft_heredoc_move_cur(char *buff, t_shell *s)
 {
@@ -22,45 +46,51 @@ void	ft_heredoc_move_cur(char *buff, t_shell *s)
 	ft_move_right(s, buff);
 	ft_backspace(s, buff);
 	ft_ctrl_l(buff);
+	ft_history_up(s, buff);
+	ft_history_down(s, buff);
 	ft_end_right(s, buff);
 	ft_end_left(s, buff);
+	ft_autocomplete(s, buff);
 	ft_heredoc_enter(buff, s);
 }
 
-void	ft_heredoc_buffer(t_shell *s)
+static int	ft_heredoc_buffer(t_shell *s)
 {
 	char	*temp;
 
 	s->width = tgetnum("co");
-    temp = (char *)malloc(sizeof(char) * 4096);
-	ft_bzero(temp, 4096);
-	read(0, temp, 4096);
-	ft_move_cur(temp, s);
+    if ((temp = (char *)malloc(sizeof(char) * 24)) == NULL)
+		return (err(ERR_MALLOC, "ft_heredoc_buffer()"));
+	ft_bzero(temp, 24);
+	read(0, temp, 24);
+	ft_heredoc_move_cur(temp, s);
 	ft_print_char(temp, s);
 	free(temp);
+	return (EXIT_SUCCESS);
 }
 
 static int	ft_heredoc_rw(int fd, t_shell *s)
 {
-	char	*line;
-	int		ret;
+	char	*end;
 	int		i;
 
 
-	line = NULL;
 	ft_putstr(" heredoc> ");
 	i = s->redir.rdr_i;
-dprintf(2, "ft_heredoc() - ft_heredoc_rw() -- cmd[%d] = '%s'\tcmd[%d] = '%s'\n", i, s->redir.cmd[i], i+1, s->redir.cmd[i+1]); // debug
-	while ((ret = ft_gnl(0, &line)) > 0)
-	{
-dprintf(2, "ft_heredoc() - ft_heredoc_rw() -- inside gnl loop -- line = '%s'\n", line); // debug
-		if (ft_strncmp(line, s->redir.cmd[i + 1], ft_strlen(line)) == 0)
-			break ;
-		write(fd, line, ft_strlen(line));
-		ft_strdel(&line);
-		ft_putstr(" heredoc> ");
-	}
-	ft_strdel(&line);
+	end = s->redir.cmd[i + 1];
+	while (ft_heredoc_buffer(s) == EXIT_SUCCESS)
+		if (s->hdoc_newstr != NULL && s->hdoc_strlen > 0)
+		{
+			if (ft_strncmp(s->hdoc_newstr, end, s->hdoc_strlen - 1) == 0)
+				break ;
+			else
+			{
+			// Add a check here that will remove any preceding tabulations if '<<-'
+				write(fd, s->hdoc_newstr, s->hdoc_strlen);
+				ft_strdel(&s->hdoc_newstr);
+				ft_putstr(" heredoc> ");
+			}
+		}
 	if (lseek(fd, 0, SEEK_SET) == -1)
 		return (err(/*ERR_LSEEK*/0, "heredoc"));
 	dup2(fd, STDIN_FILENO);
@@ -73,17 +103,15 @@ int		ft_heredocs(char *str, int pos, t_shell *s)
 	char	tmp_name[32];
 	int		fd;
 
-	ft_memset(tmp_name, 0, sizeof(tmp_name));
+	s->hdoc_newstr = NULL;
+	ft_memset(tmp_name, 0, 32);
 	if (str[pos] == str[pos + 2])			// '<<<'
 	{
 		// herestring reads one word or until end quote is found
 	}
 	else
 	{
-//		path = open(".42sh_heredoc", O_RDWR | O_CREAT, 0664); // S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
-//		path = open(ft_getenv("PWD", s), O_TMPFILE | O_RDWR, S_IRUSR | S_IWUSR);
-
-		ft_strncpy(tmp_name, "/tmp/tmp.42sh.heredoc-XXXXXX", 28);
+		ft_strncpy(tmp_name, "/tmp/42sh_heredoc-XXXXXX", 28);
 		fd = mkstemp(tmp_name);
 		unlink(tmp_name);
 		if (fd < 0)
