@@ -6,15 +6,30 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:27:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/30 01:46:12 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/01 11:09:46 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-static void	remove_var(char *name, char ***var)
+static void	delete_var(char ***var, int i)
 {
 	char			**tmp;
+
+	ft_strdel(&(*var)[i]);
+	while ((*var)[i + 1] != NULL)
+	{
+		++i;
+		(*var)[i - 1] = ft_strdup((*var)[i]);
+		ft_strdel(&(*var)[i]);
+	}
+	tmp = ft_tabdup(*var, ft_tablen(*var));
+	free_tab((void ***)var, ft_tablen(*var));
+	*var = tmp;
+}
+
+static void	remove_var(char *name, char ***var)
+{
 	int				i;
 	t_split_string	data;
 
@@ -23,21 +38,10 @@ static void	remove_var(char *name, char ***var)
 	{
 		data = ft_nstrsplit((*var)[i], '=');
 		if (ft_strcmp(name, data.strings[0]) == 0)
-		{
-			ft_strdel(&(*var)[i]);
-			while ((*var)[++i] != NULL)
-				(*var)[i - 1] = (*var)[i];
-			(*var)[i - 1] = NULL;
-			tmp = ft_tabdup(*var, ft_tablen(*var));
-			free_tab((void ***)var, ft_tablen(*var));
-			*var = tmp;
-			free_tab((void ***)&data.strings, data.words);
-		}
+			delete_var(var, i);
 		else
-		{
-			free_tab((void ***)&data.strings, data.words);
 			++i;
-		}
+		free_tab((void ***)&data.strings, data.words);
 	}
 }
 
