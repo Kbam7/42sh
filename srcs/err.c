@@ -76,6 +76,7 @@ int			err(int errno, char *msg)
 	{
 		err_msg = ft_strjoin(err, tmp);
 		ft_putendl_fd(err_msg, STDERR_FILENO);
+        write(1, "$> ", 2);
 		free(tmp);
 		free(err_msg);
 	}

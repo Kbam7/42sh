@@ -22,7 +22,7 @@ void		shell_loop(t_shell *s)
 	{
 //		set_prompt(s);
 	//	ft_printf("%s%s%s%s", C_BOLD, C_BROWN, s->prompt, C_NONE);
-		write(1, "$> ", 2);
+	//	write(1, "$> ", 2);
 		while (s->commands == NULL)
 			buffer(s);
 		cmd_list = s->commands;
