@@ -13,6 +13,7 @@ SRCS		=	srcs/main.c								\
 				srcs/operators/logical_and.c			\
 				srcs/operators/pipes.c					\
 				srcs/operators/redirs/redirs.c			\
+				srcs/operators/heredocs.c				\
 				srcs/operators/redirs/analyze_redir.c	\
 				srcs/operators/redirs/check_prefix.c	\
 				srcs/operators/redirs/check_postfix.c	\
