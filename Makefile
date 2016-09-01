@@ -42,8 +42,17 @@ SRCS		=	srcs/main.c								\
 
 BUILTIN		=	srcs/builtin/ft_cd.c					\
 				srcs/builtin/ft_cd_utils.c				\
-				srcs/builtin/ft_echo.c					\
 				srcs/builtin/ft_env.c					\
+				srcs/builtin/ft_echo.c					\
+				srcs/builtin/ft_echo_addstr.c					\
+				srcs/builtin/ft_echo_clean.c					\
+				srcs/builtin/ft_echo_env.c					\
+				srcs/builtin/ft_echo_esc.c					\
+				srcs/builtin/ft_echo_esc_char.c					\
+				srcs/builtin/ft_echo_isflag.c					\
+				srcs/builtin/ft_echo_scan.c					\
+				srcs/builtin/ft_echo_skip.c					\
+				srcs/builtin/ft_echo_string.c					\
 				srcs/builtin/ft_setenv.c				\
 				srcs/builtin/ft_unsetenv.c
 

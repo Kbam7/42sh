@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*   ft_echo_skip.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/08/31 11:12:50 by kgani             #+#    #+#             */
-/*   Updated: 2016/08/31 13:08:00 by kgani            ###   ########.fr       */
+/*   Created: 2016/08/31 11:26:08 by kgani             #+#    #+#             */
+/*   Updated: 2016/09/01 09:22:16 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-int	ft_echo(char **args, t_shell *s)
+int	ft_echo_skip(char *str)
 {
-	char	*new;
+	int             i;
+	int             found;
+	char    *esc_char;
+	int             new_line;
+	int             flag;
 
-	new = NULL;
-	if (ft_countarray(args) > 1)
-	{
-		new = ft_echo_scan(args, s);
-		if (new)
-			ft_putstr(new);
-	}
-	else
-		ft_putchar('\n');
-	ft_echo_clean(new);
-	return (1);
+	i = 0;
+	found = 0;
+	if (ft_echo_isflag(str, &flag, &new_line))
+		return (1);
+	esc_char = ft_strdup("abcefnrtv");
+	if (str[0] && str[0] == '$')
+		return (1);
+	return (0);
+
 }

@@ -1,30 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*   ft_echo_clean.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/08/31 11:12:50 by kgani             #+#    #+#             */
-/*   Updated: 2016/08/31 13:08:00 by kgani            ###   ########.fr       */
+/*   Created: 2016/08/31 11:39:57 by kgani             #+#    #+#             */
+/*   Updated: 2016/08/31 12:27:23 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-int	ft_echo(char **args, t_shell *s)
+void	ft_echo_clean(char *new_str)
 {
-	char	*new;
-
-	new = NULL;
-	if (ft_countarray(args) > 1)
-	{
-		new = ft_echo_scan(args, s);
-		if (new)
-			ft_putstr(new);
-	}
-	else
-		ft_putchar('\n');
-	ft_echo_clean(new);
-	return (1);
+	if (new_str != NULL)
+		free(new_str);
 }

@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*   ft_countarray.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/08/31 11:12:50 by kgani             #+#    #+#             */
-/*   Updated: 2016/08/31 13:08:00 by kgani            ###   ########.fr       */
+/*   Created: 2016/08/31 13:08:21 by kgani             #+#    #+#             */
+/*   Updated: 2016/08/31 13:09:05 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_shell.h"
+#include "libft.h"
 
-int	ft_echo(char **args, t_shell *s)
+int     ft_countarray(char **arr)
 {
-	char	*new;
+	int     i;
 
-	new = NULL;
-	if (ft_countarray(args) > 1)
-	{
-		new = ft_echo_scan(args, s);
-		if (new)
-			ft_putstr(new);
-	}
-	else
-		ft_putchar('\n');
-	ft_echo_clean(new);
-	return (1);
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
 }

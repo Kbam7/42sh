@@ -6,7 +6,7 @@
 #    By: kbamping <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/28 14:01:24 by kbamping          #+#    #+#              #
-#    Updated: 2016/08/30 00:10:48 by kbamping         ###   ########.fr        #
+#*   Updated: 2016/08/31 13:10:05 by kgani            ###   ########.fr       *#
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ SRCS = srcs/ft_atoi.c srcs/ft_bzero.c srcs/ft_isalnum.c 		\
 	srcs/ft_float_swap.c srcs/ft_strtoupper.c srcs/ft_nstrsplit.c	\
 	srcs/ft_memswap.c srcs/ft_isint.c srcs/ft_sprintf.c			\
 	srcs/ft_fprintf.c srcs/ft_strjoinstr.c srcs/ft_iswhtspc.c	\
-	srcs/ft_nstrsplitstr.c
+	srcs/ft_nstrsplitstr.c srcs/ft_strcaps.c srcs/ft_countarray.c
 
 OBJS = ft_atoi.o ft_bzero.o ft_isalnum.o 					\
 	ft_isalpha.o ft_isascii.o ft_isdigit.o 					\
@@ -71,7 +71,7 @@ OBJS = ft_atoi.o ft_bzero.o ft_isalnum.o 					\
 	ft_printf.o ft_strchr_end.o ft_swap.o ft_float_swap.o 	\
 	ft_strtoupper.o ft_nstrsplit.o ft_memswap.o ft_isint.o	\
 	ft_sprintf.o ft_fprintf.o ft_strjoinstr.o ft_iswhtspc.o	\
-	ft_nstrsplitstr.o
+	ft_nstrsplitstr.o ft_strcaps.o ft_countarray.o
 
 all: $(NAME)
 
