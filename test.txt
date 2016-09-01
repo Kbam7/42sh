@@ -1,0 +1,29 @@
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./42sh -u 
+
+[01;36m42sh -- [00;32mRemoved '42sh'[0m
+srcs/autocomplete/autocomplete_path.c: In function ‘ft_allmatch’:
+srcs/autocomplete/autocomplete_path.c:71:25: error: array subscript is not an integer
+    if (s->tab_options[i][stop] != s->tab_options[i + 1][stop])
+                         ^
+srcs/autocomplete/autocomplete_path.c:71:56: error: array subscript is not an integer
+    if (s->tab_options[i][stop] != s->tab_options[i + 1][stop])
+                                                        ^
+srcs/autocomplete/autocomplete_path.c: In function ‘ft_print_word’:
+srcs/autocomplete/autocomplete_path.c:89:21: error: passing argument 2 of ‘ft_allmatch’ makes pointer from integer without a cast [-Werror=int-conversion]
+  if (ft_allmatch(s, i) == 0)
+                     ^
+srcs/autocomplete/autocomplete_path.c:64:6: note: expected ‘int *’ but argument is of type ‘int’
+ int  ft_allmatch(t_shell *s, int *stop)
+      ^
+srcs/autocomplete/autocomplete_path.c:91:54: error: passing argument 2 of ‘ft_allmatch’ makes pointer from integer without a cast [-Werror=int-conversion]
+  while(s->tab_options[0][i] != '\0' && ft_allmatch(s,i))
+                                                      ^
+srcs/autocomplete/autocomplete_path.c:64:6: note: expected ‘int *’ but argument is of type ‘int’
+ int  ft_allmatch(t_shell *s, int *stop)
+      ^
+cc1: all warnings being treated as errors
+Makefile:52: recipe for target '42sh' failed
+make[1]: *** [42sh] Error 1
+Makefile:67: recipe for target 'run' failed
+make: *** [run] Error 2
+valgrind: ./42sh: No such file or directory

@@ -13,28 +13,51 @@ static void		ft_free_split(t_split_string *sp)
 	free(sp->strings);
 	sp->strings = NULL;
 }
+
 static int		ft_select_path(t_shell *s) // saving files
 {
 	DIR				*dir;
 	struct dirent	*sd;
 	char			*tmp;
 	t_split_string	sp;
+	struct stat		st;
+//	char			*path;
 
+//	if (path == NULL)
+//	{
+//		path =	(char *)malloc(sizeof(char) * ft_strlen(ft_getenv("PWD",s)))
+//		path = ft_getenv("PWD", s)
+//	}
+//	else if (ft_strcmp())
+//	path = ft_getenv("PWD", s)
 	if((dir = opendir(ft_getenv("PWD", s))) == NULL)
 		return (err(/*ERR_OPENDIR*/0, ft_getenv("PWD", s)));
 	sp = ft_nstrsplit(s->curr, ' ');
 	tmp = ft_strdup(sp.strings[sp.words - 1]);
-	ft_free_split(&sp);
+
 	while ((sd = readdir(dir)) != NULL)
 	{
 		if (ft_strncmp(tmp, sd->d_name, ft_strlen(tmp)) == 0)
 		{
-
-			ft_save_tab_options(s, sd->d_name);
-			s->opt_i++;
-
+		lstat(sd->d_name, &st);
+			if (ft_strcmp("cd", sp.strings[0]) == 0 && S_ISDIR(st.st_mode))
+			{
+					ft_save_tab_options(s, sd->d_name);
+					s->opt_i++;
+			}
+			else if (!(ft_strcmp("cd", sp.strings[0]) == 0))
+			{
+				ft_save_tab_options(s, sd->d_name);
+				s->opt_i++;
+			}
+			if (S_ISDIR(st.st_mode))
+			{
+				free(s->tab_options[s->opt_i - 1]);
+				s->tab_options[s->opt_i - 1] = ft_strjoin(sd->d_name, "\\");
+			}
 		}
 	}
+	ft_free_split(&sp);
 	ft_strdel(&tmp);
 	closedir(dir);
 	return (EXIT_SUCCESS);
@@ -116,10 +139,8 @@ static int		ft_select_cmd(t_shell *s)
 			{
 				if (ft_strncmp(s->curr, sd->d_name, ft_strlen(s->curr)) == 0)
 				{
-
 					ft_save_tab_options(s, sd->d_name);
 					s->opt_i++;
-
 				}
 			}
 		}
