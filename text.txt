@@ -1,0 +1,12 @@
+42sh
+author
+includes
+libft
+Makefile
+openallfiles.sh
+openfiles.sh
+runshell.sh
+runwithvalgrind.sh
+srcs
+text.txt
+TODO.txt

@@ -102,13 +102,13 @@ void	ft_enter(char *buff, t_shell *s)
 		s->curs_pos = 0;
 		s->str_len = 0;
 		s->h_pos = 0;
+//		write(1, "$> ", 2);
 		if (s->new_line != NULL && ft_strlen(s->new_line) > 0)
 			get_commands(s);
 		if (s->new_line != NULL)
 			free(s->new_line);
 		s->new_line = NULL;
 		s->new_line = ft_strnew(1);
-		write(1, "$> ", 2);
 		//write(1, s->prompt, ft_strlen(s->prompt));
 	}	
 }
