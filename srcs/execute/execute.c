@@ -96,8 +96,6 @@ static int	try_system(t_shell *s)
 	return (ERR_NOTFOUND);
 }
 
-
-
 int	execute_cmd(t_shell *s)
 {
 	pid_t	pid;
@@ -127,7 +125,11 @@ int	execute_cmd(t_shell *s)
 					}
 				}
 				if ((status = try_child_builtin(s)) == ERR_NOTFOUND)
+                {
+                    tputs(tgetstr("cr", 0), 1, ft_putchar_re);
+                    tputs(tgetstr("ce", 0), 1, ft_putchar_re);
 					status = try_system(s);
+                }
 		// child has executed and written to the output fd required, whether its for a pipe, redir or screen.
 //dprintf(2, "--- CHILD PROCESS returning, not exited --- ppid = %d\tpid = %d\n", getppid(), getpid()); // debug
 //dprintf(2, "2 - child -- status = '%d'\tpid = %d\n", status, getpid()); // debug
@@ -157,6 +159,8 @@ int	execute_cmd(t_shell *s)
 		}
 //dprintf(2, "2 -- status = '%d' status(+900) = '%d'\tpid = %d\n", status , status + 900, getpid()); // debug
 	}
+    tputs(tgetstr("cr", 0), 1, ft_putchar_re);
+    write(1, "$> ", 2);
 	return (status);
 }
 

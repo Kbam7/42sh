@@ -19,7 +19,7 @@ int			main(int argc, char **argv, char **envp)
 	init_env(&s, argc, argv, envp);
 	init_terminal_data(&s, envp);
 	ft_clear_screen();
-//	write(1, "$> ", 2);
+	write(1, "$> ", 2);
 	shell_loop(&s);
 	free_t_shell(&s);
 	return (EXIT_SUCCESS);

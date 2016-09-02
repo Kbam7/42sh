@@ -22,7 +22,7 @@ void		shell_loop(t_shell *s)
 	{
 //		set_prompt(s);
 	//	ft_printf("%s%s%s%s", C_BOLD, C_BROWN, s->prompt, C_NONE);
-		write(1, "$> ", 2);
+	//	write(1, "$> ", 2);
 		while (s->commands == NULL)
 			buffer(s);
 		cmd_list = s->commands;
@@ -49,6 +49,10 @@ static void	ft_exit(t_shell *s)
 
 void			free_t_shell(t_shell *s)
 {
+    if (s->history != NULL)
+        free_tab((void ***)&s->history, ft_tablen(s->history));
+    if (s->env != NULL)
+        free_tab((void ***)&s->env, ft_tablen(s->env));
 	if (s->commands != NULL)
 		free_cmd_list(&s->commands);
 	if (s->input != NULL)
