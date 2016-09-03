@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:25:22 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/28 16:14:34 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/03 17:54:45 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int		process_redir(char *str, t_shell *s)
 			if (get_redir_string(&s->redir.sp.strings[i], &cmd, '>', s) == EXIT_FAILURE)		
 				return (EXIT_FAILURE);
 		}
-		else if (ft_strchr(s->redir.sp.strings[i], '<')) //  MAKE THIS RUN THE SAME CODE AS '>'
+		else if (ft_strchr(s->redir.sp.strings[i], '<'))
 		{
 			if (get_redir_string(&s->redir.sp.strings[i], &cmd, '<', s) == EXIT_FAILURE)		
 				return (EXIT_FAILURE);
@@ -128,15 +128,7 @@ int		process_redir(char *str, t_shell *s)
 //dprintf(1, "process_redir() -- oldcmd = >%s<\tnew cmd = >%s<\n", tmp, cmd); // debug
 			ft_strdel(&tmp);
 		}
-/*		if (s->redir.nxt_cmd)
-		{
-		// save as cmd[i], and make current
-			tmp = (cmd == NULL) ? ft_strnew(1) : cmd;
-			cmd = ft_strjoinstr(s->redir.nxt_cmd, " ", tmp);
-			ft_strdel(&tmp);
-			ft_strdel(&s->redir.nxt_cmd);
-		}
-*/		if ((i + 1) == (int)s->redir.sp.words && cmd) // last word? i.e, no redir after this string ... add cmd to list of cmds
+		if ((i + 1) == (int)s->redir.sp.words && cmd) // last word? i.e, no redir after this string ... add cmd to list of cmds
 		{
 //dprintf(2, "process_redir() -- Adding last cmd -- cmd = >%s<\n", cmd);
 			tmp = ft_strnew(1);

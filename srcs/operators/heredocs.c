@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/01 14:27:46 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/02 00:19:51 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/03 17:54:10 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ft_heredoc_move_cur(char *buff, t_shell *s)
 	ft_move_left(s, buff);
 	ft_move_right(s, buff);
 	ft_backspace(s, buff);
-	ft_ctrl_l(buff);
+	ft_ctrl_l(buff, s);
 	ft_history_up(s, buff);
 	ft_history_down(s, buff);
 	ft_end_right(s, buff);

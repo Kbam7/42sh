@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 14:12:20 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/27 01:15:43 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/03 17:54:15 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ while (buff[i])
 	ft_move_left(s, buff);
 	ft_move_right(s, buff);
 	ft_backspace(s, buff);
-	ft_ctrl_l(buff);
+	ft_ctrl_l(buff, s);
 	ft_history_up(s, buff);
 	ft_history_down(s, buff);
 	ft_end_right(s, buff);
