@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/31 12:26:20 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/03 11:46:40 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,7 @@
 # include <termios.h>
 # include <term.h>
 # include <dirent.h>
-
-# define _GNU_SOURCE		// for O_TMPFILE in heredocs
-
-	#include <stdio.h> // debug
-
+# include <stdio.h>
 
 /*
 ** --[ DEFINES -- FILE/DIRECTORY ]--
@@ -101,7 +97,6 @@ typedef struct			s_redirs
 	char			**cmd;		// holds each command/path
 	char			*nxt_cmd;	// holds left over chars from after the redir string
 	char			**rdr;		// for redir operator strings
-//	int				**pipe;		// for redir pipes
 	t_split_string	sp;			// redir string split by spaces
 	int				sp_i;		// index of current string in sp
 	int				dir;
@@ -140,12 +135,13 @@ typedef struct	s_shell
 	char		*cwd;
 	char		*prompt;
 	char		**input;
+	char		*hdoc_newstr;	// heredoc
+	int			hdoc_strlen;	// heredoc
 	int			arg_p;
 	int			arg_u;
 	t_cmd_list	*commands;
 	t_redirs	redir;
 	t_pipes		pipe;
-//
 // Line editing
     int             cols;
 	int				curs_col;
@@ -324,6 +320,11 @@ void			parent_pipe(t_shell *s);
 **	execute_input_redir.c
 */
 int				child_input_redir(char *str, t_shell *s);
+
+/*
+**	heredocs.c
+*/
+int				ft_heredocs(char *str, int pos, t_shell *s);
 
 /*
 **	execute_output_redir.c
