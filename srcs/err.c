@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:50 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/27 00:40:44 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/03 20:31:50 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ int			err(int errno, char *msg)
 	{
 		err_msg = ft_strjoin(err, tmp);
 		ft_putendl_fd(err_msg, STDERR_FILENO);
-        write(1, "$> ", 2);
 		free(tmp);
 		free(err_msg);
 	}

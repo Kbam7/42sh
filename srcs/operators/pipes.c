@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:24:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/28 16:14:32 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/03 17:54:58 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 
 static void	reset_and_free_vars(char **cmds, size_t n_cmds, t_shell *s)
 {
-//dprintf(2, "process_pipes() -- START reset_and_free_vars()\tpid = %d\n", getpid()); // debug
 	s->pipe.n_pipes = 0;
 	s->pipe.pipe_i = 0;
 	free_tab((void ***)&s->pipe.pipes, n_cmds);
 	free_tab((void ***)&cmds, n_cmds);
-//dprintf(2, "process_pipes() -- END reset_and_free_vars()\tpid = %d\n", getpid()); // debug
 }
 
 static int	init_pipes(char *cmd, char ***cmds,  t_shell *s)
@@ -61,11 +59,7 @@ int			process_pipes(char *cmd, t_shell *s)
 		{
 		// user has input "cat author |", there is no command after the pipe so
 		//	read one line(ft_gnl), and use that line as a command. This command may be
-		//	multiple commands piped together, so running the input through from
-		//	the top of the program would be a good idea.
-		//	basically, fork, and run shell_loop() again. Make sure to pipe the STDOUT
-		//	into the write-end of the pipe (s->pipe_fd[1]). Then this parent which
-		//	is the parent of shell_loop, waits for the child and then uses the pipe
+		//	multiple commands piped together. i.e. a string of cmds
 		}
 		else
 			if ((i = process_input(cmds[s->pipe.pipe_i], s)) != EXIT_SUCCESS)
