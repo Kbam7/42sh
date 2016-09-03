@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/03 11:46:40 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/03 20:58:15 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,7 @@ void					ft_print_char(char *buff, t_shell *shell);
 void					ft_right_word(t_shell *shell, char *buff);
 char					**ft_semi(t_shell *shell);
 int						init_terminal_data (t_shell *shell, char **env);
-void					ft_ctrl_l(char *buff);
+void					ft_ctrl_l(char *buff, t_shell *s);
 
 /*
 ** --[ FUNCTION PROTOTYPES ]--
