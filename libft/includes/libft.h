@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/09 12:37:20 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/30 00:07:08 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/31 13:10:39 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,8 @@ char			*ft_strtoupper(char *str);
 int				ft_isint(char *str);
 char			*ft_strjoinstr(char *s1, char *s2, char *s3);
 int				ft_iswhtspc(char c);
+char			*ft_strcaps(char *str);
+int			ft_countarray(char **arr);
 
 /*
 ** GET_NEXT_LINE
