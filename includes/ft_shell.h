@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/03 21:22:36 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/04 15:45:29 by rbromilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,8 @@ typedef struct	s_shell
 	int		opt_i;
 	int		tab_count;
 	char	*cd_path;
-	int		tmp2_len;
+	char	*file_path;
+	char	*word;
 }				t_shell;
 
 /*
@@ -187,7 +188,7 @@ void			ft_checkcurr(t_shell *s);
 int				ft_save_tab_options(t_shell *s, char *d_name);
 void			ft_sortoptions(t_shell *s);
 void			ft_complete_word(t_shell *s);
-char			*ft_getpath(t_shell *s, char *path);
+char			*ft_getfullpath(t_shell *s, char *path);
 
 
 /*

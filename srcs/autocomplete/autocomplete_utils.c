@@ -48,8 +48,9 @@ int	ft_save_tab_options(t_shell *s, char *d_name)
 			s->tab_options = tmp;
 			s->tab_options[i] = ft_strdup(d_name);
 		}
-//	dprintf(2, "tab_options is --------> %s \n", s->tab_options[s->opt_i]);
 	}
+//dprintf(2, "tab_options[%d] = '%s'\n", i, s->tab_options[i]); // debug
+	s->opt_i++;
 	return (EXIT_SUCCESS);
 }
 
