@@ -78,6 +78,7 @@ void			free_t_shell(t_shell *s)
 	free_tab((void ***)&s->argv, ft_tablen(s->argv));
 	ft_strdel(&s->prompt);
 	ft_strdel(&s->curr);
+    ft_strdel(&s->new_line);
 	ft_exit(s);
 	free_tab((void ***)&s->env_var, ft_tablen(s->env_var));
 	free_tab((void ***)&s->shell_var, ft_tablen(s->shell_var));

@@ -91,6 +91,7 @@ void	ft_end_left(t_shell *s, char *buff)
 {
 	int		j;
 
+    j = 0;
 	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 72)
 	{
 		ft_nbr_cols(s);
