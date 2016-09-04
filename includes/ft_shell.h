@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/08/27 17:31:52 by rbromilo         ###   ########.fr       */
+/*   Updated: 2016/09/03 21:22:36 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,7 @@
 # include <termios.h>
 # include <term.h>
 # include <dirent.h>
-
-# define _GNU_SOURCE		// for O_TMPFILE in heredocs
-
-	#include <stdio.h> // debug
-
+# include <stdio.h>
 
 /*
 ** --[ DEFINES -- FILE/DIRECTORY ]--
@@ -101,7 +97,6 @@ typedef struct			s_redirs
 	char			**cmd;		// holds each command/path
 	char			*nxt_cmd;	// holds left over chars from after the redir string
 	char			**rdr;		// for redir operator strings
-//	int				**pipe;		// for redir pipes
 	t_split_string	sp;			// redir string split by spaces
 	int				sp_i;		// index of current string in sp
 	int				dir;
@@ -140,12 +135,13 @@ typedef struct	s_shell
 	char		*cwd;
 	char		*prompt;
 	char		**input;
+	char		*hdoc_newstr;	// heredoc
+	int			hdoc_strlen;	// heredoc
 	int			arg_p;
 	int			arg_u;
 	t_cmd_list	*commands;
 	t_redirs	redir;
 	t_pipes		pipe;
-//
 // Line editing
     int             cols;
 	int				curs_col;
@@ -170,12 +166,14 @@ typedef struct	s_shell
 	struct termios	default_term;
 	struct termios	old_term;
 // rich section
-	char	*curr;	// input string
-	int		cmd_len; // length of input string
-	int		cmd_fork;	//for auto complete
-	char	**tab_options;	//files
-	int		opt_i;		//no of tab_options
+	char	*curr;
+	int		cmd_len;
+	int		cmd_fork;
+	char	**tab_options;
+	int		opt_i;
 	int		tab_count;
+	char	*cd_path;
+	int		tmp2_len;
 }				t_shell;
 
 /*
@@ -189,6 +187,7 @@ void			ft_checkcurr(t_shell *s);
 int				ft_save_tab_options(t_shell *s, char *d_name);
 void			ft_sortoptions(t_shell *s);
 void			ft_complete_word(t_shell *s);
+char			*ft_getpath(t_shell *s, char *path);
 
 
 /*
@@ -223,7 +222,7 @@ void					ft_print_char(char *buff, t_shell *shell);
 void					ft_right_word(t_shell *shell, char *buff);
 char					**ft_semi(t_shell *shell);
 int						init_terminal_data (t_shell *shell, char **env);
-void					ft_ctrl_l(char *buff);
+void					ft_ctrl_l(char *buff, t_shell *s);
 
 /*
 ** --[ FUNCTION PROTOTYPES ]--
@@ -258,6 +257,16 @@ int				process_pipes(char *cmd, t_shell *s);
 int				get_commands(t_shell *s);
 void			get_input(char *cmd, t_shell *s);
 int				store_commands(char *str, t_shell *s);
+
+/*
+**	logical_or.c
+*/
+int				process_logical_or(char *cmd, t_shell *s);
+
+/*
+**	logical_and.c
+*/
+int				process_logical_and(char *cmd, t_shell *s);
 
 /*
 **	pipes.c
@@ -314,6 +323,11 @@ void			parent_pipe(t_shell *s);
 **	execute_input_redir.c
 */
 int				child_input_redir(char *str, t_shell *s);
+
+/*
+**	heredocs.c
+*/
+int				ft_heredocs(char *str, int pos, t_shell *s);
 
 /*
 **	execute_output_redir.c
@@ -377,6 +391,16 @@ void			cd_set_arg(char c, t_shell *s);
 **	ft_echo.c
 */
 int				ft_echo(char **args, t_shell *s);
+char				*ft_echo_scan(char **args, t_shell *s);
+void				ft_echo_string(char **new_str, char *arg, int *triggerer,  int *flag);
+int				ft_echo_esc(char **new_str, char *arg, int pos, int trigger);
+int				ft_echo_esc_char(char **new_str, int esc_char);
+int				ft_echo_skip(char *str);
+int				ft_echo_isflag(char *arg, int *flag, int *new_line);
+void				ft_echo_env(char **new_str, char *str, int *flag, t_shell *s);
+void				ft_echo_clean(char *new_str);
+void				ft_echo_addstr(char **str, char c);
+
 
 /*
 **	ft_env.c

@@ -14,50 +14,112 @@ static void		ft_free_split(t_split_string *sp)
 	sp->strings = NULL;
 }
 
+char	*ft_getpath(t_shell *s, char *path)
+{
+	char			*ret;
+	char			*tmp;
+
+	tmp = ft_strdup(ft_getenv("PWD", s));
+	ret = ft_strdup(tmp);
+	if (path[0] != '\0')
+	ret = ft_strjoinstr(ret,"/",path);
+	ret = ft_strjoin(ret, "/");
+	free(tmp);
+//	if (pat)
+//		ret = ft_strjoinstr(ret, "/", path);
+//	if (!path)
+//		ret = ft_strjoinstr(ret, path,"/");
+	return (ret);
+}
+
+char	*ft_addpath(char *str)
+{
+	t_split_string			backslash;
+	unsigned int			i;
+	char					*ret;
+
+	backslash = ft_nstrsplit(str, '/');
+	i = 0;
+	ret = ft_strnew(0);
+	while (i + 1 != backslash.words)
+	{
+		if (i > 0 && i + 1 != backslash.words)
+			ret = ft_strjoinstr(ret,"/", backslash.strings[i]);
+		else
+			ret = ft_strjoin(ret, backslash.strings[i]);
+		i++;
+	}
+	ft_free_split(&backslash);
+	return (ret);
+}
+
 static int		ft_select_path(t_shell *s) // saving files
 {
 	DIR				*dir;
 	struct dirent	*sd;
 	char			*tmp;
-	t_split_string	sp;
+	char			*tmp2;
 	struct stat		st;
-//	char			*path;
+	t_split_string	space;
+	unsigned int		i;
+	char			*path;
+	char			*pathend;
 
-//	if (path == NULL)
-//	{
-//		path =	(char *)malloc(sizeof(char) * ft_strlen(ft_getenv("PWD",s)))
-//		path = ft_getenv("PWD", s)
-//	}
-//	else if (ft_strcmp())
-//	path = ft_getenv("PWD", s)
-	if((dir = opendir(ft_getenv("PWD", s))) == NULL)
-		return (err(/*ERR_OPENDIR*/0, ft_getenv("PWD", s)));
-	sp = ft_nstrsplit(s->curr, ' ');
-	tmp = ft_strdup(sp.strings[sp.words - 1]);
 
+	space = ft_nstrsplit(s->curr, ' ');
+	tmp = ft_strdup(space.strings[space.words - 1]);
+	pathend = (char *)ft_addpath(tmp);
+	if (ft_strchr(tmp, '/'))
+	{
+		tmp2 = ft_strdup(ft_strrchr(tmp, '/'));
+		s->tmp2_len = ft_strlen(tmp2) - 1;
+		free(tmp);
+		i = 0;
+		tmp = malloc(sizeof(char )* ft_strlen(tmp2) - 1);
+		while(i < ft_strlen(tmp2))
+		{
+			tmp[i] = tmp2 [i + 1];
+			i++;
+		}
+		free(tmp2);
+	}
+	else
+		s->tmp2_len = ft_strlen(tmp);
+	path = ft_getpath(s,pathend);
+	s->opt_i = 0;
+//	dprintf(2, "\nselect-path = PATH is --3-- > %s\n", path);
+	if((dir = opendir(path)) == NULL)
+		return (err(/*ERR_OPENDIR*/0, path));
 	while ((sd = readdir(dir)) != NULL)
 	{
+
 		if (ft_strncmp(tmp, sd->d_name, ft_strlen(tmp)) == 0)
 		{
 		lstat(sd->d_name, &st);
-			if (ft_strcmp("cd", sp.strings[0]) == 0 && S_ISDIR(st.st_mode))
-			{
-					ft_save_tab_options(s, sd->d_name);
-					s->opt_i++;
-			}
-			else if (!(ft_strcmp("cd", sp.strings[0]) == 0))
-			{
+//			if (ft_strcmp("cd", space.strings[0]) == 0 && S_ISDIR(st.st_mode))
+//			{
+//		dprintf(2, "2");
 				ft_save_tab_options(s, sd->d_name);
 				s->opt_i++;
-			}
-			if (S_ISDIR(st.st_mode))
-			{
-				free(s->tab_options[s->opt_i - 1]);
-				s->tab_options[s->opt_i - 1] = ft_strjoin(sd->d_name, "\\");
-			}
+//			}
+//			else if (!(ft_strcmp("cd", space.strings[0]) == 0))
+//			{
+//		dprintf(2, "3");
+//				ft_save_tab_options(s, sd->d_name);
+//				s->opt_i++;
+//			}
+//			if (S_ISDIR(st.st_mode))
+//			{
+//		dprintf(2, "4");
+//				free(s->tab_options[s->opt_i - 1]);
+//				s->tab_options[s->opt_i - 1] = ft_strjoin(sd->d_name, "/");
+//			}
+
 		}
 	}
-	ft_free_split(&sp);
+	ft_strdel(&path);
+	ft_strdel(&pathend);
+	ft_free_split(&space);
 	ft_strdel(&tmp);
 	closedir(dir);
 	return (EXIT_SUCCESS);
@@ -68,12 +130,13 @@ void	ft_print_options(t_shell *s)
 	int	i;
 
 	i = 0;
-	if (s->opt_i > 30)
+/*	if (s->opt_i > 30)
 	{
 		ft_putstr("are you sure you want to display all ");
 		ft_putnbr(s->opt_i);
 		ft_putstr("possabilities? (y or n)");
 	}
+*/
 	while (i <= s->opt_i - 1)
 	{
 		ft_putendl(s->tab_options[i]);
@@ -108,7 +171,7 @@ void	ft_print_word(t_shell *s)
 	sp = ft_nstrsplit(s->curr, ' ');
 	tmp = ft_strdup(sp.strings[sp.words - 1]);
 	ft_free_split(&sp);
-	i = ft_strlen(tmp);
+	i = s->tmp2_len;
 	while(s->tab_options[0][i] != '\0' && ft_allmatch(s,i))
 	{
 
@@ -117,9 +180,7 @@ void	ft_print_word(t_shell *s)
 		rest[2] = 0;
 		ft_print_char(rest, s);
 		i++;
-
 	}
-
 	ft_strdel(&tmp);
 }
 
@@ -139,8 +200,10 @@ static int		ft_select_cmd(t_shell *s)
 			{
 				if (ft_strncmp(s->curr, sd->d_name, ft_strlen(s->curr)) == 0)
 				{
+
 					ft_save_tab_options(s, sd->d_name);
 					s->opt_i++;
+
 				}
 			}
 		}
