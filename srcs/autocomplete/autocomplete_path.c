@@ -22,7 +22,7 @@ char	*ft_getpath(t_shell *s, char *path)
 	tmp = ft_strdup(ft_getenv("PWD", s));
 	ret = ft_strdup(tmp);
 	if (path[0] != '\0')
-	ret = ft_strjoinstr(ret,"/",path);
+		ret = ft_strjoinstr(ret,"/",path);
 	ret = ft_strjoin(ret, "/");
 	free(tmp);
 //	if (pat)
@@ -34,6 +34,17 @@ char	*ft_getpath(t_shell *s, char *path)
 
 char	*ft_addpath(char *str)
 {
+	int		tot_len;
+	int		len;
+	char	*tmp;
+
+	tot_len = ft_strlen(str);
+	if ((tmp = ft_strrchr(str, '/') + 1) == NULL)
+		return (str);
+	len = ft_strlen(tmp);
+	tmp = ft_strsub(str, 0, (tot_len - len));
+	return (tmp);
+/*
 	t_split_string			backslash;
 	unsigned int			i;
 	char					*ret;
@@ -51,6 +62,7 @@ char	*ft_addpath(char *str)
 	}
 	ft_free_split(&backslash);
 	return (ret);
+*/
 }
 
 static int		ft_select_path(t_shell *s) // saving files
@@ -152,7 +164,7 @@ int		ft_allmatch(t_shell *s, int stop)
 	int	i;
 
 	i = 0;
-	while (s->tab_options[i + 1] != NULL)
+	while (s->tab_options[i] && s->tab_options[i + 1] != NULL)
 	{
 		 if (s->tab_options[i][stop] != s->tab_options[i + 1][stop])
 			return (0);
@@ -172,12 +184,10 @@ void	ft_print_word(t_shell *s)
 	tmp = ft_strdup(sp.strings[sp.words - 1]);
 	ft_free_split(&sp);
 	i = s->tmp2_len;
+	ft_bzero(rest, 3);
 	while(s->tab_options[0][i] != '\0' && ft_allmatch(s,i))
 	{
-
 		rest[0] = s->tab_options[0][i];
-		rest[1] = 0;
-		rest[2] = 0;
 		ft_print_char(rest, s);
 		i++;
 	}
@@ -231,12 +241,18 @@ void	ft_autocomplete_path(t_shell *s)
 			ft_select_path(s);
 		else if (ft_strchr(s->new_line, ' ') == NULL)
 			ft_select_cmd(s);
-		ft_sortoptions(s);
-		ft_print_word(s);
+		if (s->tab_options != NULL)
+		{
+			ft_sortoptions(s);
+			ft_print_word(s);
+		}
 	}
 	if (s->tab_count == 2)
 	{
-		ft_putchar('\n');
-		ft_print_options(s);
+		if (s->tab_options != NULL)
+		{
+			ft_putchar('\n');
+			ft_print_options(s);
+		}
 	}
 }
