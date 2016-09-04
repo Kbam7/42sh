@@ -104,9 +104,10 @@ void	ft_enter(char *buff, t_shell *s)
 		s->h_pos = 0;
 		if (!get_commands(s))
 			ft_prompt_print(s);
-		if (s->new_line != NULL)
+		if (s->new_line != NULL || s->new_line[0] != '\0')
 			free(s->new_line);
-		s->new_line = NULL;
-		s->new_line = ft_strnew(1);
+        s->new_line = NULL;
+        s->new_line = (char *)malloc(sizeof(char) + 1);
+        s->new_line[0] = '\0';
 	}	
 }

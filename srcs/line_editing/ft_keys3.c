@@ -16,6 +16,7 @@ void	ft_right_word(t_shell *s, char *buff)
 {
 	int		i;
 
+    i = 0;
 	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 49 && buff[5] == 67)
 	{
 		s->on = 1;
@@ -38,6 +39,7 @@ void	ft_left_word(t_shell *s, char *buff)
 {
 	int		i;
 
+    i = 0;
 	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 49 && buff[5] == 68)
 	{
 		s->on = 1;
@@ -85,7 +87,6 @@ void    ft_move_down(t_shell *s, char *buff)
         j = s->str_len;
         while (i - s->width > 0)
             j = j - s->width;
-
 		if (i < j && s->str_len > s->width && s->curs_col != s->cols)
 		{
 			tputs(tgetstr("do", 0), 1, ft_putchar_re);
