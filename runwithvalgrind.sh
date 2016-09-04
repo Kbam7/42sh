@@ -1,3 +1,3 @@
-echo "valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./42sh -u \n";
+echo "valgrind --leak-check=full --track-origins=yes ./42sh -u \n";
 make run;
-valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./42sh -up;
+valgrind --leak-check=full --track-origins=yes ./42sh -up;

@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 14:12:20 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/27 01:15:43 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/04 11:31:53 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_move_left(t_shell *s, char *buff)
 	if ((buff[0] == 27 && buff[1] == 91 && buff[2] == 68 && s->curs_pos > 0)
 			|| s->on == 1 )
 	{
-        if (((s->curs_pos + 2) % s->width) == 0)
+        if (((s->curs_pos + s->prompt_len) % s->width) == 0)
         {
 		        tputs(tgetstr("up", 0), 1, ft_putchar_re);
             while (++i <= s->width)
@@ -41,7 +41,7 @@ void	ft_move_right(t_shell *s, char *buff)
 	if ((buff[0] == 27 && buff[1] == 91 && buff[2] == 67 &&
 			s->curs_pos < s->str_len) || s-> on == 1)
 	{
-        if (((s->curs_pos + 3) % s->width) == 0)
+        if (((s->curs_pos + s->prompt_len + 1) % s->width) == 0)
         {
              tputs(tgetstr("do", 0), 1, ft_putchar_re);
 		     tputs(tgetstr("cr", 0), 1, ft_putchar_re);
@@ -70,7 +70,7 @@ while (buff[i])
 	ft_move_left(s, buff);
 	ft_move_right(s, buff);
 	ft_backspace(s, buff);
-	ft_ctrl_l(buff);
+	ft_ctrl_l(buff, s);
 	ft_history_up(s, buff);
 	ft_history_down(s, buff);
 	ft_end_right(s, buff);

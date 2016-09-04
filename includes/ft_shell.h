@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/03 21:22:36 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/04 17:14:26 by rbromilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ typedef struct	s_shell
 	char		**paths;
 	char		*cwd;
 	char		*prompt;
+	int			prompt_len;
 	char		**input;
 	char		*hdoc_newstr;	// heredoc
 	int			hdoc_strlen;	// heredoc
@@ -173,7 +174,8 @@ typedef struct	s_shell
 	int		opt_i;
 	int		tab_count;
 	char	*cd_path;
-	int		tmp2_len;
+	char	*file_path;
+	char	*word;
 }				t_shell;
 
 /*
@@ -187,7 +189,7 @@ void			ft_checkcurr(t_shell *s);
 int				ft_save_tab_options(t_shell *s, char *d_name);
 void			ft_sortoptions(t_shell *s);
 void			ft_complete_word(t_shell *s);
-char			*ft_getpath(t_shell *s, char *path);
+char			*ft_getfullpath(t_shell *s, char *path);
 
 
 /*
@@ -223,6 +225,8 @@ void					ft_right_word(t_shell *shell, char *buff);
 char					**ft_semi(t_shell *shell);
 int						init_terminal_data (t_shell *shell, char **env);
 void					ft_ctrl_l(char *buff, t_shell *s);
+void					ft_prompt_new(char *new_prompt, t_shell *s);
+void					ft_prompt_print(t_shell *s);
 
 /*
 ** --[ FUNCTION PROTOTYPES ]--

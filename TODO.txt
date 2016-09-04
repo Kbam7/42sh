@@ -6,5 +6,3 @@
 ##-	If you type "x=5", then x must be added to the environment. Any assignation
 	must be handled. E.G: TEST="The String"; echo $TEST; -- This should print
 	"The String" without the quotes.
-
-##-	CTRL-L must run the command 'clear'

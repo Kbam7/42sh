@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/09 12:37:20 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/10 14:33:49 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/31 13:10:39 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,10 +118,13 @@ void			ft_float_swap(float *a, float *b);
 void			ft_memswap(void *a, void *b);
 int				ft_atoi_hex(const char *nptr);
 t_split_string	ft_nstrsplit(const char *s, char c);
+t_split_string	ft_nstrsplitstr(const char *s, char *sp);
 char			*ft_strtoupper(char *str);
 int				ft_isint(char *str);
 char			*ft_strjoinstr(char *s1, char *s2, char *s3);
 int				ft_iswhtspc(char c);
+char			*ft_strcaps(char *str);
+int			ft_countarray(char **arr);
 
 /*
 ** GET_NEXT_LINE

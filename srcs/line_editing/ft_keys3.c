@@ -16,11 +16,12 @@ void	ft_right_word(t_shell *s, char *buff)
 {
 	int		i;
 
-	if (buff[0] == 50 && buff[1] == 67 && buff[2] == 0)
+    i = 0;
+	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 49 && buff[5] == 67)
 	{
 		s->on = 1;
 		if (s->new_line[s->curs_pos - 1] == ' ' &&
-				s->curs_pos < (s->str_len - 1))
+				s->curs_pos < (s->str_len - (1  + s->prompt_len)))
 			ft_move_right(s, buff);
 		i = s->curs_pos;
 		while (s->new_line[i] && i < (s->str_len - 1))
@@ -38,7 +39,8 @@ void	ft_left_word(t_shell *s, char *buff)
 {
 	int		i;
 
-	if (buff[0] == 50 && buff[1] == 68 && buff[2] == 0)
+    i = 0;
+	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 49 && buff[5] == 68)
 	{
 		s->on = 1;
 		if (s->new_line[s->curs_pos - 1] == ' ' &&
@@ -58,9 +60,9 @@ void	ft_left_word(t_shell *s, char *buff)
 
 void	ft_move_up(t_shell *s, char *buff)
 {
-	if (buff[0] == 50 && buff[1] == 65 && buff[2] == 0)
+	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 49 && buff[5] == 65)
 	{
-		if (s->curs_pos > s->width)
+		if (s->curs_pos + 1 > s->width)
 		{
 			tputs(tgetstr("up", 0), 1, ft_putchar_re);
 			s->curs_pos = s->curs_pos - s->width;
@@ -71,19 +73,26 @@ void	ft_move_up(t_shell *s, char *buff)
 void    ft_move_down(t_shell *s, char *buff)
 {
 	int		i;
+    int     j;
 
 	i = 0;
-	if (buff[0] == 50 && buff[1] == 66 && buff[2] == 0)
+    j = 0;
+    ft_nbr_cols(s);
+    ft_curs_col(s);
+	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 49 && buff[5] == 66)
 	{
-		i = s->str_len;
+		i = s->curs_pos;
 		while (i - s->width > 0)
 			i = i - s->width;
-		if ((s->curs_pos - 1) + s->width < s->width + i && s->str_len >
-				s->width)
+        j = s->str_len;
+        while (i - s->width > 0)
+            j = j - s->width;
+		if (i < j && s->str_len > s->width && s->curs_col != s->cols)
 		{
 			tputs(tgetstr("do", 0), 1, ft_putchar_re);
-			i = 0;
-			while (i++ <= s->curs_pos + 1)
+			tputs(tgetstr("cr", 0), 1, ft_putchar_re);
+			j = 0;
+			while (j++ <= i + s->prompt_len - 1)
 				tputs(tgetstr("nd", 0), 1, ft_putchar_re);
 			s->curs_pos = s->curs_pos + s->width;
 		}

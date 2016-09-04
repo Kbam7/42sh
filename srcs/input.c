@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 18:03:53 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/22 23:55:42 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/08/29 22:36:39 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,16 @@
 
 int	process_input(char *cmd, t_shell *s)
 {
-	int			error;
+	int		error;
+	char 	*ret;
 
 	error = EXIT_FAILURE;
-	if (ft_strchr(cmd, '|'))
+
+	if ((ret = ft_strchr(cmd, '|')) && ret[1] == '|')
+		return (process_logical_or(cmd, s));
+	if ((ret = ft_strchr(cmd, '&')) && ret[1] == '&')
+		return (process_logical_and(cmd, s));
+	else if (ft_strchr(cmd, '|'))
 		return (process_pipes(cmd, s));
 	else if (ft_strchr(cmd, '<') || ft_strchr(cmd, '>'))
 		return (process_redir(cmd, s));
@@ -28,4 +34,16 @@ int	process_input(char *cmd, t_shell *s)
 		free_tab((void ***)&s->input, ft_tablen(s->input));
 	}
 	return (error);
+}
+
+void	get_input(char *cmd, t_shell *s)
+{
+	char			*tmp;
+	t_split_string	data;
+
+	tmp = ft_strtrim(cmd);
+	data = ft_nstrsplit(tmp, ' ');
+	ft_strdel(&tmp);
+	s->input = ft_tabdup(data.strings, data.words);
+	free_tab((void ***)&data.strings, data.words);
 }

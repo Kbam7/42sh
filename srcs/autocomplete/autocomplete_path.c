@@ -14,26 +14,44 @@ static void		ft_free_split(t_split_string *sp)
 	sp->strings = NULL;
 }
 
-char	*ft_getpath(t_shell *s, char *path)
+char	*ft_getfullpath(t_shell *s, char *path)
 {
-	char			*ret;
-	char			*tmp;
+	char	*ret;
+	char	*cwd;
+	int		path_len;
 
-	tmp = ft_strdup(ft_getenv("PWD", s));
-	ret = ft_strdup(tmp);
-	if (path[0] != '\0')
-	ret = ft_strjoinstr(ret,"/",path);
-	ret = ft_strjoin(ret, "/");
-	free(tmp);
-//	if (pat)
-//		ret = ft_strjoinstr(ret, "/", path);
-//	if (!path)
-//		ret = ft_strjoinstr(ret, path,"/");
+	if ((cwd = ft_getenv("PWD", s)) == NULL)
+		return (NULL);
+	path_len = ft_strlen(path);
+	if (path[path_len - 1] == '/')
+		ret = ft_strjoinstr(cwd, "/", path);
+	else
+		ret = ft_strjoin(cwd, "/");
 	return (ret);
 }
 
-char	*ft_addpath(char *str)
+char	*ft_getpath(char **str)
 {
+	int		tot_len;
+	int		len;
+	char	*tmp;
+	char	*word;
+
+	tot_len = ft_strlen(*str);
+	if ((word = ft_strrchr(*str, '/')) != NULL)
+	{
+		if (*(word + 1))
+		{
+			++word;
+//dprintf(2, "ft_get_path() -- found '%c' after '/'\n", *word); // debug
+			len = ft_strlen(word);
+			tmp = ft_strsub(*str, 0, (tot_len - len));
+			*str = ft_strdup(word);
+			return (tmp);
+		}
+	}
+	return (*str);
+/*
 	t_split_string			backslash;
 	unsigned int			i;
 	char					*ret;
@@ -51,77 +69,71 @@ char	*ft_addpath(char *str)
 	}
 	ft_free_split(&backslash);
 	return (ret);
+*/
 }
 
 static int		ft_select_path(t_shell *s) // saving files
 {
 	DIR				*dir;
 	struct dirent	*sd;
-	char			*tmp;
-	char			*tmp2;
+//	char			*word;
 	struct stat		st;
-	t_split_string	space;
-	unsigned int		i;
-	char			*path;
-	char			*pathend;
+	t_split_string	sp;
+	char			*fpath;
+	int				last_char;
 
 
-	space = ft_nstrsplit(s->curr, ' ');
-	tmp = ft_strdup(space.strings[space.words - 1]);
-	pathend = (char *)ft_addpath(tmp);
-	if (ft_strchr(tmp, '/'))
+	s->opt_i = 0;
+	sp = ft_nstrsplit(s->curr, ' ');
+	s->word = (sp.words > 1) ? ft_strdup(sp.strings[sp.words - 1]) : ft_strnew(0);
+	s->file_path = (char *)ft_getpath(&s->word);
+	last_char = ft_strlen(s->word) - 1;
+
+//dprintf(2, "ft_select_path() -- file_path = '%s'\tword = '%s'\n", s->file_path, s->word); // debug
+
+	if (s->word[last_char] == '/')
+		s->word = ft_strnew(0);
+
+//dprintf(2, "ft_select_path() -- file_path = '%s'\tword = '%s'\n", s->file_path, s->word); // debug
+
+	if (s->file_path[0] != '/')
 	{
-		tmp2 = ft_strdup(ft_strrchr(tmp, '/'));
-		s->tmp2_len = ft_strlen(tmp2) - 1;
-		free(tmp);
-		i = 0;
-		tmp = malloc(sizeof(char )* ft_strlen(tmp2) - 1);
-		while(i < ft_strlen(tmp2))
-		{
-			tmp[i] = tmp2 [i + 1];
-			i++;
-		}
-		free(tmp2);
+		if ((fpath = ft_getfullpath(s, s->file_path)) == NULL)
+			return (EXIT_FAILURE);
 	}
 	else
-		s->tmp2_len = ft_strlen(tmp);
-	path = ft_getpath(s,pathend);
-	s->opt_i = 0;
+		fpath = s->file_path;
+
+
 //	dprintf(2, "\nselect-path = PATH is --3-- > %s\n", path);
-	if((dir = opendir(path)) == NULL)
-		return (err(/*ERR_OPENDIR*/0, path));
+	if ((access(fpath, F_OK) != 0) ||
+					(check_rights(fpath, 'r', 0, 'x') != EXIT_SUCCESS) ||
+											((dir = opendir(fpath)) == NULL))
+			return (EXIT_FAILURE);
+
+//dprintf(2, "ft_select_path() -- fpath(opened) = '%s'\tword = '%s'\n", fpath, s->word); // debug
+
 	while ((sd = readdir(dir)) != NULL)
 	{
 
-		if (ft_strncmp(tmp, sd->d_name, ft_strlen(tmp)) == 0)
+		if (ft_strncmp(s->word, sd->d_name, ft_strlen(s->word)) == 0)
 		{
-		lstat(sd->d_name, &st);
-//			if (ft_strcmp("cd", space.strings[0]) == 0 && S_ISDIR(st.st_mode))
-//			{
-//		dprintf(2, "2");
+			lstat(sd->d_name, &st);
+			if (ft_strcmp("cd", sp.strings[0]) == 0 && S_ISDIR(st.st_mode))
 				ft_save_tab_options(s, sd->d_name);
-				s->opt_i++;
-//			}
-//			else if (!(ft_strcmp("cd", space.strings[0]) == 0))
-//			{
-//		dprintf(2, "3");
-//				ft_save_tab_options(s, sd->d_name);
-//				s->opt_i++;
-//			}
+			else
+				ft_save_tab_options(s, sd->d_name);
 //			if (S_ISDIR(st.st_mode))
 //			{
-//		dprintf(2, "4");
 //				free(s->tab_options[s->opt_i - 1]);
 //				s->tab_options[s->opt_i - 1] = ft_strjoin(sd->d_name, "/");
 //			}
 
 		}
 	}
-	ft_strdel(&path);
-	ft_strdel(&pathend);
-	ft_free_split(&space);
-	ft_strdel(&tmp);
 	closedir(dir);
+	ft_strdel(&fpath);
+	ft_free_split(&sp);
 	return (EXIT_SUCCESS);
 }
 
@@ -152,7 +164,7 @@ int		ft_allmatch(t_shell *s, int stop)
 	int	i;
 
 	i = 0;
-	while (s->tab_options[i + 1] != NULL)
+	while (s->tab_options[i] && s->tab_options[i + 1] != NULL)
 	{
 		 if (s->tab_options[i][stop] != s->tab_options[i + 1][stop])
 			return (0);
@@ -163,25 +175,29 @@ int		ft_allmatch(t_shell *s, int stop)
 
 void	ft_print_word(t_shell *s)
 {
+//	int				stop;
 	int				i;
-	char			*tmp;
-	t_split_string	sp;
 	char			rest[3];
 
-	sp = ft_nstrsplit(s->curr, ' ');
-	tmp = ft_strdup(sp.strings[sp.words - 1]);
-	ft_free_split(&sp);
-	i = s->tmp2_len;
-	while(s->tab_options[0][i] != '\0' && ft_allmatch(s,i))
-	{
-
-		rest[0] = s->tab_options[0][i];
-		rest[1] = 0;
-		rest[2] = 0;
-		ft_print_char(rest, s);
-		i++;
-	}
-	ft_strdel(&tmp);
+//	stop = ft_strlen(s->file_path);
+	i = ft_strlen(s->word);
+//	i = ft_strlen(s->curr);
+//	i = 0;
+	ft_bzero(rest, 3);
+	if (s->tab_options[1] == NULL)
+		while(s->tab_options[0][i] != '\0')
+		{
+			rest[0] = s->tab_options[0][i];
+			ft_print_char(rest, s);
+			++i;
+		}
+	else
+		while (s->tab_options[0][i] != '\0' && ft_allmatch(s,i))
+		{
+			rest[0] = s->tab_options[0][i];
+			ft_print_char(rest, s);
+			++i;
+		}
 }
 
 static int		ft_select_cmd(t_shell *s)
@@ -202,7 +218,6 @@ static int		ft_select_cmd(t_shell *s)
 				{
 
 					ft_save_tab_options(s, sd->d_name);
-					s->opt_i++;
 
 				}
 			}
@@ -231,12 +246,18 @@ void	ft_autocomplete_path(t_shell *s)
 			ft_select_path(s);
 		else if (ft_strchr(s->new_line, ' ') == NULL)
 			ft_select_cmd(s);
-		ft_sortoptions(s);
-		ft_print_word(s);
+		if (s->tab_options != NULL)
+		{
+			ft_sortoptions(s);
+			ft_print_word(s);
+		}
 	}
 	if (s->tab_count == 2)
 	{
-		ft_putchar('\n');
-		ft_print_options(s);
+		if (s->tab_options != NULL)
+		{
+			ft_putchar('\n');
+			ft_print_options(s);
+		}
 	}
 }
