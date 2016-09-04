@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/07 14:32:15 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/28 16:14:37 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/03 21:18:38 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,17 @@ int		get_commands(t_shell *s)
 {
 	char			*cmd;
 
-	cmd = ft_strtrim(s->new_line);
-	ft_strdel(&s->new_line);
-	if (store_commands(cmd, s) != EXIT_SUCCESS)
+	if (s->new_line != NULL && ft_strlen(s->new_line) > 0)
 	{
+		cmd = ft_strtrim(s->new_line);
+		ft_strdel(&s->new_line);
+		if (ft_strlen(cmd) > 0)
+			if (store_commands(cmd, s) == EXIT_SUCCESS)
+			{
+				ft_strdel(&cmd);
+				return (1);
+			}
 		ft_strdel(&cmd);
-		return (0);
 	}
-	ft_strdel(&cmd);
-	return (1);
+	return (0);
 }

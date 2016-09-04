@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/28 16:14:48 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/03 20:42:42 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ void		shell_loop(t_shell *s)
 	while (ret != EXIT_SH)
 	{
 //		set_prompt(s);
-	//	ft_printf("%s%s%s%s", C_BOLD, C_BROWN, s->prompt, C_NONE);
-	//	write(1, "$> ", 2);
 		while (s->commands == NULL)
 			buffer(s);
 		cmd_list = s->commands;
@@ -31,6 +29,8 @@ void		shell_loop(t_shell *s)
 			ret = process_input(cmd_list->cmd, s);
 			if (ret == EXIT_SH || ret == EXIT_FAILURE)
 				break ;
+			write(1, "$> ", 2);
+	//	ft_printf("%s%s%s%s", C_BOLD, C_BROWN, s->prompt, C_NONE);
 			cmd_list = cmd_list->next;
 		}
 		free_cmd_list(&s->commands);
@@ -39,7 +39,18 @@ void		shell_loop(t_shell *s)
 
 static void	ft_exit(t_shell *s)
 {
-	if (getpid() == ft_atoi(ft_getenv("42SH_PID", s)))
+	char	*tmp;
+
+	if ((tmp = ft_getenv("42SH_PID", s)) != NULL && ft_isint(tmp))
+	{
+		if (getpid() == ft_atoi(tmp))
+		{
+			tputs(tgetstr("ve", 0), 1, ft_putchar_re);
+			tputs(tgetstr("te", 0), 1, ft_putchar_re);
+			tcsetattr(STDIN_FILENO, TCSADRAIN, &s->default_term);
+		}
+	}
+	else
 	{
 		tputs(tgetstr("ve", 0), 1, ft_putchar_re);
 		tputs(tgetstr("te", 0), 1, ft_putchar_re);

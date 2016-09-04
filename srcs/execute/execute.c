@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/28 16:14:29 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/03 20:26:13 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,37 @@ static int	try_child_builtin(t_shell *s)
 		return (ERR_NOTFOUND);
 }
 
+static void	make_path_and_execute(char *path, t_shell *s)
+{
+	int				i;
+	char			*tmp;
+	t_split_string	sp;
 
+	i = 0;
+	sp = ft_nstrsplit(path, ':');
+	if (s->paths)
+		free_tab((void ***)&s->paths, ft_tablen(s->paths));
+	s->paths = ft_tabdup(sp.strings, sp.words);
+	free_tab((void ***)&sp.strings, sp.words);
+	while (s->paths[++i] != NULL)
+	{
+		tmp = ft_strjoinstr(s->paths[i], "/", s->input[0]);
+		if (access(tmp, F_OK) == 0)
+			if (check_rights(tmp, 'r', 0, 'x') == EXIT_SUCCESS)
+				if (execve(tmp, s->input, s->env_var) != -1)
+				{
+					ft_strdel(&tmp);
+					free_t_shell(s);
+				}
+		ft_strdel(&tmp);
+	}
+}
 
 static int	try_system(t_shell *s)
 {
-	int		i;
-	char	*path;
+	char	*tmp;
 
 //dprintf(2, "try_system() -- trying '%s'\n", s->input[0]); // debug
-	i = -1;
 	if (access(s->input[0], F_OK) == 0)
 	{
 		if (check_rights(s->input[0], 'r', 0, 'x') == EXIT_SUCCESS)
@@ -79,20 +101,8 @@ static int	try_system(t_shell *s)
 				free_t_shell(s);
 	}
 	else
-	{
-		while (s->paths[++i] != NULL)
-		{
-			path = ft_strjoinstr(s->paths[i], "/", s->input[0]);
-			if (access(path, F_OK) == 0)
-				if (check_rights(path, 'r', 0, 'x') == EXIT_SUCCESS)
-					if (execve(path, s->input, s->env_var) != -1)
-					{
-						ft_strdel(&path);
-						free_t_shell(s);
-					}
-			ft_strdel(&path);
-		}
-	}
+		if ((tmp = ft_getenv("PATH", s)))
+			make_path_and_execute(tmp, s);
 	return (ERR_NOTFOUND);
 }
 
@@ -160,7 +170,6 @@ int	execute_cmd(t_shell *s)
 //dprintf(2, "2 -- status = '%d' status(+900) = '%d'\tpid = %d\n", status , status + 900, getpid()); // debug
 	}
     tputs(tgetstr("cr", 0), 1, ft_putchar_re);
-    write(1, "$> ", 2);
 	return (status);
 }
 
