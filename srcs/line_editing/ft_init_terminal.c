@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 16:48:49 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/04 09:45:01 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/04 11:33:56 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ static void	init_terminal_vars(t_shell *s)
 	s->h_pos = 0;
 	s->new_line = NULL;
 	s->history = NULL;
-	s->prompt = ft_strdup("moo$> ");
-	s->prompt_len = 6;
+	s->prompt = ft_strdup("$> ");
+	s->prompt_len = 3;
 
 }
 

@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/11 12:31:10 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/04 11:18:17 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/04 11:37:27 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,7 @@ void    ft_put_curs_back(t_shell *s)
 	i = s->cols - s->curs_col;
 	while (i-- > 0 && s->str_len + s->prompt_len -
 			(s->width * (s->cols - 1)) != s->width)
-	{
-		exit (0);
 		tputs(tgetstr("up", 0), 1, ft_putchar_re);
-	}
 	if ((s->str_len + s->prompt_len - 1) == s->width )
 		tputs(tgetstr("do", 0), 1, ft_putchar_re);
 	i = ft_curs_pos(s) - 2;
