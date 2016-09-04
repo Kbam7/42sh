@@ -14,17 +14,12 @@
 
 int	ft_echo_skip(char *str)
 {
-//	int             i;
-//	int             found;
-//	char    *esc_char;
 	int             new_line;
 	int             flag;
 
-//	i = 0;
-//	found = 0;
+
 	if (ft_echo_isflag(str, &flag, &new_line))
 		return (1);
-//	esc_char = ft_strdup("abcefnrtv");
 	if (str[0] && str[0] == '$')
 		return (1);
 	return (0);

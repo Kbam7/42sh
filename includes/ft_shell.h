@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/04 09:19:26 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/04 17:05:52 by rbromilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,12 +167,15 @@ typedef struct	s_shell
 	struct termios	default_term;
 	struct termios	old_term;
 // rich section
-	char	*curr;	// input string
-	int		cmd_len; // length of input string
-	int		cmd_fork;	//for auto complete
-	char	**tab_options;	//files
-	int		opt_i;		//no of tab_options
+	char	*curr;
+	int		cmd_len;
+	int		cmd_fork;
+	char	**tab_options;
+	int		opt_i;
 	int		tab_count;
+	char	*cd_path;
+	char	*file_path;
+	char	*word;
 }				t_shell;
 
 /*
@@ -186,6 +189,7 @@ void			ft_checkcurr(t_shell *s);
 int				ft_save_tab_options(t_shell *s, char *d_name);
 void			ft_sortoptions(t_shell *s);
 void			ft_complete_word(t_shell *s);
+char			*ft_getfullpath(t_shell *s, char *path);
 
 
 /*
