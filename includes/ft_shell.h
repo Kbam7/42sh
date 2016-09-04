@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/04 15:45:29 by rbromilo         ###   ########.fr       */
+/*   Updated: 2016/09/04 17:05:52 by rbromilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ typedef struct	s_shell
 	char		**paths;
 	char		*cwd;
 	char		*prompt;
+	int			prompt_len;
 	char		**input;
 	char		*hdoc_newstr;	// heredoc
 	int			hdoc_strlen;	// heredoc
@@ -224,6 +225,8 @@ void					ft_right_word(t_shell *shell, char *buff);
 char					**ft_semi(t_shell *shell);
 int						init_terminal_data (t_shell *shell, char **env);
 void					ft_ctrl_l(char *buff, t_shell *s);
+void					ft_prompt_new(char *new_prompt, t_shell *s);
+void					ft_prompt_print(t_shell *s);
 
 /*
 ** --[ FUNCTION PROTOTYPES ]--

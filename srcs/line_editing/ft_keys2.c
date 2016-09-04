@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/08 12:04:04 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/25 08:16:11 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/04 09:37:07 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_nbr_cols(t_shell *s)
 	int		i;
 
 	i = 0; 
-	temp = s->str_len + 2;
+	temp = s->str_len + s->prompt_len;
 	s->width = tgetnum("co");
 	while (1)
 	{
@@ -37,7 +37,7 @@ void	ft_curs_col(t_shell *s)
 	int		i;
 
 	i = 0;
-	temp = s->curs_pos + 2;
+	temp = s->curs_pos + s->prompt_len;
 	while (1)
 	{
 		temp = temp - s->width;
@@ -53,7 +53,7 @@ int		ft_curs_pos(t_shell *s)
 {
 	int		temp;
 
-	temp = s->curs_pos + 3;
+	temp = s->curs_pos + s->prompt_len + 1;
 	ft_nbr_cols(s);
 	if (s->cols == 0)
 		temp = s->curs_pos;
@@ -79,7 +79,7 @@ void	ft_end_right(t_shell *s, char *buff)
 		s->curs_pos = s->str_len;
 		tputs(tgetstr("cr", 0), 1, ft_putchar_re);
 		if (s->cols == 0)
-			i = 2;
+			i = s->prompt_len;
 		else
 			i = -1;
 		while (++j < ft_curs_pos(s) + i)

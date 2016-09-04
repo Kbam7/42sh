@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_prompt.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/07/28 20:35:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/04 09:31:24 by kgani            ###   ########.fr       */
+/*   Created: 2016/09/04 09:14:43 by kgani             #+#    #+#             */
+/*   Updated: 2016/09/04 09:18:28 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-int			main(int argc, char **argv, char **envp)
+void ft_prompt_print(t_shell *s)
 {
-	t_shell	s;
-
-	init_env(&s, argc, argv, envp);
-	init_terminal_data(&s, envp);
-	ft_clear_screen();
-	ft_prompt_print(&s);
-	shell_loop(&s);
-	free_t_shell(&s);
-	return (EXIT_SUCCESS);
+	ft_putstr(s->prompt);
 }
+
+void ft_prompt_new(char *new_prompt, t_shell *s)
+{
+	if (s->prompt)
+		free (s->prompt);
+	s->prompt = ft_strdup(new_prompt);
+	s->prompt_len = ft_strlen(new_prompt);
+}
+
