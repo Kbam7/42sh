@@ -45,7 +45,7 @@ int		get_commands(t_shell *s)
 	if (s->new_line != NULL && ft_strlen(s->new_line) > 0)
 	{
 		cmd = ft_strtrim(s->new_line);
-		ft_strdel(&s->new_line);
+//		ft_strdel(&s->new_line);
 		if (ft_strlen(cmd) > 0)
 			if (store_commands(cmd, s) == EXIT_SUCCESS)
 			{

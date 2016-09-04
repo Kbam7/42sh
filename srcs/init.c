@@ -60,7 +60,7 @@ void		init_env(t_shell *s, int argc, char **argv, char **envp)
 	tmp = ft_nstrsplit(tmpstr, ':');
 	s->paths = ft_tabdup(tmp.strings, tmp.words);
 	free_tab((void ***)&tmp.strings, tmp.words);
-	s->prompt = ft_strnew(1);
+//	s->prompt = ft_strnew(1);
 	s->cwd = ft_getenv("PWD", s);
 	s->commands = NULL;
 	init_pipes_redirs(s);
