@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/03 20:26:13 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/05 19:00:28 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,9 +130,7 @@ int	execute_cmd(t_shell *s)
 					if (s->redir.dir == '>')
 						child_output_redir(s->redir.rdr[i], s);
 					else if (s->redir.dir == '<')
-					{
 						child_input_redir(s->redir.rdr[i], s);
-					}
 				}
 				if ((status = try_child_builtin(s)) == ERR_NOTFOUND)
                 {
