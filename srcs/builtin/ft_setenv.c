@@ -22,7 +22,8 @@ static int	new_env_var(char *name, char *value, char ***env)
 	table = ft_tabdup(*env, len + 1);
 	free_tab((void ***)env, len);
 	tmp = ft_strjoin("=", value);
-	table[len] = ft_strjoin(ft_strcaps(name), tmp);
+    ft_strcap(name);
+	table[len] = ft_strjoin(name, tmp);
 	ft_strdel(&tmp);
 	*env = table;
 	return (EXIT_SUCCESS);
@@ -42,7 +43,8 @@ static int	variable_exists(char *name, char *value, char ***env)
 		{
 			ft_strdel(&(*env)[i]);
 			tmp = ft_strjoin("=", value);
-			(*env)[i] = ft_strjoin(ft_strcaps(name), tmp);
+            ft_strcap(name);
+			(*env)[i] = ft_strjoin(name, tmp);
 			ft_strdel(&tmp);
 			free_tab((void ***)&table.strings, table.words);
 			return (EXIT_SUCCESS);
