@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 14:08:49 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/04 11:03:25 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/04 20:49:36 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,5 @@ void	ft_enter(char *buff, t_shell *s)
         s->new_line = NULL;
         s->new_line = (char *)malloc(sizeof(char) + 1);
         s->new_line[0] = '\0';
-	}	
+	}
 }
