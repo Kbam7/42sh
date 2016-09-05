@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 14:08:49 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/05 11:07:36 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/05 12:39:21 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	ft_enter(char *buff, t_shell *s)
 	if (buff[0] == 10 && buff[1] == 0 && buff[2] == 0)
 	{
 		ft_putchar('\n');
+		ft_check_wait(s);
 		ft_new_history(s);
 		s->curs_pos = 0;
 		s->str_len = 0;

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/04 17:05:52 by rbromilo         ###   ########.fr       */
+/*   Updated: 2016/09/05 12:38:30 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,17 @@ typedef struct	s_shell
 	char	*cd_path;
 	char	*file_path;
 	char	*word;
+// Inhibitors
+	char			*wait_str;
+	int				wait_strlen;
 }				t_shell;
+
+/*
+** --[ FUNCTION PROTOTYPES -- AUTO-COMPLETE]--
+*/
+
+	void			ft_wait(int trigger, t_shell *s);
+	void			ft_check_wait(t_shell *s);
 
 /*
 ** --[ FUNCTION PROTOTYPES -- AUTO-COMPLETE]--
