@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/11 12:31:10 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/05 11:08:48 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/05 12:40:52 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_line_back_space(t_shell *s)
 	{
 		i = s->curs_pos;
 		j = i;
-		while (i <= s->str_len -  s->prompt_len - 1)
+		while (i <= s->str_len - (s->prompt_len - 2))
 		{
 			if (s->new_line[j - 1] == '\n')
 				j++;
