@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/10 13:29:59 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/27 17:52:11 by rbromilo         ###   ########.fr       */
+/*   Updated: 2016/09/05 12:07:16 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	change_dir(char *path, t_shell *s)
 		ft_strdel(&cwd);
 		return (err(ERR_CHDIR, path));
 	}
-	ft_set(2, "OLDPWD", ft_getenv("PWD", s), s);
+	ft_set(1, "OLDPWD", ft_getenv("PWD", s), s);
 	ft_set(1, "PWD", getcwd(cwd, 4096), s);
 	s->cwd = ft_getenv("PWD", s);
 	ft_strdel(&cwd);
