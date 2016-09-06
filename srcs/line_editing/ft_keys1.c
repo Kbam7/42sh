@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 14:12:20 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/06 08:17:07 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/06 16:57:28 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,20 @@ void	ft_move_cur(char *buff, t_shell *s)
 	ft_enter(buff, s);
 }
 
+void ft_signal_exit(char *buff, t_shell *s)
+{
+	if (buff[0] == 4 && buff[1] == 0 && buff[2] == 0)
+	{
+		if (s->fork_pid == 0)
+		{
+			free_t_shell(s);
+			exit(EXIT_SUCCESS);
+		}
+		else
+			kill(s->fork_pid, SIGQUIT);
+	}
+}
+
 void	buffer(t_shell *s)
 {
 	char	*temp;
@@ -80,6 +94,7 @@ void	buffer(t_shell *s)
 	temp = (char *)malloc(sizeof(char) * 4096);
 	ft_bzero(temp, 4096);
 	read(0, temp, 4096);
+	ft_signal_exit(temp, s);
 	ft_move_cur(temp, s);
 	ft_print_char(temp, s);
 	free(temp);
