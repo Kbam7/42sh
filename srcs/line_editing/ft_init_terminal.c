@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 16:48:49 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/06 10:16:04 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/06 15:46:54 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static void		init_terminal_vars(t_shell *s)
 	s->history = NULL;
 	s->prompt = ft_strdup("$> ");
 	s->prompt_len = 3;
+	s->fork_pid = 0;
 }
 
 int				init_terminal_data(t_shell *s)
@@ -66,7 +67,7 @@ int				init_terminal_data(t_shell *s)
 		err(0, term);
 	s->new_term = s->default_term;
 	s->new_term.c_lflag |= ISIG;
-	s->new_term.c_lflag &= ~(ICANON | ECHO | ISIG);
+	s->new_term.c_lflag &= ~(ICANON | ECHO);
 	s->new_term.c_cc[VMIN] = 1;
 	s->new_term.c_cc[VTIME] = 0;
 	tcsetattr(STDIN_FILENO, TCSADRAIN, &s->new_term);

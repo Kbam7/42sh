@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/06 10:30:03 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/06 17:17:16 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int	execute_cmd(t_shell *s)
 			return (err(ERR_FORK_FAILED, ""));
 		if (pid == 0)
 		{
+			s->fork_pid = getpid();
 //dprintf(2, "--- START -- CHILD PROCESS --- ppid = %d\tpid = %d\n"
 //						"execute_cmd() - child -- Trying to execute '%s' with '%s' ...\n",
 //						getppid(), getpid(), s->input[0], s->input[1]); // debug
