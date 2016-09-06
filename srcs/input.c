@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 18:03:53 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/29 22:36:39 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/06 21:15:12 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,18 @@ int	process_input(char *cmd, t_shell *s)
 
 	error = EXIT_FAILURE;
 
-	if ((ret = ft_strchr(cmd, '|')) && ret[1] == '|')
+dprintf(2, "process_input() -- cmd = '%s'\n", cmd); // debug
+	if ((ret = ft_strstr(cmd, "||")))
+	{
+dprintf(2, "process_input() -- found OR\n"); // debug
 		return (process_logical_or(cmd, s));
-	if ((ret = ft_strchr(cmd, '&')) && ret[1] == '&')
+	}
+dprintf(2, "process_input() -- ret from OR check -- ret = '%s'\n", ret); // debug
+	if ((ret = ft_strstr(cmd, "&&")))
+	{
+dprintf(2, "process_input() -- found AND\n"); // debug
 		return (process_logical_and(cmd, s));
+	}
 	else if (ft_strchr(cmd, '|'))
 		return (process_pipes(cmd, s));
 	else if (ft_strchr(cmd, '<') || ft_strchr(cmd, '>'))
