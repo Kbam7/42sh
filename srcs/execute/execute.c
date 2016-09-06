@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/06 15:39:37 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/06 17:17:16 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	make_path_and_execute(char *path, t_shell *s)
 	char			*tmp;
 	t_split_string	sp;
 
-	i = 0;
+	i = -1;
 	sp = ft_nstrsplit(path, ':');
 	if (s->paths)
 		free_tab((void ***)&s->paths, ft_tablen(s->paths));

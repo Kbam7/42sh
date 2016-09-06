@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/09 12:37:20 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/31 13:10:39 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/06 10:37:06 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct	s_split_string
 	size_t		words;
 	char		**strings;
 }				t_split_string;
-void            ft_strcap(char *str);
+
 void			*ft_memset(void *s, int c, size_t n);
 void			ft_bzero(void *s, size_t n);
 void			*ft_memcpy(void *dest, const void *src, size_t n);
@@ -124,7 +124,8 @@ int				ft_isint(char *str);
 char			*ft_strjoinstr(char *s1, char *s2, char *s3);
 int				ft_iswhtspc(char c);
 char			*ft_strcaps(char *str);
-int			ft_countarray(char **arr);
+void            ft_strcap(char *str);
+int				ft_countarray(char **arr);
 
 /*
 ** GET_NEXT_LINE
