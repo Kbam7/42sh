@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/11 12:31:10 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/05 12:40:52 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/06 08:19:20 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_line_back_space(t_shell *s)
 {
-	int     i;
+	int		i;
 	int		j;
 
 	if (s->curs_pos != s->str_len)
@@ -36,9 +36,9 @@ void	ft_line_back_space(t_shell *s)
 	s->new_line[s->str_len - 1] = '\0';
 }
 
-void    back_shorter(t_shell *s)
+void	back_shorter(t_shell *s)
 {
-	int     i;
+	int		i;
 
 	i = (s->curs_pos + s->prompt_len) - (s->width * (s->cols - 1));
 	while ((i - s->width) > 0)
@@ -59,10 +59,10 @@ void    back_shorter(t_shell *s)
 	}
 }
 
-void    ft_put_curs_back(t_shell *s)
+void	ft_put_curs_back(t_shell *s)
 {
-	int     j;
-	int     i;
+	int		j;
+	int		i;
 
 	i = 0;
 	back_shorter(s);
@@ -86,7 +86,7 @@ void	ft_back_clear(t_shell *s)
 	ft_put_curs_back(s);
 }
 
-void    ft_backspace(t_shell *s, char *buff)
+void	ft_backspace(t_shell *s, char *buff)
 {
 	if (buff[0] == 127 && s->curs_pos > 0)
 	{
