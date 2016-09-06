@@ -6,7 +6,7 @@
 /*   By: rbromilo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/06 10:27:15 by rbromilo          #+#    #+#             */
-/*   Updated: 2016/09/06 10:40:10 by rbromilo         ###   ########.fr       */
+/*   Updated: 2016/09/06 12:06:10 by rbromilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,8 @@ static int		ft_select_path(t_shell *s)
 	s->word = (sp.words > 1) ? ft_strdup(sp.strings[sp.words - 1]) : ft_strnew(0);
 	s->file_path = (char *)ft_getpath(&s->word);
 	last_char = ft_strlen(s->word) - 1;
-
-
 	if (s->word[last_char] == '/')
 		s->word = ft_strnew(0);
-
-
 	if (s->file_path[0] != '/')
 	{
 		if ((fpath = ft_getfullpath(s, s->file_path)) == NULL)
@@ -134,7 +130,6 @@ void	ft_print_options(t_shell *s)
 		ft_putendl(s->tab_options[i]);
 		i++;
 	}
-	tputs(tgetstr("cd",0), 1,ft_putchar_re);
 	ft_putstr("$> ");
 	ft_putstr(s->curr);
 }
@@ -184,6 +179,7 @@ static int		ft_select_cmd(t_shell *s)
 	int				i;
 
 	i = 0;
+	s->word = ft_strdup(s->new_line);
 	while((dir = opendir(s->paths[i])) != NULL)
 	{
 		if (access(s->paths[i], F_OK) == 0)
@@ -192,9 +188,7 @@ static int		ft_select_cmd(t_shell *s)
 			{
 				if (ft_strncmp(s->curr, sd->d_name, ft_strlen(s->curr)) == 0)
 				{
-
 					ft_save_tab_options(s, sd->d_name);
-
 				}
 			}
 		}
