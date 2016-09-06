@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:47 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/05 12:44:26 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/06 07:27:16 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static int	new_env_var(char *name, char *value, char ***env)
 	table = ft_tabdup(*env, len + 1);
 	free_tab((void ***)env, len);
 	tmp = ft_strjoin("=", value);
-	table[len] = ft_strjoin(ft_strcaps(name), tmp);
+    ft_strcap(name);
+	table[len] = ft_strjoin(name, tmp);
 	ft_strdel(&tmp);
 	*env = table;
 	return (EXIT_SUCCESS);
@@ -42,7 +43,8 @@ static int	variable_exists(char *name, char *value, char ***env)
 		{
 			ft_strdel(&(*env)[i]);
 			tmp = ft_strjoin("=", value);
-			(*env)[i] = ft_strjoin(ft_strcaps(name), tmp);
+            ft_strcap(name);
+			(*env)[i] = ft_strjoin(name, tmp);
 			ft_strdel(&tmp);
 			free_tab((void ***)&table.strings, table.words);
 			return (EXIT_SUCCESS);

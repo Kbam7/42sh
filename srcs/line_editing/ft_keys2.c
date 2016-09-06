@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/08 12:04:04 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/04 09:37:07 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/06 08:10:21 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ void	ft_nbr_cols(t_shell *s)
 	int		temp;
 	int		i;
 
-	i = 0; 
+	i = 0;
 	temp = s->str_len + s->prompt_len;
 	s->width = tgetnum("co");
 	while (1)
 	{
 		temp = temp - s->width;
-		if (temp  >= 0)
+		if (temp >= 0)
 			i++;
 		else
 			break ;
@@ -70,7 +70,7 @@ void	ft_end_right(t_shell *s, char *buff)
 
 	j = -1;
 	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 70)
-	{ 
+	{
 		ft_nbr_cols(s);
 		ft_curs_col(s);
 		i = s->cols - s->curs_col;
@@ -91,7 +91,7 @@ void	ft_end_left(t_shell *s, char *buff)
 {
 	int		j;
 
-    j = 0;
+	j = 0;
 	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 72)
 	{
 		ft_nbr_cols(s);

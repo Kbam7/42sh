@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_prompt.c                                        :+:      :+:    :+:   */
+/*   ft_strcap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/04 09:14:43 by kgani             #+#    #+#             */
-/*   Updated: 2016/09/06 08:18:18 by tmack            ###   ########.fr       */
+/*   Created: 2016/09/06 10:32:22 by kbamping          #+#    #+#             */
+/*   Updated: 2016/09/06 10:37:26 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_shell.h"
+#include "libft.h"
 
-void	ft_prompt_print(t_shell *s)
+void    ft_strcap(char *str)
 {
-	ft_putstr(s->prompt);
-}
+    int             i;
 
-void	ft_prompt_new(char *new_prompt, t_shell *s)
-{
-	if (s->prompt)
-		free(s->prompt);
-	s->prompt = ft_strdup(new_prompt);
-	s->prompt_len = ft_strlen(new_prompt);
+    i = 0;
+    while (str[i])
+    {
+        if (str[i] >= 'a' && str[i] <= 'z')
+            str[i] = ft_toupper(str[i]);
+        i++;
+    }
 }
