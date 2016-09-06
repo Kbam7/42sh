@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   autocomplete_path.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbromilo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/09/06 10:27:15 by rbromilo          #+#    #+#             */
+/*   Updated: 2016/09/06 10:27:17 by rbromilo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_shell.h"
 
 static void		ft_free_split(t_split_string *sp)
@@ -43,7 +55,6 @@ char	*ft_getpath(char **str)
 		if (*(word + 1))
 		{
 			++word;
-//dprintf(2, "ft_get_path() -- found '%c' after '/'\n", *word); // debug
 			len = ft_strlen(word);
 			tmp = ft_strsub(*str, 0, (tot_len - len));
 			*str = ft_strdup(word);
@@ -51,32 +62,12 @@ char	*ft_getpath(char **str)
 		}
 	}
 	return (*str);
-/*
-	t_split_string			backslash;
-	unsigned int			i;
-	char					*ret;
-
-	backslash = ft_nstrsplit(str, '/');
-	i = 0;
-	ret = ft_strnew(0);
-	while (i + 1 != backslash.words)
-	{
-		if (i > 0 && i + 1 != backslash.words)
-			ret = ft_strjoinstr(ret,"/", backslash.strings[i]);
-		else
-			ret = ft_strjoin(ret, backslash.strings[i]);
-		i++;
-	}
-	ft_free_split(&backslash);
-	return (ret);
-*/
 }
 
-static int		ft_select_path(t_shell *s) // saving files
+static int		ft_select_path(t_shell *s)
 {
 	DIR				*dir;
 	struct dirent	*sd;
-//	char			*word;
 	struct stat		st;
 	t_split_string	sp;
 	char			*fpath;
@@ -89,12 +80,10 @@ static int		ft_select_path(t_shell *s) // saving files
 	s->file_path = (char *)ft_getpath(&s->word);
 	last_char = ft_strlen(s->word) - 1;
 
-//dprintf(2, "ft_select_path() -- file_path = '%s'\tword = '%s'\n", s->file_path, s->word); // debug
 
 	if (s->word[last_char] == '/')
 		s->word = ft_strnew(0);
 
-//dprintf(2, "ft_select_path() -- file_path = '%s'\tword = '%s'\n", s->file_path, s->word); // debug
 
 	if (s->file_path[0] != '/')
 	{
@@ -105,13 +94,11 @@ static int		ft_select_path(t_shell *s) // saving files
 		fpath = s->file_path;
 
 
-//	dprintf(2, "\nselect-path = PATH is --3-- > %s\n", path);
 	if ((access(fpath, F_OK) != 0) ||
 					(check_rights(fpath, 'r', 0, 'x') != EXIT_SUCCESS) ||
 											((dir = opendir(fpath)) == NULL))
 			return (EXIT_FAILURE);
 
-//dprintf(2, "ft_select_path() -- fpath(opened) = '%s'\tword = '%s'\n", fpath, s->word); // debug
 
 	while ((sd = readdir(dir)) != NULL)
 	{
@@ -123,11 +110,11 @@ static int		ft_select_path(t_shell *s) // saving files
 				ft_save_tab_options(s, sd->d_name);
 			else
 				ft_save_tab_options(s, sd->d_name);
-//			if (S_ISDIR(st.st_mode))
-//			{
-//				free(s->tab_options[s->opt_i - 1]);
-//				s->tab_options[s->opt_i - 1] = ft_strjoin(sd->d_name, "/");
-//			}
+			if (S_ISDIR(st.st_mode))
+			{
+				free(s->tab_options[s->opt_i - 1]);
+				s->tab_options[s->opt_i - 1] = ft_strjoin(sd->d_name, "/");
+			}
 
 		}
 	}
@@ -142,20 +129,13 @@ void	ft_print_options(t_shell *s)
 	int	i;
 
 	i = 0;
-/*	if (s->opt_i > 30)
-	{
-		ft_putstr("are you sure you want to display all ");
-		ft_putnbr(s->opt_i);
-		ft_putstr("possabilities? (y or n)");
-	}
-*/
 	while (i <= s->opt_i - 1)
 	{
 		ft_putendl(s->tab_options[i]);
 		i++;
 	}
-
-	ft_putstr("$>");
+	tputs(tgetstr("cd",0), 1,ft_putchar_re);
+	ft_putstr("$> ");
 	ft_putstr(s->curr);
 }
 
@@ -175,14 +155,10 @@ int		ft_allmatch(t_shell *s, int stop)
 
 void	ft_print_word(t_shell *s)
 {
-//	int				stop;
 	int				i;
 	char			rest[3];
 
-//	stop = ft_strlen(s->file_path);
 	i = ft_strlen(s->word);
-//	i = ft_strlen(s->curr);
-//	i = 0;
 	ft_bzero(rest, 3);
 	if (s->tab_options[1] == NULL)
 		while(s->tab_options[0][i] != '\0')

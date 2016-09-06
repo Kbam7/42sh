@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   autocomplete_utils.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbromilo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/09/06 10:27:18 by rbromilo          #+#    #+#             */
+/*   Updated: 2016/09/06 10:27:20 by rbromilo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_shell.h"
 
 void	ft_checkcurr(t_shell *s)
@@ -49,7 +61,6 @@ int	ft_save_tab_options(t_shell *s, char *d_name)
 			s->tab_options[i] = ft_strdup(d_name);
 		}
 	}
-//dprintf(2, "tab_options[%d] = '%s'\n", i, s->tab_options[i]); // debug
 	s->opt_i++;
 	return (EXIT_SUCCESS);
 }
