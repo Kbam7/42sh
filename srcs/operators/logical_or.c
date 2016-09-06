@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/30 01:24:20 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/06 10:11:25 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/06 10:21:48 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int			process_logical_or(char *cmd, t_shell *s)
 	init_logical_or(cmd, &cmds);
 	while (cmds[i] != NULL)
 	{
-		if ((ret = process_input(cmds[i], s)) != EXIT_SUCCESS)
+		if ((ret = process_input(cmds[i], s)) == EXIT_SUCCESS)
 			break ;
 		++i;
 	}
