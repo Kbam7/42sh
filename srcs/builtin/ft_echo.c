@@ -6,7 +6,7 @@
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/31 11:12:50 by kgani             #+#    #+#             */
-/*   Updated: 2016/08/31 13:08:00 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/06 10:21:06 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,5 @@ int	ft_echo(char **args, t_shell *s)
 	else
 		ft_putchar('\n');
 	ft_echo_clean(new);
-	return (1);
+	return (EXIT_SUCCESS);
 }
