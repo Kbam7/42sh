@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/05 12:38:30 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/05 22:16:48 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FT_SHELL_H
 
 # include "libft.h"
+# include <time.h>
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -324,8 +325,13 @@ char			*check_shell_variables(char *name, t_shell *s);
 **	execute.c
 */
 int				execute_cmd(t_shell *s);
-//int				try_builtin(t_shell *s);
-//int				try_system(t_shell *s);
+int				ft_execute(t_shell *s);
+
+/*
+**	execute_builtin.c
+*/
+int				try_parent_builtin(t_shell *s);
+int				try_child_builtin(t_shell *s);
 
 /*
 **	execute_pipe.c

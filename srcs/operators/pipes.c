@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:24:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/05 18:57:26 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/05 23:26:43 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,33 +48,74 @@ static int	init_pipes(char *cmd, char ***cmds, int *n_cmds, t_shell *s)
 
 int			process_pipes(char *cmd, t_shell *s)
 {
-	int		i;
-	int		n;
-	char	**cmds;
+	struct timespec	time;
+	pid_t			pid;
+	int				n;
+	int				flag;
+	int				status;
+	char			**cmds;
 
-	if ((i = init_pipes(cmd, &cmds, &n, s)) != EXIT_SUCCESS)
-		return (i);
+	if ((status = init_pipes(cmd, &cmds, &n, s)) != EXIT_SUCCESS)
+		return (status);
 	while (cmds[s->pipe.pipe_i] && (s->pipe.n_pipes = n - s->pipe.pipe_i) > 0)
 	{
-		if (s->pipe.n_pipes == 1 && cmds[s->pipe.pipe_i] == NULL)
+		if ((pid = fork()) < 0)
+			return (err(ERR_FORK_FAILED, ""));
+		if (pid == 0)
 		{
-		// user has input "cat author |", there is no command after the pipe so
-		//	read one line(ft_gnl), and use that line as a command. This command may be
-		//	multiple commands piped together. i.e. a string of cmds
-		}
-		else
-			if ((i = process_input(cmds[s->pipe.pipe_i], s)) != EXIT_SUCCESS)
+
+dprintf(2, "process_pipes() --- START -- CHILD PROCESS --- ppid = %d\tpid = %d\n"
+						"process_pipes() - child -- Calling process_input() with '%s' ...\n\n",
+						getppid(), getpid(), cmds[s->pipe.pipe_i]); // debug
+
+
+			if ((status = process_input(cmds[s->pipe.pipe_i], s)) != EXIT_SUCCESS)
 			{
-dprintf(2, "process_pipes() -- process_input() NOT SUCCESSFULL!\treturn = %d\tpid = %d\n", i, getpid()); // debug
-		//		break ;
+dprintf(2, "process_pipes() -- process_input() NOT SUCCESSFULL!\tstatus = %d\tpid = %d\n", status, getpid()); // debug
 			}
-// At this point, the output has been read into the pipe or to the screen if its the last command.
+dprintf(2, "process_pipes() --- CHILD PROCESS returning, not exited --- ppid = %d\tpid = %d\n",
+																				getppid(), getpid()); // debug
+dprintf(2, "process_pipes() -- 2 - child -- status = '%d'\tpid = %d\n", status, getpid()); // debug
+			free_t_shell(s);
+dprintf(2, "process_pipes() -- 2 - child -- status = '%d'\tstatus(-900) = '%d'\tpid = %d\n", status, status-900, getpid()); // debug
+			exit(status == 0 ? 0 : (status - 900));
+		}
+		// -----   Parent only   ------
+
+dprintf(2, "process_pipes() -- PARENT  only area ------- ppid = %d\tpid = %d\n", getppid(), getpid()); // debug
+		if (s->pipe.n_pipes)
+		{
+dprintf(2, "process_pipes() -- PARENT only area -- Do parent_pipe()  n_pipes = '%d' --- ppid = %d\tpid = %d\n",
+													s->pipe.n_pipes, getppid(), getpid()); // debug
+			parent_pipe(s);
+		}
+		time.tv_sec = 0;
+		time.tv_nsec = 1000000;
+dprintf(2, "process_pipes() -- PARENT --  nanosleep() -- START ------- pid = %d\n", getpid()); // debug
+		nanosleep(&time, NULL);
+dprintf(2, "process_pipes() -- PARENT -- nanosleep() -- END ------- pid = %d\n", getpid()); // debug
 		++s->pipe.pipe_i;
 	}
+	s->pipe.pipe_i = 0;
+	flag = EXIT_SUCCESS;
+	while ((s->pipe.n_pipes = n - s->pipe.pipe_i) > 0)
+	{
+//	wait for child to finish
+dprintf(2, "process_pipes() -- PARENT -- Waiting for child ------- pid = %d\n", getpid()); // debug
+		wait(&status);
+dprintf(2, "process_pipes() -- PARENT -- Finished waiting ------- pid = %d\n", getpid()); // debug
+
+// error checks
+		if (WIFEXITED(status) && (status = WEXITSTATUS(status)) != EXIT_SUCCESS)
+		{
+dprintf(2, "process_pipes() -- 1 -- status = '%d' status(+900) = '%d'\tpid = %d\n", status , status + 900, getpid()); // debug
+			++flag;
+			err(((status == 1) ? 1 : status + 900), s->input[0]);
+		}
+dprintf(2, "process_pipes() -- 2 -- status = '%d' status(+900) = '%d'\tpid = %d\n", status , status + 900, getpid()); // debug
+		++s->pipe.pipe_i;
+	}
+	
 	reset_and_free_vars(cmds, n, s);
-	return ((i == EXIT_SUCCESS) ? EXIT_SUCCESS : EXIT_FAILURE);
+	return ((flag == EXIT_SUCCESS) ? EXIT_SUCCESS : EXIT_FAILURE);
 }
-
-/*
-
-*/

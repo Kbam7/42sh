@@ -20,6 +20,7 @@ SRCS		=	srcs/main.c								\
 				srcs/shell_args.c						\
 				srcs/environ.c							\
 				srcs/execute/execute.c					\
+				srcs/execute/execute_builtin.c			\
 				srcs/execute/execute_pipe.c				\
 				srcs/execute/execute_output_redir.c		\
 				srcs/execute/execute_input_redir.c		\
@@ -37,28 +38,28 @@ SRCS		=	srcs/main.c								\
 				srcs/line_editing/ft_print_char.c		\
 				srcs/line_editing/ft_init_terminal.c	\
 				srcs/line_editing/ft_strdup_2.c			\
-				srcs/line_editing/ft_prompt.c				\
+				srcs/line_editing/ft_prompt.c			\
 				srcs/autocomplete/ft_autocomplete.c		\
 				srcs/autocomplete/autocomplete_path.c	\
 				srcs/autocomplete/autocomplete_utils.c	\
-				srcs/inhibitors/ft_check_wait.c					\
-				srcs/inhibitors/ft_wait.c						\
+				srcs/inhibitors/ft_check_wait.c			\
+				srcs/inhibitors/ft_wait.c				
 
 BUILTIN		=	srcs/builtin/ft_cd.c					\
 				srcs/builtin/ft_cd_utils.c				\
 				srcs/builtin/ft_env.c					\
 				srcs/builtin/ft_echo.c					\
-				srcs/builtin/ft_echo_addstr.c					\
-				srcs/builtin/ft_echo_clean.c					\
-				srcs/builtin/ft_echo_env.c					\
-				srcs/builtin/ft_echo_esc.c					\
-				srcs/builtin/ft_echo_esc_char.c					\
-				srcs/builtin/ft_echo_isflag.c					\
-				srcs/builtin/ft_echo_scan.c					\
-				srcs/builtin/ft_echo_skip.c					\
-				srcs/builtin/ft_echo_string.c					\
+				srcs/builtin/ft_echo_addstr.c			\
+				srcs/builtin/ft_echo_clean.c			\
+				srcs/builtin/ft_echo_env.c				\
+				srcs/builtin/ft_echo_esc.c				\
+				srcs/builtin/ft_echo_esc_char.c			\
+				srcs/builtin/ft_echo_isflag.c			\
+				srcs/builtin/ft_echo_scan.c				\
+				srcs/builtin/ft_echo_skip.c				\
+				srcs/builtin/ft_echo_string.c			\
 				srcs/builtin/ft_setenv.c				\
-				srcs/builtin/ft_unsetenv.c
+				srcs/builtin/ft_unsetenv.c				
 
 all: $(PROG)
 
