@@ -6,18 +6,18 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:24:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/06 20:54:00 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/07 01:26:06 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-static void	reset_and_free_vars(char **cmds, size_t n_cmds, t_shell *s)
+static void	reset_and_free_vars(char ***cmds, size_t n_cmds, t_shell *s)
 {
 	s->pipe.n_pipes = 0;
 	s->pipe.pipe_i = 0;
 	free_tab((void ***)&s->pipe.pipes, n_cmds);
-	free_tab((void ***)&cmds, n_cmds);
+	free_tab((void ***)cmds, n_cmds);
 }
 
 static int	init_pipes(char *cmd, char ***cmds, int *n_cmds, t_shell *s)
@@ -46,24 +46,26 @@ static int	init_pipes(char *cmd, char ***cmds, int *n_cmds, t_shell *s)
 	return (EXIT_SUCCESS);
 }
 
-static int	wait_for_children(int n_cmds, t_shell *s)
+static int	wait_for_children(char **cmds, int n_cmds, t_shell *s)
 {
-	int				status;
-	int				flag;
+	int		status;
+	int		flag;
+	pid_t	pid;
 
 	s->pipe.pipe_i = 0;
 	flag = EXIT_SUCCESS;
 	while ((s->pipe.n_pipes = n_cmds - s->pipe.pipe_i) > 0)
 	{
-dprintf(2, "wait_for_children() -- PARENT -- Waiting for child ------- pid = %d\n", getpid()); // debug
-		wait(&status);
-dprintf(2, "wait_for_children() -- PARENT -- Finished waiting ------- pid = %d\n", getpid()); // debug
+dprintf(2, "wait_for_children() -- PARENT -- Waiting for child --- pid = %d\n", getpid()); // debug
+		if ((pid = wait(&status)) > 0)
+			remove_child_pid(pid, s);
+dprintf(2, "wait_or_children() -- PARENT -- Finished waiting --- pid = '%d' caught child_pid '%d'\n", getpid(), pid); // debug
 
 		if (WIFEXITED(status) && (status = WEXITSTATUS(status)) != EXIT_SUCCESS)
 		{
 dprintf(2, "wait_for_children() -- 1 -- status = '%d' status(+900) = '%d'\tpid = %d\n", status , status + 900, getpid()); // debug
 			++flag;
-			err(((status == 1) ? 1 : status + 900), ""/*s->input[0]*/);	
+			err(((status == 1) ? 1 : status + 900), cmds[s->pipe.pipe_i]/*s->input[0]*/);	
 		}
 
 		
@@ -83,6 +85,8 @@ int			process_pipes(char *cmd, t_shell *s)
 
 	if ((status = init_pipes(cmd, &cmds, &n, s)) != EXIT_SUCCESS)
 		return (status);
+//	if ((defult_signal = signal(SIGCHLD, ft_sigchld_handler)) == SIG_IGN)
+//		signal(SIGCHLD, SIG_IGN);
 	while (cmds[s->pipe.pipe_i] && (s->pipe.n_pipes = n - s->pipe.pipe_i) > 0)
 	{
 		if ((pid = fork()) < 0)
@@ -108,6 +112,7 @@ dprintf(2, "process_pipes() -- 2 - child -- status = '%d'\tstatus(-900) = '%d'\t
 		// -----   Parent only   ------
 
 // ADD CHILD PID TO ARRAY
+		add_child_pid(pid, s);
 
 dprintf(2, "process_pipes() -- PARENT  only area ------- ppid = %d\tpid = %d\n", getppid(), getpid()); // debug
 		if (s->pipe.n_pipes)
@@ -116,16 +121,20 @@ dprintf(2, "process_pipes() -- PARENT only area -- Do parent_pipe()  n_pipes = '
 													s->pipe.n_pipes, getppid(), getpid()); // debug
 			parent_pipe(s);
 		}
+
+// sleep
 		time.tv_sec = 0;
-		time.tv_nsec = 10000000/*000000*/;
+		time.tv_nsec = 1000000;
 dprintf(2, "process_pipes() -- PARENT --  nanosleep() -- START ------- pid = %d\n", getpid()); // debug
 		nanosleep(&time, NULL);
 dprintf(2, "process_pipes() -- PARENT -- nanosleep() -- END ------- pid = %d\n", getpid()); // debug
+// end sleep */
+
 		++s->pipe.pipe_i;
 	}
 
-	status = wait_for_children(n, s);
+	status = wait_for_children(cmds, n, s);
 
-	reset_and_free_vars(cmds, n, s);
+	reset_and_free_vars(&cmds, n, s);
 	return ((status == EXIT_SUCCESS) ? EXIT_SUCCESS : EXIT_FAILURE);
 }

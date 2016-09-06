@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/06 14:03:05 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/07 00:15:14 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <term.h>
 # include <dirent.h>
 # include <stdio.h>
+# include <signal.h>
 
 /*
 ** --[ DEFINES -- FILE/DIRECTORY ]--
@@ -111,6 +112,7 @@ typedef struct			s_redirs
 
 typedef struct			s_pipes
 {
+	char			**child_pid;
 	int				**pipes;
 	int				n_pipes;
 	int				pipe_i;
@@ -128,7 +130,7 @@ typedef struct	s_cmd_list
 
 typedef struct	s_shell
 {
-	char		**env_var;	
+	char		**env_var;
 	char		**shell_var;
 	t_func_opt	func_opt;
 	char		**argv;
@@ -286,6 +288,12 @@ int				process_logical_and(char *cmd, t_shell *s);
 int				process_pipes(char *cmd, t_shell *s);
 
 /*
+**	pid_array.c
+*/
+int				add_child_pid(pid_t pid, t_shell *s);
+int				remove_child_pid(pid_t pid, t_shell *s);
+
+/*
 **	redirs.c
 */
 int				process_redir(char *cmd, t_shell *s);
@@ -338,6 +346,7 @@ void			parent_pipe(t_shell *s);
 
 /*
 **	execute_input_redir.c
+	char	**tmp;
 */
 int				child_input_redir(char *str, t_shell *s);
 
@@ -355,6 +364,7 @@ int				parent_output_redir(char *str, t_shell *s);
 /*
 **	tab_funcs.c
 */
+char			**ft_tabnew(char *str, size_t len);
 char			**ft_tabdup(char **table, int len);
 int				ft_tablen(char **envp);
 void			free_tab(void ***table, int len);

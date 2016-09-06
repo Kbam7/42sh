@@ -12,6 +12,7 @@ SRCS		=	srcs/main.c								\
 				srcs/operators/logical_or.c				\
 				srcs/operators/logical_and.c			\
 				srcs/operators/pipes.c					\
+				srcs/operators/pid_array.c				\
 				srcs/operators/redirs/redirs.c			\
 				srcs/operators/heredocs.c				\
 				srcs/operators/redirs/analyze_redir.c	\

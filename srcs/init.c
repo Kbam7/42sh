@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 02:28:26 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/06 07:50:15 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/07 01:36:52 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static void	init_builtin_func_options(t_shell *s)
 
 void		init_pipes_redirs(t_shell *s)
 {
+	s->pipe.child_pid = NULL;
 	s->pipe.pipes = NULL;
 	s->pipe.n_pipes = 0;
 	s->pipe.pipe_i = 0;
