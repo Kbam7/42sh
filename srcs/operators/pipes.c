@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:24:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/05 23:26:43 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/06 16:19:57 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,38 @@ static int	init_pipes(char *cmd, char ***cmds, int *n_cmds, t_shell *s)
 	return (EXIT_SUCCESS);
 }
 
+static int	wait_for_children(int n_cmds, t_shell *s)
+{
+	int				status;
+	int				flag;
+
+	s->pipe.pipe_i = 0;
+	flag = EXIT_SUCCESS;
+	while ((s->pipe.n_pipes = n_cmds - s->pipe.pipe_i) > 0)
+	{
+	dprintf(2, "process_pipes() -- PARENT -- Waiting for child ------- pid = %d\n", getpid()); // debug
+		wait(&status);
+dprintf(2, "process_pipes() -- PARENT -- Finished waiting ------- pid = %d\n", getpid()); // debug
+
+		if (WIFEXITED(status) && (status = WEXITSTATUS(status)) != EXIT_SUCCESS)
+		{
+dprintf(2, "process_pipes() -- 1 -- status = '%d' status(+900) = '%d'\tpid = %d\n", status , status + 900, getpid()); // debug
+			++flag;
+			err(((status == 1) ? 1 : status + 900), s->input[0]);
+		}
+
+		
+dprintf(2, "process_pipes() -- 2 -- status = '%d' status(+900) = '%d'\tpid = %d\n", status , status + 900, getpid()); // debug
+		++s->pipe.pipe_i;
+	}
+	return (flag);
+}
+
 int			process_pipes(char *cmd, t_shell *s)
 {
 	struct timespec	time;
 	pid_t			pid;
 	int				n;
-	int				flag;
 	int				status;
 	char			**cmds;
 
@@ -96,26 +122,9 @@ dprintf(2, "process_pipes() -- PARENT --  nanosleep() -- START ------- pid = %d\
 dprintf(2, "process_pipes() -- PARENT -- nanosleep() -- END ------- pid = %d\n", getpid()); // debug
 		++s->pipe.pipe_i;
 	}
-	s->pipe.pipe_i = 0;
-	flag = EXIT_SUCCESS;
-	while ((s->pipe.n_pipes = n - s->pipe.pipe_i) > 0)
-	{
-//	wait for child to finish
-dprintf(2, "process_pipes() -- PARENT -- Waiting for child ------- pid = %d\n", getpid()); // debug
-		wait(&status);
-dprintf(2, "process_pipes() -- PARENT -- Finished waiting ------- pid = %d\n", getpid()); // debug
 
-// error checks
-		if (WIFEXITED(status) && (status = WEXITSTATUS(status)) != EXIT_SUCCESS)
-		{
-dprintf(2, "process_pipes() -- 1 -- status = '%d' status(+900) = '%d'\tpid = %d\n", status , status + 900, getpid()); // debug
-			++flag;
-			err(((status == 1) ? 1 : status + 900), s->input[0]);
-		}
-dprintf(2, "process_pipes() -- 2 -- status = '%d' status(+900) = '%d'\tpid = %d\n", status , status + 900, getpid()); // debug
-		++s->pipe.pipe_i;
-	}
-	
+	status = wait_for_children(n, s);
+
 	reset_and_free_vars(cmds, n, s);
-	return ((flag == EXIT_SUCCESS) ? EXIT_SUCCESS : EXIT_FAILURE);
+	return ((status == EXIT_SUCCESS) ? EXIT_SUCCESS : EXIT_FAILURE);
 }
