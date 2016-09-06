@@ -6,7 +6,6 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/04 17:14:26 by rbromilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,8 +126,8 @@ typedef struct	s_cmd_list
 
 typedef struct	s_shell
 {
-	char		**env_var;	// copy to child shell
-	char		**shell_var;// do not copy to child shell
+	char		**env_var;
+	char		**shell_var;
 	t_func_opt	func_opt;
 	char		**argv;
 	char		**paths;
@@ -136,8 +135,8 @@ typedef struct	s_shell
 	char		*prompt;
 	int			prompt_len;
 	char		**input;
-	char		*hdoc_newstr;	// heredoc
-	int			hdoc_strlen;	// heredoc
+	char		*hdoc_newstr;
+	int			hdoc_strlen;
 	int			arg_p;
 	int			arg_u;
 	t_cmd_list	*commands;
@@ -154,15 +153,12 @@ typedef struct	s_shell
 	int				on;
 	int				str_len;
     int             width;
-	char			**env;
 	char			**history;
     char            **path;
-    char            *home_path;
 	char			*new_line;
     char            *oldpwd;
     char            *pwd;
 	char			*term_type;
-    char            *user;
 	struct termios	new_term;
 	struct termios	default_term;
 	struct termios	old_term;
@@ -176,7 +172,17 @@ typedef struct	s_shell
 	char	*cd_path;
 	char	*file_path;
 	char	*word;
+// Inhibitors
+	char			*wait_str;
+	int				wait_strlen;
 }				t_shell;
+
+/*
+** --[ FUNCTION PROTOTYPES -- AUTO-COMPLETE]--
+*/
+
+	void			ft_wait(int trigger, t_shell *s);
+	void			ft_check_wait(t_shell *s);
 
 /*
 ** --[ FUNCTION PROTOTYPES -- AUTO-COMPLETE]--
@@ -223,7 +229,7 @@ int						ft_putchar_re(int c);
 void					ft_print_char(char *buff, t_shell *shell);
 void					ft_right_word(t_shell *shell, char *buff);
 char					**ft_semi(t_shell *shell);
-int						init_terminal_data (t_shell *shell, char **env);
+int						init_terminal_data (t_shell *shell);
 void					ft_ctrl_l(char *buff, t_shell *s);
 void					ft_prompt_new(char *new_prompt, t_shell *s);
 void					ft_prompt_print(t_shell *s);

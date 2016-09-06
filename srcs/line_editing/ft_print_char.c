@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 14:08:49 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/04 11:03:25 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/06 08:04:13 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	ft_put_string(t_shell *s)
 	tputs(tgetstr("cr", 0), 1, ft_putchar_re);
 	tputs(tgetstr("cd", 0), 1, ft_putchar_re);
 	ft_prompt_print(s);
-//	write(1, s->prompt, ft_strlen(s->prompt));
 	ft_putstr(s->new_line);
 }
 
@@ -98,6 +97,7 @@ void	ft_enter(char *buff, t_shell *s)
 	if (buff[0] == 10 && buff[1] == 0 && buff[2] == 0)
 	{
 		ft_putchar('\n');
+		ft_check_wait(s);
 		ft_new_history(s);
 		s->curs_pos = 0;
 		s->str_len = 0;
@@ -106,8 +106,8 @@ void	ft_enter(char *buff, t_shell *s)
 			ft_prompt_print(s);
 		if (s->new_line != NULL || s->new_line[0] != '\0')
 			free(s->new_line);
-        s->new_line = NULL;
-        s->new_line = (char *)malloc(sizeof(char) + 1);
-        s->new_line[0] = '\0';
-	}	
+		s->new_line = NULL;
+		s->new_line = (char *)malloc(sizeof(char) + 1);
+		s->new_line[0] = '\0';
+	}
 }

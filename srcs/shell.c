@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/04 09:23:44 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/06 08:30:41 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,6 @@ void			free_t_shell(t_shell *s)
 {
     if (s->history != NULL)
         free_tab((void ***)&s->history, ft_tablen(s->history));
-    if (s->env != NULL)
-        free_tab((void ***)&s->env, ft_tablen(s->env));
 	if (s->commands != NULL)
 		free_cmd_list(&s->commands);
 	if (s->input != NULL)

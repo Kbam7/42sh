@@ -6,3 +6,5 @@
 .Trashes
 .*.swp
 *.o
+libft.a
+42sh
