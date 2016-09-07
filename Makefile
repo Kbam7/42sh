@@ -38,27 +38,28 @@ SRCS		=	srcs/main.c								\
 				srcs/line_editing/ft_print_char.c		\
 				srcs/line_editing/ft_init_terminal.c	\
 				srcs/line_editing/ft_strdup_2.c			\
-				srcs/line_editing/ft_prompt.c				\
+				srcs/line_editing/ft_prompt.c			\
 				srcs/autocomplete/ft_autocomplete.c		\
 				srcs/autocomplete/autocomplete_path.c	\
 				srcs/autocomplete/autocomplete_utils.c	\
 				srcs/inhibitors/ft_check_wait.c			\
 				srcs/inhibitors/ft_wait.c				\
-				srcs/signals/ft_signals.c			\
+				srcs/signals/ft_signals.c 				\
+				srcs/line_editing/ft_cpy.c				\
 
-BUILTIN		=	srcs/builtin/ft_cd.c					\
+BUILTIN		=	srcs/builtin/ft_cd.c 					\
 				srcs/builtin/ft_cd_utils.c				\
 				srcs/builtin/ft_env.c					\
 				srcs/builtin/ft_echo.c					\
-				srcs/builtin/ft_echo_addstr.c					\
-				srcs/builtin/ft_echo_clean.c					\
-				srcs/builtin/ft_echo_env.c					\
-				srcs/builtin/ft_echo_esc.c					\
-				srcs/builtin/ft_echo_esc_char.c					\
-				srcs/builtin/ft_echo_isflag.c					\
-				srcs/builtin/ft_echo_scan.c					\
-				srcs/builtin/ft_echo_skip.c					\
-				srcs/builtin/ft_echo_string.c					\
+				srcs/builtin/ft_echo_addstr.c			\
+				srcs/builtin/ft_echo_clean.c			\
+				srcs/builtin/ft_echo_env.c				\
+				srcs/builtin/ft_echo_esc.c				\
+				srcs/builtin/ft_echo_esc_char.c			\
+				srcs/builtin/ft_echo_isflag.c			\
+				srcs/builtin/ft_echo_scan.c				\
+				srcs/builtin/ft_echo_skip.c				\
+				srcs/builtin/ft_echo_string.c			\
 				srcs/builtin/ft_setenv.c				\
 				srcs/builtin/ft_unsetenv.c
 

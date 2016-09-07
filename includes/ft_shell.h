@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/06 16:58:05 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/07 09:15:11 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,8 @@ typedef struct	s_shell
 	t_redirs	redir;
 	t_pipes		pipe;
 // Line editing
+	char			**high;
+	int				a;
     int             cols;
 	int				curs_col;
 	int				curs_pos;
@@ -216,7 +218,8 @@ char			*ft_getfullpath(t_shell *s, char *path);
 /*
 ** --[ FUNCTION PROTOTYPES -- LINE EDITING]--
 */
-
+void    				ft_high_right(t_shell *s, char *buff);
+void    				ft_high_left(t_shell *s, char *buff);
 char					**ft_strdup_2(char **src);
 void					ft_backspace(t_shell *shell, char *buff);
 void					buffer(t_shell *shell);
