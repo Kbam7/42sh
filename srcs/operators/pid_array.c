@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/06 21:40:53 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/07 15:16:06 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/07 21:56:08 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static void	delete_var(char ***var, int i)
 {
 	char			**tmp;
 
-dprintf(2, "remove_child_pid() - delete_var() -- removed  '%s'\n", (*var)[i]); // debug
 	ft_strdel(&(*var)[i]);
 	while ((*var)[i + 1] != NULL)
 	{
@@ -35,13 +34,9 @@ int			remove_child_pid(pid_t pid, t_shell *s)
 	int		len;
 	int		i;
 
-dprintf(2, "remove_child_pid() - START\n"); // debug
 	len = ft_tablen(s->pipe.child_pid);
 	if (len == 1)
-	{
-dprintf(2, "remove_child_pid() - LAST PID, deleting child_pid tab. i.e == NULL\n"); // debug
 		free_tab((void ***)&s->pipe.child_pid, len);
-	}
 	else
 	{
 		pid_str = ft_itoa((int)pid);
@@ -54,9 +49,7 @@ dprintf(2, "remove_child_pid() - LAST PID, deleting child_pid tab. i.e == NULL\n
 				++i;
 		}
 		free(pid_str);
-dprintf(2, "remove_child_pid() - PID's left = '%d'\n", len -1); // debug
 	}
-dprintf(2, "remove_child_pid() - END\n"); // debug
 	return (len - 1);
 }
 
@@ -71,7 +64,6 @@ int			add_child_pid(pid_t pid, t_shell *s)
 	{
 		if ((s->pipe.child_pid = ft_tabnew(pid_str, 1)) == NULL)
 			return (EXIT_FAILURE);
-dprintf(2, "add_child_pid() -- added pid[0] '%s'\n", s->pipe.child_pid[0]); // debug
 	}
 	else
 	{
@@ -81,11 +73,8 @@ dprintf(2, "add_child_pid() -- added pid[0] '%s'\n", s->pipe.child_pid[0]); // d
 		free_tab((void ***)&s->pipe.child_pid, len);
 		tmp[len] = ft_strdup(pid_str);
 		s->pipe.child_pid = tmp;
-dprintf(2, "add_child_pid() -- added pid[%d] '%s'\n", len, s->pipe.child_pid[len]); // debug
 	}
 	free(pid_str);
-
-
 	return (EXIT_SUCCESS);
 }
 
@@ -94,50 +83,9 @@ int			get_child_pid_index(pid_t pid, t_shell *s)
 	int		c;
 	char	*str;
 
-dprintf(2, "get_child_pid_index() -- checking for '%d'\n", pid); // debug
 	c = 0;
 	str = ft_itoa((int)pid);
 	while (s->pipe.child_pid[c] && ft_strcmp(str, s->pipe.child_pid[c]) != 0)
-	{
-dprintf(2, "get_child_pid_index() -- s->pipe.child_pid[%d] = '%s'\n", c, s->pipe.child_pid[c]); // debug
-		if (s->pipe.child_pid[c] && ft_strcmp(str, s->pipe.child_pid[c]) == 0)
-	dprintf(2, "get_child_pid_index() -- FOUND s->pipe.child_pid[%d] = '%s'\n", c, s->pipe.child_pid[c]); // debug
-
 		++c;
-
-		if (s->pipe.child_pid[c] && ft_strcmp(str, s->pipe.child_pid[c]) == 0)
-	dprintf(2, "get_child_pid_index() -- FOUND s->pipe.child_pid[%d] = '%s'\n", c, s->pipe.child_pid[c]); // debug
-	}
 	return (c);	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

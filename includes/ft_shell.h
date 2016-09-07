@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/07 17:18:39 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/07 21:57:56 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,6 +302,13 @@ int				process_logical_and(char *cmd, t_shell *s);
 int				process_pipes(char *cmd, t_shell *s);
 
 /*
+**	pipes_wait.c
+*/
+int				wait_for_children(char **cmds, t_shell *s);
+int				ft_wait_child_pipe(int wait, char **cmds, int *curr,
+																t_shell *s);
+
+/*
 **	pid_array.c
 */
 int				add_child_pid(pid_t pid, t_shell *s);
@@ -361,7 +368,6 @@ void			parent_pipe(t_shell *s);
 
 /*
 **	execute_input_redir.c
-	char	**tmp;
 */
 int				child_input_redir(char *str, t_shell *s);
 

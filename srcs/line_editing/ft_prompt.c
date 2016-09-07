@@ -6,7 +6,7 @@
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/04 09:14:43 by kgani             #+#    #+#             */
-/*   Updated: 2016/09/07 13:28:46 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/07 17:36:15 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 void	ft_prompt_print(t_shell *s)
 {
-
-//dprintf(1, "ft_print_prompt() -- pid = '%d'\n", getpid()); // debug
-
 	ft_putstr(s->prompt);
 }
 

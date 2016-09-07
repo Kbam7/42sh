@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/07 17:20:34 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/07 17:36:00 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,7 @@ void		shell_loop(t_shell *s)
 				ft_prompt_print(s);
 				break ;
 			}
-//dprintf(2, "process_pipes() -- PARENT --  nanosleep() -- START ------- pid = %d\n", getpid()); // debug
 			ft_sleep(0, 10000000);
-//dprintf(2, "process_pipes() -- PARENT -- nanosleep() -- END ------- pid = %d\n", getpid()); // debug
 			ft_prompt_print(s);
 			cmd_list = cmd_list->next;
 		}
