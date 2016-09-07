@@ -1,28 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   get_shell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/07/28 20:35:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/07 02:03:34 by kbamping         ###   ########.fr       */
+/*   Created: 2016/09/06 15:56:42 by kgani             #+#    #+#             */
+/*   Updated: 2016/09/06 16:03:38 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-int			main(int argc, char **argv, char **envp)
+t_shell *ft_get_shell(void)
 {
-	t_shell	*s;
+	static t_shell	s;
 
-	ft_signals();
-	s = ft_get_shell();
-	init_env(s, argc, argv, envp);
-	init_terminal_data(s);
-	ft_clear_screen();
-	ft_prompt_print(s);
-	shell_loop(s);
-	free_t_shell(s);
-	return (EXIT_SUCCESS);
+	return (&s);
 }
+

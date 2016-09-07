@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/07 00:15:14 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/07 02:03:34 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <sys/stat.h>
+# include <signal.h>
 # include <fcntl.h>
 # include <termios.h>
 # include <term.h>
@@ -179,7 +180,20 @@ typedef struct	s_shell
 // Inhibitors
 	char			*wait_str;
 	int				wait_strlen;
+//signals
+	int				fork_pid;	
 }				t_shell;
+
+/*
+** --[ FUNCTION PROTOTYPES -- SIGNALS]--
+*/
+	void		ft_signals(void);
+	void		ft_signal_exit(char *buff, t_shell *s);
+
+/*
+** --[ FUNCTION PROTOTYPES -- AUTO-COMPLETE]--
+*/
+	t_shell 		*ft_get_shell(void);
 
 /*
 ** --[ FUNCTION PROTOTYPES -- AUTO-COMPLETE]--

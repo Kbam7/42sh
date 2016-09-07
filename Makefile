@@ -5,6 +5,7 @@ INCLUDES	= -I includes -I libft/includes
 
 SRCS		=	srcs/main.c								\
 				srcs/shell.c							\
+				srcs/get_shell.c						\
 				srcs/init.c								\
 				srcs/prompt.c							\
 				srcs/input.c							\
@@ -44,7 +45,12 @@ SRCS		=	srcs/main.c								\
 				srcs/autocomplete/autocomplete_path.c	\
 				srcs/autocomplete/autocomplete_utils.c	\
 				srcs/inhibitors/ft_check_wait.c			\
+<<<<<<< HEAD
 				srcs/inhibitors/ft_wait.c				
+=======
+				srcs/inhibitors/ft_wait.c				\
+				srcs/signals/ft_signals.c			\
+>>>>>>> 87f2f9c68cc77b97e454c1184c6aab6a21010914
 
 BUILTIN		=	srcs/builtin/ft_cd.c					\
 				srcs/builtin/ft_cd_utils.c				\
