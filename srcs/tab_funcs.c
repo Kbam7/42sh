@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 20:32:13 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/06 23:04:34 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/07 02:20:34 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	**ft_tabnew(char *str, size_t len)
 	char	**new_str;
 	size_t	i;
 
-	if ((new_str = (char **)malloc(sizeof(char *) * len + 1)) == NULL)
+	if ((new_str = (char **)ft_memalloc(sizeof(char *) * (len + 1))) == NULL)
 			return (err(ERR_MALLOC, "ft_tabnew()") ? NULL : NULL);
 	if (str == NULL)
 		new_str[0] = NULL;

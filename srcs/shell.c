@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/06 14:02:47 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/07 12:59:07 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@ void		shell_loop(t_shell *s)
 				ft_prompt_print(s);
 				break ;
 			}
+
+//ft_putstr_fd("HERE\n", 2);
+write(1, "HERE\n", 5);
+//fflush(stdout);
 			ft_prompt_print(s);
 			cmd_list = cmd_list->next;
 		}

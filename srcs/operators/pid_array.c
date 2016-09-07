@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/06 21:40:53 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/07 00:14:59 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/07 12:54:52 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	delete_var(char ***var, int i)
 {
 	char			**tmp;
 
+//dprintf(2, "remove_child_pid() - delete_var() -- removed  '%s'\n", (*var)[i]); // debug
 	ft_strdel(&(*var)[i]);
 	while ((*var)[i + 1] != NULL)
 	{
@@ -64,7 +65,7 @@ int			add_child_pid(pid_t pid, t_shell *s)
 	{
 		if ((s->pipe.child_pid = ft_tabnew(pid_str, 1)) == NULL)
 			return (EXIT_FAILURE);
-dprintf(2, "add_child_pid() -- added pid[0] '%s'\n", s->pipe.child_pid[0]); // debug
+//dprintf(2, "add_child_pid() -- added pid[0] '%s'\n", s->pipe.child_pid[0]); // debug
 	}
 	else
 	{
@@ -74,10 +75,59 @@ dprintf(2, "add_child_pid() -- added pid[0] '%s'\n", s->pipe.child_pid[0]); // d
 		free_tab((void ***)&s->pipe.child_pid, len);
 		tmp[len] = ft_strdup(pid_str);
 		s->pipe.child_pid = tmp;
-dprintf(2, "add_child_pid() -- added pid[%d] '%s'\n", len, s->pipe.child_pid[len]); // debug
+//dprintf(2, "add_child_pid() -- added pid[%d] '%s'\n", len, s->pipe.child_pid[len]); // debug
 	}
 	free(pid_str);
 
 
 	return (EXIT_SUCCESS);
 }
+
+int			get_child_pid_index(pid_t pid, t_shell *s)
+{
+	int		c;
+	char	*str;
+
+//dprintf(2, "get_child_pid_index() -- checking for '%d'\n", pid); // debug
+	c = 0;
+	str = ft_itoa((int)pid);
+	while (s->pipe.child_pid[c] && ft_strcmp(str, s->pipe.child_pid[c]) != 0)
+	{
+//dprintf(2, "get_child_pid_index() -- s->pipe.child_pid[%d] = '%s'\n", c, s->pipe.child_pid[c]); // debug
+		++c;
+//		if (s->pipe.child_pid[c] && ft_strcmp(str, s->pipe.child_pid[c]) == 0)
+//	dprintf(2, "get_child_pid_index() -- FOUND s->pipe.child_pid[%d] = '%s'\n", c, s->pipe.child_pid[c]); // debug
+	}
+	return (c);	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

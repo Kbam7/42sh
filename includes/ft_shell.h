@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/07 02:03:34 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/07 10:41:38 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ typedef struct	s_shell
 	char			*wait_str;
 	int				wait_strlen;
 //signals
-	int				fork_pid;	
+	int				fork_pid;
 }				t_shell;
 
 /*
@@ -306,6 +306,7 @@ int				process_pipes(char *cmd, t_shell *s);
 */
 int				add_child_pid(pid_t pid, t_shell *s);
 int				remove_child_pid(pid_t pid, t_shell *s);
+int				get_child_pid_index(pid_t pid, t_shell *s);
 
 /*
 **	redirs.c

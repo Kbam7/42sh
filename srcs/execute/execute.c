@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/07 02:03:12 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/07 12:53:50 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,33 +97,33 @@ int	execute_cmd(t_shell *s)
 				return (err(ERR_FORK_FAILED, ""));
 			if (pid == 0)
 			{
-dprintf(2, "execute_cmd() --- START -- CHILD PROCESS --- ppid = %d\tpid = %d\n"
-						"execute_cmd() - child -- Trying to execute '%s' with '%s' ...\n",
-						getppid(), getpid(), s->input[0], s->input[1]); // debug
+//dprintf(2, "execute_cmd() --- START -- CHILD PROCESS --- ppid = %d\tpid = %d\n"
+//						"execute_cmd() - child -- Trying to execute '%s' with '%s' ...\n",
+//						getppid(), getpid(), s->input[0], s->input[1]); // debug
 				status = ft_execute(s);
 		// child has executed and written to the output fd required, whether its for a pipe, redir or screen.
-dprintf(2, "execute_cmd() ----- CHILD PROCESS returning, not exited --- ppid = %d\tpid = %d\n", getppid(), getpid()); // debug
-dprintf(2, "execute_cmd() --2 - child -- status = '%d'\tpid = %d\n", status, getpid()); // debug
+//dprintf(2, "execute_cmd() ----- CHILD PROCESS returning, not exited --- ppid = %d\tpid = %d\n", getppid(), getpid()); // debug
+//dprintf(2, "execute_cmd() --2 - child -- status = '%d'\tpid = %d\n", status, getpid()); // debug
 				free_t_shell(s);
-dprintf(2, "execute_cmd() --2 - child -- status = '%d'\tstatus(-900) = '%d'\tpid = %d\n", status, status-900, getpid()); // debug
+//dprintf(2, "execute_cmd() --2 - child -- status = '%d'\tstatus(-900) = '%d'\tpid = %d\n", status, status-900, getpid()); // debug
 				exit(status == 0 ? 0 : (status - 900));
 			}
 		// -----   Parent only   ------
 
-dprintf(2, "execute_cmd() -- Parent only area ------- ppid = %d\tpid = %d\n", getppid(), getpid()); // debug
+//dprintf(2, "execute_cmd() -- Parent only area ------- ppid = %d\tpid = %d\n", getppid(), getpid()); // debug
 //	wait for child to finish
-dprintf(2, "execute_cmd() -- Waiting for child ------- pid = %d\n", getpid()); // debug
+//dprintf(2, "execute_cmd() -- Waiting for child ------- pid = %d\n", getpid()); // debug
 			wait(&status);
-dprintf(2, "execute_cmd() -- Finished waiting ------- pid = %d\n", getpid()); // debug
+//dprintf(2, "execute_cmd() -- Finished waiting ------- pid = %d\n", getpid()); // debug
 
 // error checks
 			if (WIFEXITED(status) && (status = WEXITSTATUS(status)) != EXIT_SUCCESS)
 			{
-dprintf(2, "execute_cmd() --1 -- status = '%d' status(+900) = '%d'\tpid = %d\n", status , status + 900, getpid()); // debug
+//dprintf(2, "execute_cmd() --1 -- status = '%d' status(+900) = '%d'\tpid = %d\n", status , status + 900, getpid()); // debug
 				return (err(((status == 1) ? 1 : status + 900), s->input[0]));
 //			return (err(status, s->input[0]));
 			}
-dprintf(2, "execute_cmd() --2 -- status = '%d' status(+900) = '%d'\tpid = %d\n", status , status + 900, getpid()); // debug
+//dprintf(2, "execute_cmd() --2 -- status = '%d' status(+900) = '%d'\tpid = %d\n", status , status + 900, getpid()); // debug
 		}
 	}
     tputs(tgetstr("cr", 0), 1, ft_putchar_re);
