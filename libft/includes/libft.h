@@ -119,6 +119,7 @@ void			ft_memswap(void *a, void *b);
 int				ft_atoi_hex(const char *nptr);
 t_split_string	ft_nstrsplit(const char *s, char c);
 t_split_string	ft_nstrsplitstr(const char *s, char *sp);
+void			ft_free_split(t_split_string *sp);
 char			*ft_strtoupper(char *str);
 int				ft_isint(char *str);
 char			*ft_strjoinstr(char *s1, char *s2, char *s3);

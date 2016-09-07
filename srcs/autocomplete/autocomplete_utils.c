@@ -41,13 +41,10 @@ int	ft_save_tab_options(t_shell *s, char *d_name)
 	i = s->opt_i;	
 	if (i == 0)
 	{
-		if ((s->tab_options = (char **)malloc(sizeof(char *) * 2)) == NULL)
+		if ((s->tab_options = (char **)ft_memalloc(sizeof(char *) * 2)) == NULL)
 				return (err(ERR_MALLOC, "ft_save_tab_options()"));
 		else
-		{
 			s->tab_options[0] = ft_strdup(d_name);
-			s->tab_options[1] = NULL;
-		}
 	}
 	else if (i > 0)
 	{
@@ -70,7 +67,6 @@ void	ft_sortoptions(t_shell *s)
 	int		i;
 	int		j;
 	int		k;
-
 
 	k = 0;
 	while (k < s->opt_i)

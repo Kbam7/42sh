@@ -45,6 +45,7 @@ SRCS		=	srcs/main.c								\
 				srcs/autocomplete/ft_autocomplete.c		\
 				srcs/autocomplete/autocomplete_path.c	\
 				srcs/autocomplete/autocomplete_utils.c	\
+				srcs/autocomplete/print_options.c		\
 				srcs/inhibitors/ft_check_wait.c			\
 				srcs/inhibitors/ft_wait.c				\
 				srcs/signals/ft_signals.c				\
