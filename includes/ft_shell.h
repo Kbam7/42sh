@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/07 10:05:55 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/07 10:59:04 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ typedef struct	s_shell
 	t_redirs	redir;
 	t_pipes		pipe;
 // Line editing
-	char			**high;
+	int				cpy_nbr;
 	int				a;
     int             cols;
 	int				curs_col;

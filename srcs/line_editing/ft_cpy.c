@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/06 09:29:32 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/07 10:42:08 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/07 12:55:06 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_put_string1(t_shell *s)
 	i = 0;
 	while (s->new_line[i])
 	{
-		if (s->high[j] && i == ft_atoi(s->high[j]))
+		if (i > (s->cpy_nbr - s->a) && i <= s->cpy_nbr)
 		{
 			tputs(tgetstr("so", 0), 1, ft_putchar_re);
 			ft_putchar(s->new_line[i]);
@@ -49,8 +49,7 @@ void	ft_high_right(t_shell *s, char *buff)
 	i = 0;
 	if (buff[0] == 27 && buff[1] == 27 && buff[2] == 91 && buff[3] == 67)
 	{
-		s->high[s->a] = ft_itoa(s->curs_pos);
-		s->high[s->a + 1] = NULL;
+		s->cpy_nbr = s->curs_pos;
 		s->a++;
 		s->on = 1;
 		ft_move_right(s, "A");
@@ -73,19 +72,19 @@ void	ft_paste(t_shell *s, char *buff)
 	new_line = NULL;
 	if (buff[0] == -53 && buff[1] == -121 && buff[2] == 0 && buff[3] == 0)
 	{
-		k = ft_atoi(s->high[0]);
-		new_line = (char *)malloc(sizeof(char) * (s->str_len +
-					ft_atoi(s->high[s->a - 1]) + 1));
-		ft_bzero(new_line, s->str_len + ft_atoi(s->high[s->a - 1]) + 1);
-		while (s->new_line[i])
+		tputs(tgetstr("as", 0), 1, ft_putchar_re);
+		tputs(tgetstr("ae", 0), 1, ft_putchar_re);
+		k = s->cpy_nbr - s->a;
+		new_line = (char *)malloc(sizeof(char) * (s->str_len + s->a + 1));
+		ft_bzero(new_line, s->str_len + (s->cpy_nbr - s->a) + 1);
+		while (i < s->str_len + 1)
 		{
 			if (i == s->curs_pos)
 			{
-				while (k <= ft_atoi(s->high[s->a - 1]))
+				while (++k <= s->cpy_nbr)
 				{
 					new_line[j] = s->new_line[k];
 					j++;
-					k++;
 				}
 				i++;
 				continue ;
@@ -101,6 +100,8 @@ void	ft_paste(t_shell *s, char *buff)
 		ft_put_string(s);
 		tputs(tgetstr("rc", 0), 1, ft_putchar_re);
 		s->str_len = ft_strlen(s->new_line);
+		s->a = 0;
+		s->cpy_nbr = 0;
 	}
 }
 

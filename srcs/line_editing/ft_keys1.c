@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 14:12:20 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/07 10:11:34 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/07 12:57:32 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	buffer(t_shell *s)
 	temp = (char *)malloc(sizeof(char) * 4096);
 	ft_bzero(temp, 4096);
 	read(0, temp, 4096);
-	/*ft_putnbr(temp[0]);
+	ft_putnbr(temp[0]);
 	ft_putchar(' ');
 	ft_putnbr(temp[1]);
 	ft_putchar(' ');
@@ -106,7 +106,7 @@ void	buffer(t_shell *s)
 	ft_putnbr(temp[3]);
 	ft_putchar(' ');
 	ft_putnbr(temp[4]);
-	ft_putchar('\n');*/
+	ft_putchar('\n');
 	ft_signal_exit(temp, s);
 	ft_move_cur(temp, s);
 	ft_print_char(temp, s);

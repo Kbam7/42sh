@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 16:48:49 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/07 09:14:40 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/07 11:19:00 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int				ft_putchar_re(int c)
 
 static void		init_terminal_vars(t_shell *s)
 {
-	s->high = (char **)malloc(1024);
 	s->pwd = NULL;
 	s->oldpwd = NULL;
 	s->curs_pos = 0;
