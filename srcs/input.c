@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 18:03:53 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/29 22:36:39 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/06 23:56:17 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,20 @@ int	process_input(char *cmd, t_shell *s)
 
 	error = EXIT_FAILURE;
 
-	if ((ret = ft_strchr(cmd, '|')) && ret[1] == '|')
+	if ((ret = ft_strstr(cmd, "||")))
 		return (process_logical_or(cmd, s));
-	if ((ret = ft_strchr(cmd, '&')) && ret[1] == '&')
+	if ((ret = ft_strstr(cmd, "&&")))
 		return (process_logical_and(cmd, s));
-	else if (ft_strchr(cmd, '|'))
+	if (ft_strchr(cmd, '|'))
 		return (process_pipes(cmd, s));
-	else if (ft_strchr(cmd, '<') || ft_strchr(cmd, '>'))
+	if (ft_strchr(cmd, '<') || ft_strchr(cmd, '>'))
 		return (process_redir(cmd, s));
 	else
 	{
+		if (s->input != NULL)
+			free_tab((void ***)&s->input, ft_tablen(s->input));
 		get_input(cmd, s);
 		error = execute_cmd(s);
-		free_tab((void ***)&s->input, ft_tablen(s->input));
 	}
 	return (error);
 }

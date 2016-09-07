@@ -13,6 +13,8 @@ SRCS		=	srcs/main.c								\
 				srcs/operators/logical_or.c				\
 				srcs/operators/logical_and.c			\
 				srcs/operators/pipes.c					\
+				srcs/operators/pipes_wait.c				\
+				srcs/operators/pid_array.c				\
 				srcs/operators/redirs/redirs.c			\
 				srcs/operators/heredocs.c				\
 				srcs/operators/redirs/analyze_redir.c	\
@@ -21,6 +23,7 @@ SRCS		=	srcs/main.c								\
 				srcs/shell_args.c						\
 				srcs/environ.c							\
 				srcs/execute/execute.c					\
+				srcs/execute/execute_builtin.c			\
 				srcs/execute/execute_pipe.c				\
 				srcs/execute/execute_output_redir.c		\
 				srcs/execute/execute_input_redir.c		\
