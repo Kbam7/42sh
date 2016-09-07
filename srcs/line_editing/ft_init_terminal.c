@@ -67,7 +67,7 @@ int				init_terminal_data(t_shell *s)
 		err(0, term);
 	s->new_term = s->default_term;
 	s->new_term.c_lflag |= ISIG;
-	s->new_term.c_lflag &= ~(ICANON | ECHO);
+	s->new_term.c_lflag &= ~(ICANON | ECHO | ISIG);
 	s->new_term.c_cc[VMIN] = 1;
 	s->new_term.c_cc[VTIME] = 0;
 	tcsetattr(STDIN_FILENO, TCSADRAIN, &s->new_term);
