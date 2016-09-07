@@ -205,12 +205,13 @@ typedef struct	s_shell
 
 void			ft_autocomplete(t_shell *s, char *buff);
 void			ft_print_options(t_shell *s);
-void			ft_autocomplete_path(t_shell *s);
 void			ft_checkcurr(t_shell *s);
 int				ft_save_tab_options(t_shell *s, char *d_name);
 void			ft_sortoptions(t_shell *s);
 void			ft_complete_word(t_shell *s);
-char			*ft_getfullpath(t_shell *s, char *path);
+int				ft_select_cmd(t_shell *s);
+int				ft_select_path(t_shell *s);
+void			ft_print_word(t_shell *s);
 
 
 /*
