@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   autocomplete_path.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbromilo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/09/06 10:27:15 by rbromilo          #+#    #+#             */
+/*   Updated: 2016/09/06 12:06:10 by rbromilo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_shell.h"
 
 static void		ft_free_split(t_split_string *sp)
@@ -52,7 +64,7 @@ char	*ft_getpath(char **str)
 	return (*str);
 }
 
-static int		ft_select_path(t_shell *s) // saving files
+static int		ft_select_path(t_shell *s)
 {
 	DIR				*dir;
 	struct dirent	*sd;
@@ -167,6 +179,7 @@ static int		ft_select_cmd(t_shell *s)
 	int				i;
 
 	i = 0;
+	s->word = ft_strdup(s->new_line);
 	while((dir = opendir(s->paths[i])) != NULL)
 	{
 		if (access(s->paths[i], F_OK) == 0)
@@ -175,9 +188,7 @@ static int		ft_select_cmd(t_shell *s)
 			{
 				if (ft_strncmp(s->curr, sd->d_name, ft_strlen(s->curr)) == 0)
 				{
-
 					ft_save_tab_options(s, sd->d_name);
-
 				}
 			}
 		}

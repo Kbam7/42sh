@@ -128,7 +128,7 @@ typedef struct	s_cmd_list
 
 typedef struct	s_shell
 {
-	char		**env_var;	
+	char		**env_var;
 	char		**shell_var;
 	t_func_opt	func_opt;
 	char		**argv;
