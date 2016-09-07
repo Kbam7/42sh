@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/06 16:58:05 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/07 11:21:49 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <sys/stat.h>
+# include <sys/ioctl.h>
 # include <signal.h>
 # include <fcntl.h>
 # include <termios.h>
@@ -185,7 +186,12 @@ typedef struct	s_shell
 ** --[ FUNCTION PROTOTYPES -- SIGNALS]--
 */
 	void		ft_signals(void);
-	void		ft_signal_exit(char *buff, t_shell *s);
+	void		ft_signal_quit(void);
+	void		ft_signal_pause(void);
+	void		ft_signal_suspend(void);
+	void		ft_signal_segv(void);
+	void		ft_signal_int(void);
+	void		ft_key_exit(char *buff, t_shell *s);
 
 /*
 ** --[ FUNCTION PROTOTYPES -- AUTO-COMPLETE]--
