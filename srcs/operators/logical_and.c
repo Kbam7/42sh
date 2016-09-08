@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/30 01:24:50 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/06 10:22:00 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/06 17:18:33 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int			process_logical_and(char *cmd, t_shell *s)
 	init_logical_and(cmd, &cmds);
 	while (cmds[i] != NULL)
 	{
+dprintf(2, "process_logical_and() -- process_input('%s')\n", cmds[i]); // debug
 		if ((ret = process_input(cmds[i], s)) != EXIT_SUCCESS)
 			break ;
 		++i;

@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/01 14:27:46 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/04 00:15:25 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/07 02:29:34 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	ft_heredoc_enter(char *buff, t_shell *s)
 			ft_strdel(&s->new_line);
 			s->hdoc_newstr = ft_strdup(tmp);
 			s->hdoc_strlen = ft_strlen(s->hdoc_newstr);
+			free(tmp);
 		}
 		if (s->new_line != NULL)
 			free(s->new_line);

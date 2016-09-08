@@ -6,13 +6,9 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:50 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/03 20:31:50 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/07 17:25:11 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/*
-syntax error near unexpected token `newline' -- For ERR_BAD_TOKEN
-*/
 
 #include "ft_shell.h"
 

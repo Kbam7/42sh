@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/07 10:59:04 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/08 07:28:10 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FT_SHELL_H
 
 # include "libft.h"
+# include <time.h>
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -23,6 +24,7 @@
 # include <term.h>
 # include <dirent.h>
 # include <stdio.h>
+# include <signal.h>
 
 /*
 ** --[ DEFINES -- FILE/DIRECTORY ]--
@@ -111,6 +113,7 @@ typedef struct			s_redirs
 
 typedef struct			s_pipes
 {
+	char			**child_pid;
 	int				**pipes;
 	int				n_pipes;
 	int				pipe_i;
@@ -128,7 +131,7 @@ typedef struct	s_cmd_list
 
 typedef struct	s_shell
 {
-	char		**env_var;	
+	char		**env_var;
 	char		**shell_var;
 	t_func_opt	func_opt;
 	char		**argv;
@@ -180,7 +183,7 @@ typedef struct	s_shell
 	char			*wait_str;
 	int				wait_strlen;
 //signals
-	int				fork_pid;	
+	int				fork_pid;
 }				t_shell;
 
 /*
@@ -207,12 +210,13 @@ typedef struct	s_shell
 
 void			ft_autocomplete(t_shell *s, char *buff);
 void			ft_print_options(t_shell *s);
-void			ft_autocomplete_path(t_shell *s);
 void			ft_checkcurr(t_shell *s);
 int				ft_save_tab_options(t_shell *s, char *d_name);
 void			ft_sortoptions(t_shell *s);
 void			ft_complete_word(t_shell *s);
-char			*ft_getfullpath(t_shell *s, char *path);
+int				ft_select_cmd(t_shell *s);
+int				ft_select_path(t_shell *s);
+void			ft_print_word(t_shell *s);
 
 
 /*
@@ -303,6 +307,20 @@ int				process_logical_and(char *cmd, t_shell *s);
 int				process_pipes(char *cmd, t_shell *s);
 
 /*
+**	pipes_wait.c
+*/
+int				wait_for_children(char **cmds, t_shell *s);
+int				ft_wait_child_pipe(int wait, char **cmds, int *curr,
+																t_shell *s);
+
+/*
+**	pid_array.c
+*/
+int				add_child_pid(pid_t pid, t_shell *s);
+int				remove_child_pid(pid_t pid, t_shell *s);
+int				get_child_pid_index(pid_t pid, t_shell *s);
+
+/*
 **	redirs.c
 */
 int				process_redir(char *cmd, t_shell *s);
@@ -339,8 +357,13 @@ char			*check_shell_variables(char *name, t_shell *s);
 **	execute.c
 */
 int				execute_cmd(t_shell *s);
-//int				try_builtin(t_shell *s);
-//int				try_system(t_shell *s);
+int				ft_execute(t_shell *s);
+
+/*
+**	execute_builtin.c
+*/
+int				try_parent_builtin(t_shell *s);
+int				try_child_builtin(t_shell *s);
 
 /*
 **	execute_pipe.c
@@ -367,6 +390,7 @@ int				parent_output_redir(char *str, t_shell *s);
 /*
 **	tab_funcs.c
 */
+char			**ft_tabnew(char *str, size_t len);
 char			**ft_tabdup(char **table, int len);
 int				ft_tablen(char **envp);
 void			free_tab(void ***table, int len);
@@ -375,6 +399,7 @@ char			**tab_trim(char **table, int len);
 /*
 **	utils.c
 */
+int				ft_sleep(int sec, int nsec);
 int				check_rights(char *path, int r, int w, int x);
 char			***check_env_type(int type, t_shell *s);
 void			print_variables(char **env);

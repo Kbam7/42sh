@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_prompt.c                                        :+:      :+:    :+:   */
+/*   ft_free_split.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: rbromilo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/04 09:14:43 by kgani             #+#    #+#             */
-/*   Updated: 2016/09/07 17:36:15 by kbamping         ###   ########.fr       */
+/*   Created: 2016/09/06 10:27:15 by rbromilo          #+#    #+#             */
+/*   Updated: 2016/09/06 12:06:10 by rbromilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_shell.h"
+#include "libft.h"
 
-void	ft_prompt_print(t_shell *s)
+void		ft_free_split(t_split_string *sp)
 {
-	ft_putstr(s->prompt);
-}
+	size_t	i;
 
-void	ft_prompt_new(char *new_prompt, t_shell *s)
-{
-	if (s->prompt)
-		free(s->prompt);
-	s->prompt = ft_strdup(new_prompt);
-	s->prompt_len = ft_strlen(new_prompt);
+	i = 0;
+	while (i < sp->words)
+	{
+		ft_strdel(&sp->strings[i]);
+		++i;
+	}
+	free(sp->strings);
+	sp->strings = NULL;
 }
