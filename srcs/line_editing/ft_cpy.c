@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/06 09:29:32 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/07 12:55:06 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/07 13:35:50 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,10 @@ void	ft_paste(t_shell *s, char *buff)
 	new_line = NULL;
 	if (buff[0] == -53 && buff[1] == -121 && buff[2] == 0 && buff[3] == 0)
 	{
-		tputs(tgetstr("as", 0), 1, ft_putchar_re);
-		tputs(tgetstr("ae", 0), 1, ft_putchar_re);
 		k = s->cpy_nbr - s->a;
 		new_line = (char *)malloc(sizeof(char) * (s->str_len + s->a + 1));
 		ft_bzero(new_line, s->str_len + (s->cpy_nbr - s->a) + 1);
-		while (i < s->str_len + 1)
+		while (j < s->str_len + 1)
 		{
 			if (i == s->curs_pos)
 			{
@@ -93,6 +91,7 @@ void	ft_paste(t_shell *s, char *buff)
 			j++;
 			i++;
 		}
+		new_line[j] = '\0';
 		if (s->new_line != NULL)
 			free(s->new_line);
 		s->new_line = ft_strdup(new_line);
@@ -100,6 +99,7 @@ void	ft_paste(t_shell *s, char *buff)
 		ft_put_string(s);
 		tputs(tgetstr("rc", 0), 1, ft_putchar_re);
 		s->str_len = ft_strlen(s->new_line);
+		ft_strdel(&new_line);
 		s->a = 0;
 		s->cpy_nbr = 0;
 	}
