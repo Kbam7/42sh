@@ -48,9 +48,10 @@ SRCS		=	srcs/main.c								\
 				srcs/autocomplete/print_options.c		\
 				srcs/inhibitors/ft_check_wait.c			\
 				srcs/inhibitors/ft_wait.c				\
-				srcs/signals/ft_signals.c				\
+				srcs/signals/ft_signals.c 				\
+				srcs/line_editing/ft_cpy.c				\
 
-BUILTIN		=	srcs/builtin/ft_cd.c					\
+BUILTIN		=	srcs/builtin/ft_cd.c 					\
 				srcs/builtin/ft_cd_utils.c				\
 				srcs/builtin/ft_env.c					\
 				srcs/builtin/ft_echo.c					\
