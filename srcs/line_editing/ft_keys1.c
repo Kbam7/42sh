@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 14:12:20 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/06 16:57:28 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/07 13:01:39 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,9 @@ void	ft_move_cur(char *buff, t_shell *s)
 	ft_end_left(s, buff);
 	ft_autocomplete(s, buff);
 	ft_enter(buff, s);
+	ft_high_left(s, buff);
+	ft_high_right(s, buff);
+	ft_paste(s, buff);
 }
 
 void ft_signal_exit(char *buff, t_shell *s)
@@ -94,6 +97,16 @@ void	buffer(t_shell *s)
 	temp = (char *)malloc(sizeof(char) * 4096);
 	ft_bzero(temp, 4096);
 	read(0, temp, 4096);
+	/*ft_putnbr(temp[0]);
+	ft_putchar(' ');
+	ft_putnbr(temp[1]);
+	ft_putchar(' ');
+	ft_putnbr(temp[2]);
+	ft_putchar(' ');
+	ft_putnbr(temp[3]);
+	ft_putchar(' ');
+	ft_putnbr(temp[4]);
+	ft_putchar('\n');*/
 	ft_signal_exit(temp, s);
 	ft_move_cur(temp, s);
 	ft_print_char(temp, s);
