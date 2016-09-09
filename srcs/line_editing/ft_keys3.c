@@ -17,7 +17,8 @@ void	ft_right_word(t_shell *s, char *buff)
 	int		i;
 
 	i = 0;
-	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 49 && buff[5] == 67)
+	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 49 &&
+           buff[3] == 59 && buff[4] == 50 && buff[5] == 67 )
 	{
 		s->on = 1;
 		if (s->new_line[s->curs_pos - 1] == ' ' &&
@@ -40,7 +41,8 @@ void	ft_left_word(t_shell *s, char *buff)
 	int		i;
 
 	i = 0;
-	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 49 && buff[5] == 68)
+	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 49 &&
+            buff[3] == 59 && buff[4] == 50 && buff[5] == 68)
 	{
 		s->on = 1;
 		if (s->new_line[s->curs_pos - 1] == ' ' &&
@@ -60,7 +62,8 @@ void	ft_left_word(t_shell *s, char *buff)
 
 void	ft_move_up(t_shell *s, char *buff)
 {
-	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 49 && buff[5] == 65)
+	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 49 &&
+            buff[3] == 59 && buff[4] == 50 && buff[5] == 65)
 	{
 		if (s->curs_pos + 1 > s->width)
 		{
@@ -79,7 +82,8 @@ void	ft_move_down(t_shell *s, char *buff)
 	j = 0;
 	ft_nbr_cols(s);
 	ft_curs_col(s);
-	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 49 && buff[5] == 66)
+	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 49 &&
+            buff[3] == 59 && buff[4] == 50 && buff[5] == 66)
 	{
 		i = s->curs_pos;
 		while (i - s->width > 0)

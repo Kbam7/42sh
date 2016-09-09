@@ -42,6 +42,9 @@ SRCS		=	srcs/main.c								\
 				srcs/line_editing/ft_init_terminal.c	\
 				srcs/line_editing/ft_strdup_2.c			\
 				srcs/line_editing/ft_prompt.c			\
+				srcs/line_editing/ft_cpy.c				\
+				srcs/line_editing/ft_cut.c				\
+				srcs/line_editing/ft_highlight.c		\
 				srcs/autocomplete/ft_autocomplete.c		\
 				srcs/autocomplete/autocomplete_path.c	\
 				srcs/autocomplete/autocomplete_utils.c	\
@@ -49,7 +52,6 @@ SRCS		=	srcs/main.c								\
 				srcs/inhibitors/ft_check_wait.c			\
 				srcs/inhibitors/ft_wait.c				\
 				srcs/inhibitors/ft_check_inhibitors.c	\
-				srcs/line_editing/ft_cpy.c				\
 				srcs/signals/ft_signals.c				\
 				srcs/signals/ft_signal_quit.c			\
 				srcs/signals/ft_signal_suspend.c		\
