@@ -50,6 +50,11 @@ SRCS		=	srcs/main.c								\
 				srcs/inhibitors/ft_wait.c				\
 				srcs/signals/ft_signals.c 				\
 				srcs/line_editing/ft_cpy.c				\
+				srcs/signals/ft_signals.c				\
+				srcs/signals/ft_signal_quit.c			\
+				srcs/signals/ft_signal_suspend.c		\
+				srcs/signals/ft_signal_segv.c			\
+				srcs/signals/ft_signal_int.c			\
 
 BUILTIN		=	srcs/builtin/ft_cd.c 					\
 				srcs/builtin/ft_cd_utils.c				\
