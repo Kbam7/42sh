@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/06 09:29:32 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/09 13:11:19 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/09 23:07:48 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@ void	ft_paste_1(t_shell *s, char *new_line)
 {
 	int		i;
 	int		j;
-	int		len;
 	int		k;
 
 	k = 0;
 	j = 0;
 	i = 0;
-	len = ft_strlen(s->cpy_cut);
 	while (k <= s->str_len)
 	{
 		if (k == s->curs_pos)
