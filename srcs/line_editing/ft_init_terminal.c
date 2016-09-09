@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 16:48:49 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/07 11:19:00 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/09 13:41:04 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int				init_terminal_data(t_shell *s)
 		err(0, term);
 	s->new_term = s->default_term;
 	s->new_term.c_lflag |= ISIG;
-	s->new_term.c_lflag &= ~(ICANON | ECHO | ISIG);
+	s->new_term.c_lflag &= ~(ICANON | ECHO);
 	s->new_term.c_cc[VMIN] = 1;
 	s->new_term.c_cc[VTIME] = 0;
 	tcsetattr(STDIN_FILENO, TCSADRAIN, &s->new_term);

@@ -6,7 +6,7 @@
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/07 10:37:11 by kgani             #+#    #+#             */
-/*   Updated: 2016/09/07 13:30:12 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/09 13:37:43 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void ft_signal_suspend(void)
 	term = ft_getenv("TERM", s);
 	if (s->fork_pid != 0)
 	{
-		kill(s->fork_pid, SIGSTOP);
+			kill(s->fork_pid, SIGSTOP);
 	}
 
 }
