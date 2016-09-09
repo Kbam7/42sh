@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/06 09:29:32 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/07 13:35:50 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/09 09:24:08 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,6 @@ void	ft_put_string1(t_shell *s)
 
 void	ft_high_right(t_shell *s, char *buff)
 {
-	int		i;
-
-	i = 0;
 	if (buff[0] == 27 && buff[1] == 27 && buff[2] == 91 && buff[3] == 67)
 	{
 		s->cpy_nbr = s->curs_pos;
