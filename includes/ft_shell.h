@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/09 06:59:00 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/09 10:33:36 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,16 +199,17 @@ typedef struct	s_shell
 	void		ft_key_exit(char *buff, t_shell *s);
 
 /*
-** --[ FUNCTION PROTOTYPES -- AUTO-COMPLETE]--
+** --[ FUNCTION PROTOTYPES -- GET-STATIC-SHELL]--
 */
 	t_shell 		*ft_get_shell(void);
 
 /*
-** --[ FUNCTION PROTOTYPES -- AUTO-COMPLETE]--
+** --[ FUNCTION PROTOTYPES -- INHIBITORS]--
 */
 
 	void			ft_wait(int trigger, t_shell *s);
 	void			ft_check_wait(t_shell *s);
+	int				ft_check_inhibitors(char *str);
 
 /*
 ** --[ FUNCTION PROTOTYPES -- AUTO-COMPLETE]--

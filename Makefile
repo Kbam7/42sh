@@ -48,6 +48,7 @@ SRCS		=	srcs/main.c								\
 				srcs/autocomplete/print_options.c		\
 				srcs/inhibitors/ft_check_wait.c			\
 				srcs/inhibitors/ft_wait.c				\
+				srcs/inhibitors/ft_check_inhibitors.c	\
 				srcs/line_editing/ft_cpy.c				\
 				srcs/signals/ft_signals.c				\
 				srcs/signals/ft_signal_quit.c			\
