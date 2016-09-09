@@ -50,6 +50,8 @@ SRCS		=	srcs/main.c								\
 				srcs/inhibitors/ft_wait.c				\
 				srcs/signals/ft_signals.c 				\
 				srcs/line_editing/ft_cpy.c				\
+				srcs/line_editing/ft_cut.c				\
+				srcs/line_editing/ft_highlight.c		\
 
 BUILTIN		=	srcs/builtin/ft_cd.c 					\
 				srcs/builtin/ft_cd_utils.c				\

@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 14:12:20 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/07 13:01:39 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/09 12:55:32 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,9 @@ void	ft_move_cur(char *buff, t_shell *s)
 	ft_end_left(s, buff);
 	ft_autocomplete(s, buff);
 	ft_enter(buff, s);
-	ft_cut(s, buff);
 	ft_high_right(s, buff);
+	ft_cut(s, buff);
+	ft_cpy(s, buff);
 	ft_paste(s, buff);
 }
 

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/08 07:28:10 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/09 07:33:55 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,6 +223,7 @@ void			ft_print_word(t_shell *s);
 /*
 ** --[ FUNCTION PROTOTYPES -- LINE EDITING]--
 */
+void					ft_cpy(t_shell *s, char *buff);
 void                    ft_cut(t_shell *s, char *buff);
 void					ft_paste(t_shell *s, char *buff);
 void    				ft_high_right(t_shell *s, char *buff);
