@@ -6,11 +6,20 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:24:20 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/29 16:58:26 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/07 17:23:07 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
+
+int		ft_sleep(int sec, int nsec)
+{
+	struct timespec	time;
+
+	time.tv_sec = sec;
+	time.tv_nsec = nsec;
+	return (nanosleep(&time, NULL));
+}
 
 int		check_rights(char *path, int r, int w, int x)
 {
@@ -43,8 +52,6 @@ void	print_variables(char **env)
 	i = 0;
 	while (env[i] != NULL)
 	{
-
-//dprintf(2, "print_variables() -- env[%d] = '%s'\n", i, env[i]); // debug
 		ft_putendl_fd(env[i], STDOUT_FILENO);
 		++i;
 	}

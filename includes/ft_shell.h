@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/06 16:58:05 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/09 13:11:48 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,18 @@
 # define FT_SHELL_H
 
 # include "libft.h"
+# include <time.h>
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <sys/stat.h>
+# include <sys/ioctl.h>
 # include <signal.h>
 # include <fcntl.h>
 # include <termios.h>
 # include <term.h>
 # include <dirent.h>
 # include <stdio.h>
+# include <signal.h>
 
 /*
 ** --[ DEFINES -- FILE/DIRECTORY ]--
@@ -111,6 +114,7 @@ typedef struct			s_redirs
 
 typedef struct			s_pipes
 {
+	char			**child_pid;
 	int				**pipes;
 	int				n_pipes;
 	int				pipe_i;
@@ -145,6 +149,9 @@ typedef struct	s_shell
 	t_redirs	redir;
 	t_pipes		pipe;
 // Line editing
+    char            *cpy_cut;
+	int				cpy_nbr;
+	int				a;
     int             cols;
 	int				curs_col;
 	int				curs_pos;
@@ -178,26 +185,32 @@ typedef struct	s_shell
 	char			*wait_str;
 	int				wait_strlen;
 //signals
-	int				fork_pid;	
+	int				fork_pid;
 }				t_shell;
 
 /*
 ** --[ FUNCTION PROTOTYPES -- SIGNALS]--
 */
 	void		ft_signals(void);
-	void		ft_signal_exit(char *buff, t_shell *s);
+	void		ft_signal_quit(void);
+	void		ft_signal_pause(void);
+	void		ft_signal_suspend(void);
+	void		ft_signal_segv(void);
+	void		ft_signal_int(void);
+	void		ft_key_exit(char *buff, t_shell *s);
 
 /*
-** --[ FUNCTION PROTOTYPES -- AUTO-COMPLETE]--
+** --[ FUNCTION PROTOTYPES -- GET-STATIC-SHELL]--
 */
 	t_shell 		*ft_get_shell(void);
 
 /*
-** --[ FUNCTION PROTOTYPES -- AUTO-COMPLETE]--
+** --[ FUNCTION PROTOTYPES -- INHIBITORS]--
 */
 
 	void			ft_wait(int trigger, t_shell *s);
 	void			ft_check_wait(t_shell *s);
+	int				ft_check_inhibitors(char *str);
 
 /*
 ** --[ FUNCTION PROTOTYPES -- AUTO-COMPLETE]--
@@ -217,7 +230,11 @@ void			ft_print_word(t_shell *s);
 /*
 ** --[ FUNCTION PROTOTYPES -- LINE EDITING]--
 */
-
+void					ft_cpy(t_shell *s, char *buff);
+void                    ft_cut(t_shell *s, char *buff);
+void					ft_paste(t_shell *s, char *buff);
+void    				ft_high_right(t_shell *s, char *buff);
+void    				ft_high_left(t_shell *s, char *buff);
 char					**ft_strdup_2(char **src);
 void					ft_backspace(t_shell *shell, char *buff);
 void					buffer(t_shell *shell);
@@ -300,6 +317,20 @@ int				process_logical_and(char *cmd, t_shell *s);
 int				process_pipes(char *cmd, t_shell *s);
 
 /*
+**	pipes_wait.c
+*/
+int				wait_for_children(char **cmds, t_shell *s);
+int				ft_wait_child_pipe(int wait, char **cmds, int *curr,
+																t_shell *s);
+
+/*
+**	pid_array.c
+*/
+int				add_child_pid(pid_t pid, t_shell *s);
+int				remove_child_pid(pid_t pid, t_shell *s);
+int				get_child_pid_index(pid_t pid, t_shell *s);
+
+/*
 **	redirs.c
 */
 int				process_redir(char *cmd, t_shell *s);
@@ -336,8 +367,13 @@ char			*check_shell_variables(char *name, t_shell *s);
 **	execute.c
 */
 int				execute_cmd(t_shell *s);
-//int				try_builtin(t_shell *s);
-//int				try_system(t_shell *s);
+int				ft_execute(t_shell *s);
+
+/*
+**	execute_builtin.c
+*/
+int				try_parent_builtin(t_shell *s);
+int				try_child_builtin(t_shell *s);
 
 /*
 **	execute_pipe.c
@@ -364,6 +400,7 @@ int				parent_output_redir(char *str, t_shell *s);
 /*
 **	tab_funcs.c
 */
+char			**ft_tabnew(char *str, size_t len);
 char			**ft_tabdup(char **table, int len);
 int				ft_tablen(char **envp);
 void			free_tab(void ***table, int len);
@@ -372,6 +409,7 @@ char			**tab_trim(char **table, int len);
 /*
 **	utils.c
 */
+int				ft_sleep(int sec, int nsec);
 int				check_rights(char *path, int r, int w, int x);
 char			***check_env_type(int type, t_shell *s);
 void			print_variables(char **env);

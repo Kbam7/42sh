@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/11 09:33:16 by tmack             #+#    #+#             */
-/*   Updated: 2016/08/30 07:38:35 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/09 11:56:51 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 void	ft_new_history(t_shell *s)
 {
-	s->history[s->h_index] = ft_strdup(s->new_line);
-	s->h_index++;
+	if (s->new_line)
+	{
+		s->history[s->h_index] = ft_strdup(s->new_line);
+		s->h_index++;
+	}
 }
 
 void	ft_history_up(t_shell *s, char *buff)
@@ -26,9 +29,14 @@ void	ft_history_up(t_shell *s, char *buff)
 	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 65 && buff[3] == 0 &&
 			s->h_pos < s->h_index)
 	{
-		while (s->curs_pos-- > 0)
-			tputs(tgetstr("le", 0), 1, ft_putchar_re);
-		tputs(tgetstr("ce", 0), 1, ft_putchar_re);
+		while (i < s->curs_col)
+		{
+			tputs(tgetstr("up", 0), 1, ft_putchar_re);
+			i++;
+		}
+		tputs(tgetstr("cr", 0), 1, ft_putchar_re);
+		tputs(tgetstr("cd", 0), 1, ft_putchar_re);
+		ft_prompt_print(s);
 		s->h_pos++;
 		i = s->h_index - s->h_pos;
 		if (s->new_line != NULL)
@@ -48,9 +56,14 @@ void	ft_history_down(t_shell *s, char *buff)
 	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 66 &&
 			buff[3] == 0 && s->h_pos > 1)
 	{
-		while (s->curs_pos-- > 0)
-			tputs(tgetstr("le", 0), 1, ft_putchar_re);
-		tputs(tgetstr("ce", 0), 1, ft_putchar_re);
+		while (i < s->curs_col)
+		{
+			tputs(tgetstr("up", 0), 1, ft_putchar_re);
+			i++;
+		}
+		tputs(tgetstr("cr", 0), 1, ft_putchar_re);
+		tputs(tgetstr("cd", 0), 1, ft_putchar_re);
+		ft_prompt_print(s);
 		s->h_pos--;
 		i = s->h_index - s->h_pos;
 		if (s->new_line != NULL)
