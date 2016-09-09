@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_signals.c                                       :+:      :+:    :+:   */
+/*   ft_signal_suspend.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/06 10:48:11 by kgani             #+#    #+#             */
-/*   Updated: 2016/09/07 11:22:43 by kgani            ###   ########.fr       */
+/*   Created: 2016/09/07 10:37:11 by kgani             #+#    #+#             */
+/*   Updated: 2016/09/07 13:30:12 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-static void ft_signal_handler(int signal)
+void ft_signal_suspend(void)
 {
-	if (signal == SIGINT)
-		ft_signal_int();
-	if (signal == SIGQUIT)
-		ft_signal_quit();
-	if (signal == SIGTSTP)
-		ft_signal_suspend();
-	if (signal == SIGSEGV)
-		ft_signal_segv();
-}
+	t_shell *s;
+	char *term;
 
-void ft_signals(void)
-{
-	signal(SIGINT, ft_signal_handler);
-	signal(SIGQUIT, ft_signal_handler);
-	signal(SIGTSTP, ft_signal_handler);
-	signal(SIGSEGV, ft_signal_handler);
+	s = ft_get_shell();
+	term = ft_getenv("TERM", s);
+	if (s->fork_pid != 0)
+	{
+		kill(s->fork_pid, SIGSTOP);
+	}
+
 }
