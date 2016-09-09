@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/07/28 18:03:53 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/06 23:56:17 by kbamping         ###   ########.fr       */
+/*   Created: 2016/09/09 09:59:03 by kgani             #+#    #+#             */
+/*   Updated: 2016/09/09 11:07:22 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,26 @@ int	process_input(char *cmd, t_shell *s)
 
 	error = EXIT_FAILURE;
 
-	if ((ret = ft_strstr(cmd, "||")))
-		return (process_logical_or(cmd, s));
-	if ((ret = ft_strstr(cmd, "&&")))
-		return (process_logical_and(cmd, s));
-	if (ft_strchr(cmd, '|'))
-		return (process_pipes(cmd, s));
-	if (ft_strchr(cmd, '<') || ft_strchr(cmd, '>'))
-		return (process_redir(cmd, s));
+	if (!ft_check_inhibitors(cmd))
+	{
+		if ((ret = ft_strstr(cmd, "||")))
+			return (process_logical_or(cmd, s));
+		if ((ret = ft_strstr(cmd, "&&")))
+			return (process_logical_and(cmd, s));
+		if (ft_strchr(cmd, '|'))
+			return (process_pipes(cmd, s));
+		if (ft_strchr(cmd, '<') || ft_strchr(cmd, '>'))
+			return (process_redir(cmd, s));
+		else
+		{
+			if (s->input != NULL)
+				free_tab((void ***)&s->input, ft_tablen(s->input));
+			get_input(cmd, s);
+			error = execute_cmd(s);
+		}
+	}
 	else
 	{
-		if (s->input != NULL)
-			free_tab((void ***)&s->input, ft_tablen(s->input));
 		get_input(cmd, s);
 		error = execute_cmd(s);
 	}

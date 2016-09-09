@@ -1,33 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_signals.c                                       :+:      :+:    :+:   */
+/*   ft_signal_int.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/06 10:48:11 by kgani             #+#    #+#             */
-/*   Updated: 2016/09/07 11:22:43 by kgani            ###   ########.fr       */
+/*   Created: 2016/09/07 11:02:18 by kgani             #+#    #+#             */
+/*   Updated: 2016/09/07 11:03:45 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-static void ft_signal_handler(int signal)
+void ft_signal_int()
 {
-	if (signal == SIGINT)
-		ft_signal_int();
-	if (signal == SIGQUIT)
-		ft_signal_quit();
-	if (signal == SIGTSTP)
-		ft_signal_suspend();
-	if (signal == SIGSEGV)
-		ft_signal_segv();
-}
+	t_shell *s;
 
-void ft_signals(void)
-{
-	signal(SIGINT, ft_signal_handler);
-	signal(SIGQUIT, ft_signal_handler);
-	signal(SIGTSTP, ft_signal_handler);
-	signal(SIGSEGV, ft_signal_handler);
+	s = ft_get_shell();
+	if (s->fork_pid == 0)
+	{
+		ft_putchar('\n');
+		s->curs_pos = 0;
+		s->str_len = 0;
+		s->h_pos = 0;
+		ft_strdel(&s->new_line);
+		s->new_line = (char *)malloc(sizeof(char) + 1);
+		s->new_line[0] = '\0';
+		ft_prompt_print(s);
+	}
+	else
+	{
+		free_t_shell(s);
+		kill(s->fork_pid, SIGKILL);
+	}
+
 }

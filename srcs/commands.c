@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/07 14:32:15 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/03 21:18:38 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/09 11:01:33 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		store_commands(char *str, t_shell *s)
 	ret = EXIT_FAILURE;
 	if (str == NULL)
 		return (EXIT_FAILURE);
-	if (ft_strchr(str, ';'))
+	if (ft_strchr(str, ';' && ft_check_inhibitors(str)))
 	{
 		args = ft_nstrsplit(str, ';');
 		while (i < args.words)
