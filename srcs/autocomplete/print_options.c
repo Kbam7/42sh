@@ -38,6 +38,11 @@ void		ft_print_word(t_shell *s)
 	if (s->tab_options[1] == NULL)
 		while(s->tab_options[0][i] != '\0')
 		{
+			if (s->tab_options[0][i] == ' ')
+			{
+				rest[0] = '\\';
+				ft_print_char(rest, s);
+			}
 			rest[0] = s->tab_options[0][i];
 			ft_print_char(rest, s);
 			++i;

@@ -12,6 +12,29 @@
 
 #include "ft_shell.h"
 
+/*
+char	*ft_cd_get_path(t_shell *s)
+{
+	int		i;
+	char	*path;
+	char	*tmp;
+
+	i = 1;
+	path = input[1];
+	while (input[i])
+	{
+		if (input[i + 1])
+		{
+			tmp = path;
+			path = ft_strjoin(path, input[i + 1]);
+			ft_strdel(&tmp);
+		}
+		++i;
+	}
+	return (s->input);
+}
+*/
+
 int		cd_invalid_input(char *input)
 {
 	char	*tmp;
