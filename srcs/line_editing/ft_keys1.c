@@ -70,7 +70,7 @@ void	ft_move_cur(char *buff, t_shell *s)
 	ft_end_left(s, buff);
 	ft_autocomplete(s, buff);
 	ft_enter(buff, s);
-	ft_high_left(s, buff);
+	ft_cut(s, buff);
 	ft_high_right(s, buff);
 	ft_paste(s, buff);
 }
@@ -106,6 +106,12 @@ void	buffer(t_shell *s)
 	ft_putnbr(temp[3]);
 	ft_putchar(' ');
 	ft_putnbr(temp[4]);
+	ft_putchar(' ');
+	ft_putnbr(temp[5]);
+	ft_putchar(' ');
+	ft_putnbr(temp[6]);
+	ft_putchar(' ');
+	ft_putnbr(temp[7]);
 	ft_putchar('\n');*/
 	ft_signal_exit(temp, s);
 	ft_move_cur(temp, s);

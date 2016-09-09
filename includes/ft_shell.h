@@ -148,6 +148,7 @@ typedef struct	s_shell
 	t_redirs	redir;
 	t_pipes		pipe;
 // Line editing
+    char            *cpy_cut;
 	int				cpy_nbr;
 	int				a;
     int             cols;
@@ -222,6 +223,7 @@ void			ft_print_word(t_shell *s);
 /*
 ** --[ FUNCTION PROTOTYPES -- LINE EDITING]--
 */
+void                    ft_cut(t_shell *s, char *buff);
 void					ft_paste(t_shell *s, char *buff);
 void    				ft_high_right(t_shell *s, char *buff);
 void    				ft_high_left(t_shell *s, char *buff);
