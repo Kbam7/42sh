@@ -52,33 +52,44 @@ static char	*ft_getpath(char **str)
 	return (*str);
 }
 
-static void	ft_chksv(struct stat *st, struct dirent *sd, char *str, t_shell *s)
+static int	ft_symlink_isdir(struct stat *st, char *path, t_shell *s)
+{
+	struct stat	stats;
+	char		*str;
+	int			i;
+
+	str = (char *)malloc(sizeof(char) * st->st_size + 1);
+	if ((i = readlink(path, str, st->st_size + 1)) == -1)
+		return (0);
+	if (i > st->st_size)
+		return (0);
+	str[i] = '\0';
+	lstat(str, &stats);
+	if (S_ISDIR(stats.st_mode))
+		return (1);
+	else if (S_ISLNK(stats.st_mode))
+		return (ft_symlink_isdir(&stats, str, s));
+	else
+		return(0);
+}
+
+static void	ft_chksv(char *extpath, struct dirent *sd, char *str, t_shell *s)
 {
 	char			*tmp;
+	struct stat		st;
 
 	tmp = NULL;
-	if (ft_strcmp("cd", str) == 0)
+	lstat(extpath, &st);
+	if (S_ISDIR(st.st_mode) || (S_ISLNK(st.st_mode) &&
+										ft_symlink_isdir(&st, extpath, s)))
+		tmp = ft_strjoin(sd->d_name, "/");
+	else if (ft_strcmp("cd", str) != 0)
+		tmp = ft_strjoin(sd->d_name, " ");
+	if (tmp != NULL)
 	{
-		if (S_ISDIR(st->st_mode))
-		{
-			tmp = ft_strjoin(sd->d_name, "/");
-			ft_save_tab_options(s, tmp);
-		}
+		ft_save_tab_options(s, tmp);
+		ft_strdel(&tmp);
 	}
-	else
-	{
-		if (S_ISDIR(st->st_mode))
-		{
-			tmp = ft_strjoin(sd->d_name, "/");
-			ft_save_tab_options(s, tmp);
-		}
-		else
-		{
-			tmp = ft_strjoin(sd->d_name, " ");
-			ft_save_tab_options(s, tmp);
-		}
-	}
-	ft_strdel(&tmp);
 }
 
 static void	ft_search_save(t_shell *s, char	**fp, t_split_string *sp)
@@ -94,10 +105,11 @@ static void	ft_search_save(t_shell *s, char	**fp, t_split_string *sp)
 	{
 		extpath = ft_strjoin(*fp, sd->d_name);
 		lstat(extpath, &st);
-		if ((ft_strncmp(s->word, sd->d_name, ft_strlen(s->word)) == 0 ||
-							ft_strlen(s->word) == 0) && sd->d_name[0] != '.')
+		if ((ft_strcmp(sd->d_name, ".") != 0 &&
+			ft_strcmp(sd->d_name, "..") != 0) && (ft_strlen(s->word) == 0 ||
+			ft_strncmp(s->word, sd->d_name, ft_strlen(s->word)) == 0))
 		{
-			ft_chksv(&st, sd, sp->strings[0], s);
+			ft_chksv(extpath, sd, sp->strings[0], s);
 		}
 		ft_strdel(&extpath);
 	}
@@ -115,8 +127,16 @@ int		ft_select_path(t_shell *s)
 
 	s->opt_i = 0;
 	sp = ft_nstrsplit(s->curr, ' ');
-	s->word = (sp.words > 1) ? ft_strdup(sp.strings[sp.words - 1]) :
-																ft_strnew(0);
+
+/*	if ((sp.words > 1 && sp.strings[sp.words - 1][0] == '-') || sp.words < 2)
+		s->word = ft_strnew(0);
+	else
+		s->word = ft_strdup(sp.strings[sp.words - 1]);
+*/
+	s->word = ((sp.words > 1 && sp.strings[sp.words - 1][0] == '-') ||
+		sp.words < 2) ? ft_strnew(0): ft_strdup(sp.strings[sp.words - 1]);
+
+
 	s->file_path = (char *)ft_getpath(&s->word);
 	last_char = (s->word[0]) ? ft_strlen(s->word) - 1 : 0;
 	if (s->word[0] && s->word[last_char] == '/')
