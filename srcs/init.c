@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 02:28:26 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/07 01:36:52 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/10 14:27:50 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void		init_env(t_shell *s, int argc, char **argv, char **envp)
 	t_split_string	tmp;
 	char			*tmpstr;
 
+	s->history = NULL;
 	get_arg(argc, argv, s);
 	init_builtin_func_options(s);
 	s->env_var = ft_tabdup(envp, ft_tablen(envp));
@@ -61,7 +62,6 @@ void		init_env(t_shell *s, int argc, char **argv, char **envp)
 	tmp = ft_nstrsplit(tmpstr, ':');
 	s->paths = ft_tabdup(tmp.strings, tmp.words);
 	free_tab((void ***)&tmp.strings, tmp.words);
-//	s->prompt = ft_strnew(1);
 	s->cwd = ft_getenv("PWD", s);
 	s->commands = NULL;
 	init_pipes_redirs(s);

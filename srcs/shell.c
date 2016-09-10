@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/07 17:36:00 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/10 16:12:42 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void		shell_loop(t_shell *s)
 	ret = 0;
 	while (ret != EXIT_SH)
 	{
-//		set_prompt(s);
+		set_prompt(s);
 		while (s->commands == NULL)
 			buffer(s);
 		cmd_list = s->commands;
@@ -46,6 +46,7 @@ static void	ft_exit(t_shell *s)
 
 	if ((tmp = ft_getenv("42SH_PID", s)) != NULL && ft_isint(tmp))
 	{
+		tputs(tgetstr("cl", 0), 1, ft_putchar_re);
 		if (getpid() == ft_atoi(tmp))
 		{
 			tputs(tgetstr("ve", 0), 1, ft_putchar_re);

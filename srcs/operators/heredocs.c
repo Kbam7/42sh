@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/01 14:27:46 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/07 02:29:34 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/10 12:28:47 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ static int	ft_heredoc_buffer(t_shell *s)
 	s->width = tgetnum("co");
     if ((temp = (char *)malloc(sizeof(char) * 24)) == NULL)
 		return (err(ERR_MALLOC, "ft_heredoc_buffer()"));
-	ft_bzero(temp, 24);
-	read(0, temp, 24);
+	ft_bzero(temp, 4096);
+	read(0, temp, 4096);
 	ft_heredoc_move_cur(temp, s);
 	ft_print_char(temp, s);
 	free(temp);
@@ -75,8 +75,8 @@ static int	ft_heredoc_rw(int fd, t_shell *s)
 	char	*end;
 	int		i;
 
-
-	ft_putstr(" heredoc> ");
+	ft_prompt_new("heredoc> ", s);
+	ft_prompt_print(s);
 	i = s->redir.rdr_i;
 	end = s->redir.cmd[i + 1];
 	while (ft_heredoc_buffer(s) == EXIT_SUCCESS)
@@ -89,7 +89,7 @@ static int	ft_heredoc_rw(int fd, t_shell *s)
 			// Add a check here that will remove any preceding tabulations if '<<-'
 				write(fd, s->hdoc_newstr, s->hdoc_strlen);
 				ft_strdel(&s->hdoc_newstr);
-				ft_putstr(" heredoc> ");
+				ft_prompt_print(s);
 			}
 		}
 	if (lseek(fd, 0, SEEK_SET) == -1)
