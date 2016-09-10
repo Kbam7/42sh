@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/07 12:53:50 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/10 20:30:30 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,7 @@ int		ft_execute(t_shell *s)
 			child_input_redir(s->redir.rdr[i], s);
 	}
 	if ((i = try_child_builtin(s)) == ERR_NOTFOUND)
-	{
-		tputs(tgetstr("cr", 0), 1, ft_putchar_re);
-		tputs(tgetstr("ce", 0), 1, ft_putchar_re);
 		i = try_system(s);
-	}
 	return (i);
 }
 
