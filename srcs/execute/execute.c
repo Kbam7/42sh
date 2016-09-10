@@ -72,7 +72,7 @@ int		ft_execute(t_shell *s)
 	if ((i = try_child_builtin(s)) == ERR_NOTFOUND)
 	{
 		tputs(tgetstr("cr", 0), 1, ft_putchar_re);
-		tputs(tgetstr("ce", 0), 1, ft_putchar_re);
+		tputs(tgetstr("cd", 0), 1, ft_putchar_re);
 		i = try_system(s);
 	}
 	return (i);
@@ -100,6 +100,8 @@ int	execute_cmd(t_shell *s)
 //dprintf(2, "execute_cmd() --- START -- CHILD PROCESS --- ppid = %d\tpid = %d\n"
 //						"execute_cmd() - child -- Trying to execute '%s' with '%s' ...\n",
 //						getppid(), getpid(), s->input[0], s->input[1]); // debug
+	        	tputs(tgetstr("cr", 0), 1, ft_putchar_re);
+	        	tputs(tgetstr("cd", 0), 1, ft_putchar_re);
 				status = ft_execute(s);
 		// child has executed and written to the output fd required, whether its for a pipe, redir or screen.
 //dprintf(2, "execute_cmd() ----- CHILD PROCESS returning, not exited --- ppid = %d\tpid = %d\n", getppid(), getpid()); // debug
