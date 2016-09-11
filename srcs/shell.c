@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/11 17:04:02 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 17:38:14 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void		get_input(char *cmd, t_shell *s)
 
 void		free_t_shell(t_shell *s)
 {
+	if (s->prompt != NULL)
+		ft_strdel(&s->prompt);
 	if (s->history != NULL)
 		free_tab((void ***)&s->history, ft_tablen(s->history));
 	if (s->commands != NULL)
@@ -91,7 +93,6 @@ void		free_t_shell(t_shell *s)
 		free_tab((void ***)&s->redir.cmd, ft_tablen(s->redir.cmd));
 	free_tab((void ***)&s->paths, ft_tablen(s->paths));
 	free_tab((void ***)&s->argv, ft_tablen(s->argv));
-	ft_strdel(&s->prompt);
 	ft_strdel(&s->curr);
 	ft_strdel(&s->new_line);
 	ft_exit(s);

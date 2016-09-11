@@ -6,7 +6,7 @@
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/04 09:14:43 by kgani             #+#    #+#             */
-/*   Updated: 2016/09/11 16:26:50 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/11 17:40:36 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,19 +74,27 @@ static int	ft_get_prompt_len(t_shell *s)
 	close(filter[1]);
 	read(filter[0], buf, 4096);
 	close(filter[0]);
+	free(filter);
 	return (EXIT_SUCCESS);
 }
 
 void	set_prompt(t_shell *s)
 {
 	char		*tmp;
+	char		*temp2;
 
 	if (s->prompt)
 	{
-		free(s->prompt);
+		if (s->prompt != NULL)
+			ft_strdel(&s->prompt);
 		ft_assign_prompt_value(s);
-		tmp = ft_strjoin(s->prompt, "\033[01m $>\033[0m ");
+		temp2 = ft_strdup(s->prompt);
+		if (s->prompt != NULL)
+			ft_strdel(&s->prompt);
+		tmp = ft_strjoin(temp2, "\033[01m $>\033[0m ");
 		ft_prompt_new(tmp, s);
+		free(tmp);
+		free(temp2);
 	}
 }
 
@@ -98,7 +106,7 @@ void	ft_prompt_print(t_shell *s)
 void	ft_prompt_new(char *new_prompt, t_shell *s)
 {
 	if (s->prompt)
-		free(s->prompt);
+		ft_strdel(&s->prompt);
 	s->prompt = ft_strdup(new_prompt);
 	ft_get_prompt_len(s);
 }
