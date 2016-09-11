@@ -6,13 +6,13 @@
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/31 11:14:32 by kgani             #+#    #+#             */
-/*   Updated: 2016/09/11 06:17:41 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/11 11:51:41 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-static int ft_echo_break(char *str)
+static int	ft_echo_break(char *str)
 {
 	if (ft_strcmp(str, ">") == 0)
 		return (1);
@@ -33,7 +33,7 @@ static int ft_echo_break(char *str)
 	return (0);
 }
 
-char	*ft_echo_scan(char **args, t_shell *s)
+char		*ft_echo_scan(char **args, t_shell *s)
 {
 	int		i;
 	int		trigger;
@@ -45,12 +45,11 @@ char	*ft_echo_scan(char **args, t_shell *s)
 	trigger = 0;
 	flag = 0;
 	new_line = 1;
-	new = NULL;
-	while(args[i])
+	while (args[i])
 	{
 		if (ft_echo_break(args[i]) && trigger == 0)
-			break;
-		if (flag != -1 && args[i][0] == '-' && trigger  == 0)
+			break ;
+		if (flag != -1 && args[i][0] == '-' && trigger == 0)
 			ft_echo_isflag(args[i], &flag, &new_line);
 		ft_echo_env(&new, args[i], &flag, s);
 		ft_echo_string(&new, args[i], &trigger, &flag);

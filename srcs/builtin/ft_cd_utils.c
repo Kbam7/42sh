@@ -6,34 +6,11 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/07 14:39:02 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/05 11:28:46 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/11 10:40:23 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
-
-/*
-char	*ft_cd_get_path(t_shell *s)
-{
-	int		i;
-	char	*path;
-	char	*tmp;
-
-	i = 1;
-	path = input[1];
-	while (input[i])
-	{
-		if (input[i + 1])
-		{
-			tmp = path;
-			path = ft_strjoin(path, input[i + 1]);
-			ft_strdel(&tmp);
-		}
-		++i;
-	}
-	return (s->input);
-}
-*/
 
 int		cd_invalid_input(char *input)
 {

@@ -6,7 +6,7 @@
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/31 11:26:08 by kgani             #+#    #+#             */
-/*   Updated: 2016/09/11 05:55:05 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/11 10:43:18 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,12 @@
 
 int	ft_echo_skip(char *str)
 {
-//	int             i;
-//	int             found;
-//	char    *esc_char;
-	int             new_line;
-	int             flag;
+	int	new_line;
+	int	flag;
 
-//	i = 0;
-//	found = 0;
 	if (ft_echo_isflag(str, &flag, &new_line))
 		return (1);
-//	esc_char = ft_strdup("abcefnrtv");
 	if (str[0] && str[0] == '$')
 		return (1);
 	return (0);
-
 }

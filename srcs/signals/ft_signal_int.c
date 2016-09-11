@@ -6,13 +6,13 @@
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/07 11:02:18 by kgani             #+#    #+#             */
-/*   Updated: 2016/09/11 06:30:05 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/11 10:28:53 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-void ft_signal_int()
+void	ft_signal_int(void)
 {
 	t_shell *s;
 
@@ -33,5 +33,4 @@ void ft_signal_int()
 		free_t_shell(s);
 		kill(s->fork_pid, SIGKILL);
 	}
-
 }

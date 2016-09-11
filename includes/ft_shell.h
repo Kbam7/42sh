@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/11 11:05:30 by rbromilo         ###   ########.fr       */
+/*   Updated: 2016/09/11 12:01:40 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,7 @@ typedef struct	s_shell
 	void		ft_signal_segv(void);
 	void		ft_signal_int(void);
 	void		ft_key_exit(char *buff, t_shell *s);
+	void		ft_resume(int sig);
 
 /*
 ** --[ FUNCTION PROTOTYPES -- GET-STATIC-SHELL]--
