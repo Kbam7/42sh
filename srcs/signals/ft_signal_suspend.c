@@ -6,7 +6,7 @@
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/07 10:37:11 by kgani             #+#    #+#             */
-/*   Updated: 2016/09/09 23:08:05 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 06:45:48 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ void ft_signal_suspend(void)
 	s = ft_get_shell();
 	if (s->fork_pid != 0)
 	{
-		kill(s->fork_pid, SIGSTOP);
+		kill(s->fork_pid, SIGTSTP);
+		kill(getppid(), SIGCONT);
+		pause();
 	}
 
 }
