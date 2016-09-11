@@ -6,7 +6,7 @@
 /*   By: rbromilo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/06 10:27:21 by rbromilo          #+#    #+#             */
-/*   Updated: 2016/09/06 10:27:22 by rbromilo         ###   ########.fr       */
+/*   Updated: 2016/09/11 11:06:51 by rbromilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static void	ft_autocomplete_path(t_shell *s)
 {
-	ft_checkcurr(s);
 	if (s->tab_count == 1 && ft_strlen(s->new_line) > 0)
 	{
 		if (s->tab_options != NULL)
@@ -42,7 +41,31 @@ static void	ft_autocomplete_path(t_shell *s)
 	}
 }
 
-int		ft_select_cmd(t_shell *s)
+char		*ft_getpath(char **str)
+{
+	int		tot_len;
+	int		len;
+	char	*tmp;
+	char	*word;
+
+	word = NULL;
+	tot_len = ft_strlen(*str);
+	if ((*str)[0])
+	{
+		if (ft_strchr(*str, '/') && (word = ft_strrchr(*str, '/')) != NULL)
+			if (*(word + 1))
+			{
+				++word;
+				len = ft_strlen(word);
+				tmp = ft_strsub(*str, 0, (tot_len - len));
+				*str = ft_strdup(word);
+				return (tmp);
+			}
+	}
+	return (*str);
+}
+
+int			ft_select_cmd(t_shell *s)
 {
 	DIR				*dir;
 	struct dirent	*sd;
@@ -51,7 +74,7 @@ int		ft_select_cmd(t_shell *s)
 
 	i = 0;
 	s->word = ft_strdup(s->new_line);
-	while((dir = opendir(s->paths[i])) != NULL)
+	while ((dir = opendir(s->paths[i])) != NULL)
 	{
 		if (access(s->paths[i], F_OK) == 0)
 			while ((sd = readdir(dir)) != NULL)
@@ -64,15 +87,16 @@ int		ft_select_cmd(t_shell *s)
 		++i;
 	}
 	if (dir == NULL)
-		return (err(/*ERR_OPENDIR*/0, s->paths[i]));
+		return (err(ERR_OPENDIR, s->paths[i]));
 	closedir(dir);
 	return (EXIT_SUCCESS);
 }
 
-void	ft_autocomplete(t_shell *s, char *buff)
+void		ft_autocomplete(t_shell *s, char *buff)
 {
 	if (buff[0] == 9)
 	{
+		ft_checkcurr(s);
 		ft_autocomplete_path(s);
 	}
 	ft_strdel(&s->word);

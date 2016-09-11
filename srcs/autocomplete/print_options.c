@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_options.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbromilo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/09/11 10:36:18 by rbromilo          #+#    #+#             */
+/*   Updated: 2016/09/11 10:51:29 by rbromilo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_shell.h"
 
 static int	ft_allmatch(t_shell *s, int stop)
@@ -7,7 +19,7 @@ static int	ft_allmatch(t_shell *s, int stop)
 	i = 0;
 	while (s->tab_options[i] && s->tab_options[i + 1] != NULL)
 	{
-		 if (s->tab_options[i][stop] != s->tab_options[i + 1][stop])
+		if (s->tab_options[i][stop] != s->tab_options[i + 1][stop])
 			return (0);
 		i++;
 	}
@@ -36,24 +48,17 @@ void		ft_print_word(t_shell *s)
 	i = ft_strlen(s->word);
 	ft_bzero(rest, 3);
 	if (s->tab_options[1] == NULL)
-		while(s->tab_options[0][i] != '\0')
-		{
-/*			if (s->tab_options[0][i] == ' ')
-			{
-				rest[0] = '\\';
-				ft_print_char(rest, s);
-			}
-*/			rest[0] = s->tab_options[0][i];
-			ft_print_char(rest, s);
-			++i;
-		}
-	else
-		while (s->tab_options[0][i] != '\0' && ft_allmatch(s,i))
+		while (s->tab_options[0][i] != '\0')
 		{
 			rest[0] = s->tab_options[0][i];
 			ft_print_char(rest, s);
 			++i;
-		}	
+		}
+	else
+		while (s->tab_options[0][i] != '\0' && ft_allmatch(s, i))
+		{
+			rest[0] = s->tab_options[0][i];
+			ft_print_char(rest, s);
+			++i;
+		}
 }
-
-

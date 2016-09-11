@@ -6,7 +6,7 @@
 /*   By: rbromilo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/06 10:27:18 by rbromilo          #+#    #+#             */
-/*   Updated: 2016/09/06 10:27:20 by rbromilo         ###   ########.fr       */
+/*   Updated: 2016/09/11 10:51:29 by rbromilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ void	ft_checkcurr(t_shell *s)
 	s->cmd_len = ft_strlen(s->curr);
 }
 
-int	ft_save_tab_options(t_shell *s, char *d_name)
+int		ft_save_tab_options(t_shell *s, char *d_name)
 {
 	int		i;
 	char	**tmp;
 
-	i = s->opt_i;	
+	i = s->opt_i;
 	if (i == 0)
 	{
 		if ((s->tab_options = (char **)ft_memalloc(sizeof(char *) * 2)) == NULL)
-				return (err(ERR_MALLOC, "ft_save_tab_options()"));
+			return (err(ERR_MALLOC, "ft_save_tab_options()"));
 		else
 			s->tab_options[0] = ft_strdup(d_name);
 	}
