@@ -6,16 +6,16 @@
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/09 09:59:03 by kgani             #+#    #+#             */
-/*   Updated: 2016/09/11 14:59:17 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 15:57:41 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-static int ft_check_or(char *str)
+static int	ft_check_or(char *str)
 {
-	int i;
-	int trigger;
+	int	i;
+	int	trigger;
 
 	i = 0;
 	trigger = 0;
@@ -29,14 +29,14 @@ static int ft_check_or(char *str)
 		if (str[i] == trigger && trigger != 0)
 			trigger = 0;
 		if (str[i] == '|' && str[i + 1] == '|' && trigger == 0)
-			return(1);
+			return (1);
 		if (str[i] != '\0')
 			i++;
 	}
 	return (0);
 }
 
-static int ft_check_and(char *str)
+static int	ft_check_and(char *str)
 {
 	int i;
 	int trigger;
@@ -53,14 +53,14 @@ static int ft_check_and(char *str)
 		if (str[i] == trigger && trigger != 0)
 			trigger = 0;
 		if (str[i] == '&' && str[i + 1] == '&' && trigger == 0)
-			return(1);
+			return (1);
 		if (str[i] != '\0')
 			i++;
 	}
 	return (0);
 }
 
-static int ft_check_pipes(char *str)
+static int	ft_check_pipes(char *str)
 {
 	int i;
 	int trigger;
@@ -78,15 +78,14 @@ static int ft_check_pipes(char *str)
 			trigger = 0;
 		if (str[i] == '|' && str[i + 1] != '|' && str[i - 1] != '|' &&
 				trigger == 0)
-			return(1);
+			return (1);
 		if (str[i] != '\0')
 			i++;
 	}
 	return (0);
 }
 
-
-static int ft_check_redir(char *str)
+static int	ft_check_redir(char *str)
 {
 	int i;
 	int trigger;
@@ -103,7 +102,7 @@ static int ft_check_redir(char *str)
 		if (str[i] == trigger && trigger != 0)
 			trigger = 0;
 		if ((str[i] == '>' || str[i] == '<') && trigger == 0)
-			return(1);
+			return (1);
 		if (str[i] != '\0')
 			i++;
 	}
@@ -112,7 +111,7 @@ static int ft_check_redir(char *str)
 
 int			process_input(char *cmd, t_shell *s)
 {
-	int		error;
+	int	error;
 
 	error = EXIT_FAILURE;
 	if (ft_check_or(cmd))
