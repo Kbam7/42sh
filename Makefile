@@ -7,7 +7,6 @@ SRCS		=	srcs/main.c								\
 				srcs/shell.c							\
 				srcs/get_shell.c						\
 				srcs/init.c								\
-				srcs/prompt.c							\
 				srcs/input.c							\
 				srcs/commands.c							\
 				srcs/operators/logical_or.c				\
