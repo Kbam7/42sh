@@ -6,7 +6,7 @@
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/09 09:59:03 by kgani             #+#    #+#             */
-/*   Updated: 2016/09/11 05:54:04 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/11 14:49:10 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,19 +113,8 @@ static int ft_check_redir(char *str)
 int	process_input(char *cmd, t_shell *s)
 {
 	int		error;
-//	char 	*ret;
 
 	error = EXIT_FAILURE;
-
-/*	if ((ret = ft_strstr(cmd, "||")))
-		return (process_logical_or(cmd, s));
-	if ((ret = ft_strstr(cmd, "&&")))
-		return (process_logical_and(cmd, s));
-	if (ft_strchr(cmd, '|'))
-		return (process_pipes(cmd, s));
-	if (ft_strchr(cmd, '<') || ft_strchr(cmd, '>'))
-		return (process_redir(cmd, s));
-*/
 	if (ft_check_or(cmd))
 		return (process_logical_or(cmd, s));
 	else if (ft_check_and(cmd))

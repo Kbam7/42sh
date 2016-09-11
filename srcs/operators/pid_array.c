@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/06 21:40:53 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/11 12:05:29 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 14:46:53 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int			add_child_pid(pid_t pid, t_shell *s)
 	int		len;
 
 	pid_str = ft_itoa((int)pid);
+dprintf(2, "add_child_pid() -- adding '%s'\n", pid_str); // debug
 	if (s->pipe.child_pid == NULL)
 	{
 		if ((s->pipe.child_pid = ft_tabnew(pid_str, 1)) == NULL)
@@ -87,5 +88,6 @@ int			get_child_pid_index(pid_t pid, t_shell *s)
 	str = ft_itoa((int)pid);
 	while (s->pipe.child_pid[c] && ft_strcmp(str, s->pipe.child_pid[c]) != 0)
 		++c;
+	free(str);
 	return (c);
 }

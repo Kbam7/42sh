@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:24:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/11 12:03:28 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 14:25:54 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	process_pipes_two(char **cmds, pid_t pid, int *status, t_shell *s)
 	add_child_pid(pid, s);
 	if (s->pipe.n_pipes)
 		parent_pipe(s);
-	ft_sleep(0, 2000000);
+	ft_sleep(0, 10000000);
 	*status = 0;
 	ft_wait_child_pipe(0, cmds, status, s);
 }

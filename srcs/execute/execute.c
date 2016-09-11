@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/11 13:29:03 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 14:48:40 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,6 @@ int			execute_cmd(t_shell *s)
 				return (err(ERR_FORK_FAILED, ""));
 			if (pid == 0)
 			{
-				if (s->fork_pid != 0)
-	        	tputs(tgetstr("cr", 0), 1, ft_putchar_re);
-	        	tputs(tgetstr("cd", 0), 1, ft_putchar_re);
 				st = ft_execute(s);
 				free_t_shell(s);
 				exit(st == 0 ? 0 : (st - 900));
