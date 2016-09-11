@@ -6,26 +6,12 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/26 17:48:29 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 15:00:36 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-/*
-void	intro_message(t_shell *s)
-{
-	ft_printf(C_BOLD C_GREEN"\t-- [Welcome to my version of Bash] --"C_NONE
-		"\nIf you would like to have you user name and/or"
-		"\ncurrent directory displayed, you will need to "
-		"\nrelaunch with the relevant options."
-	C_BOLD"\n\t-- [OPTIONS] --\n"C_NONE
-	C_BOLD"-p"C_NONE"\tDisplays current working directory\n"
-	C_BOLD"-u"C_NONE"\tDisplays your username\n"
-	C_BOLD"-pu"C_NONE"\tDisplays both the path and your username\n"
-	);
-}
-*/
 static char	*get_path(t_shell *s)
 {
 	char	*path;
@@ -43,12 +29,11 @@ static char	*get_path(t_shell *s)
 	return (path);
 }
 
-void	set_prompt(t_shell *s)
+void		set_prompt(t_shell *s)
 {
 	char		*tmp;
 	static	int	count = 1;
 
-//dprintf(2, "set_prompt() -- START -- \tpid = %d\n", getpid()); // debug
 	if (s->prompt && (count == 1 || s->arg_p))
 	{
 		free(s->prompt);
@@ -73,5 +58,4 @@ void	set_prompt(t_shell *s)
 		s->prompt = tmp;
 	}
 	++count;
-//dprintf(2, "set_prompt() -- END -- \tpid = %d\n", getpid()); // debug
 }

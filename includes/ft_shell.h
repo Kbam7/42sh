@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/11 13:37:01 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 14:59:47 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -276,6 +276,7 @@ void					ft_prompt_print(t_shell *s);
 /*
 **	shell.c
 */
+void			get_input(char *cmd, t_shell *s);
 void			shell_loop(t_shell *s);
 int				run_shell(t_shell *s);
 void			free_t_shell(t_shell *s);
@@ -301,7 +302,6 @@ int				process_pipes(char *cmd, t_shell *s);
 **	commands.c
 */
 int				get_commands(t_shell *s);
-void			get_input(char *cmd, t_shell *s);
 int				store_commands(char *str, t_shell *s);
 
 /*

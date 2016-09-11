@@ -6,11 +6,32 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/11 14:51:45 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 14:59:12 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
+
+static void	ft_exit(t_shell *s)
+{
+	char	*tmp;
+
+	if ((tmp = ft_getenv("42SH_PID", s)) != NULL && ft_isint(tmp))
+	{
+		if (getpid() == ft_atoi(tmp))
+		{
+			tputs(tgetstr("ve", 0), 1, ft_putchar_re);
+			tputs(tgetstr("te", 0), 1, ft_putchar_re);
+			tcsetattr(STDIN_FILENO, TCSADRAIN, &s->default_term);
+		}
+	}
+	else
+	{
+		tputs(tgetstr("ve", 0), 1, ft_putchar_re);
+		tputs(tgetstr("te", 0), 1, ft_putchar_re);
+		tcsetattr(STDIN_FILENO, TCSADRAIN, &s->default_term);
+	}
+}
 
 void		shell_loop(t_shell *s)
 {
@@ -41,28 +62,19 @@ void		shell_loop(t_shell *s)
 	}
 }
 
-static void	ft_exit(t_shell *s)
+void		get_input(char *cmd, t_shell *s)
 {
-	char	*tmp;
+	char			*tmp;
+	t_split_string	data;
 
-	if ((tmp = ft_getenv("42SH_PID", s)) != NULL && ft_isint(tmp))
-	{
-		if (getpid() == ft_atoi(tmp))
-		{
-			tputs(tgetstr("ve", 0), 1, ft_putchar_re);
-			tputs(tgetstr("te", 0), 1, ft_putchar_re);
-			tcsetattr(STDIN_FILENO, TCSADRAIN, &s->default_term);
-		}
-	}
-	else
-	{
-		tputs(tgetstr("ve", 0), 1, ft_putchar_re);
-		tputs(tgetstr("te", 0), 1, ft_putchar_re);
-		tcsetattr(STDIN_FILENO, TCSADRAIN, &s->default_term);
-	}
+	tmp = ft_strtrim(cmd);
+	data = ft_nstrsplit(tmp, ' ');
+	ft_strdel(&tmp);
+	s->input = ft_tabdup(data.strings, data.words);
+	free_tab((void ***)&data.strings, data.words);
 }
 
-void			free_t_shell(t_shell *s)
+void		free_t_shell(t_shell *s)
 {
     if (s->history != NULL)
         free_tab((void ***)&s->history, ft_tablen(s->history));
