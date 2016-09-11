@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/11 12:32:29 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 13:29:03 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,12 @@ static int	try_system(t_shell *s)
 			if (execve(s->input[0], s->input, s->env_var) != -1)
 				free_t_shell(s);
 	}
-	else
-		if ((tmp = ft_getenv("PATH", s)))
-			make_path_and_execute(tmp, s);
+	else if ((tmp = ft_getenv("PATH", s)))
+		make_path_and_execute(tmp, s);
 	return (ERR_NOTFOUND);
 }
 
-int		ft_execute(t_shell *s)
+int			ft_execute(t_shell *s)
 {
 	int i;
 
@@ -73,37 +72,34 @@ int		ft_execute(t_shell *s)
 	return (i);
 }
 
-int	execute_cmd(t_shell *s)
+int			execute_cmd(t_shell *s)
 {
 	pid_t	pid;
-	int		status;
+	int		st;
 
-	status = EXIT_FAILURE;
-	if ((status = try_parent_builtin(s)) == ERR_NOTFOUND)
+	st = EXIT_FAILURE;
+	if ((st = try_parent_builtin(s)) == ERR_NOTFOUND)
 	{
 		if (s->pipe.n_pipes)
-		{
-			status = ft_execute(s);
-		}
+			st = ft_execute(s);
 		else
 		{
 			if ((pid = fork()) < 0)
 				return (err(ERR_FORK_FAILED, ""));
 			if (pid == 0)
 			{
-				if(s->fork_pid != 0)
+				if (s->fork_pid != 0)
 	        	tputs(tgetstr("cr", 0), 1, ft_putchar_re);
 	        	tputs(tgetstr("cd", 0), 1, ft_putchar_re);
-				status = ft_execute(s);
+				st = ft_execute(s);
 				free_t_shell(s);
-				exit(status == 0 ? 0 : (status - 900));
+				exit(st == 0 ? 0 : (st - 900));
 			}
-			wait(&status);
-			if (WIFEXITED(status) && (status = WEXITSTATUS(status)) != EXIT_SUCCESS)
-				return (err(((status == 1) ? 1 : status + 900), s->input[0]));
+			wait(&st);
+			if (WIFEXITED(st) && (st = WEXITSTATUS(st)) != EXIT_SUCCESS)
+				return (err(((st == 1) ? 1 : st + 900), s->input[0]));
 		}
 	}
-    tputs(tgetstr("cr", 0), 1, ft_putchar_re);
-	return (status);
+	tputs(tgetstr("cr", 0), 1, ft_putchar_re);
+	return (st);
 }
-
