@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/18 12:58:16 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/06 08:08:35 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/11 11:47:12 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_right_word(t_shell *s, char *buff)
 
 	i = 0;
 	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 49 &&
-           buff[3] == 59 && buff[4] == 50 && buff[5] == 67 )
+			buff[3] == 59 && buff[4] == 50 && buff[5] == 67)
 	{
 		s->on = 1;
 		if (s->new_line[s->curs_pos - 1] == ' ' &&
@@ -42,7 +42,7 @@ void	ft_left_word(t_shell *s, char *buff)
 
 	i = 0;
 	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 49 &&
-            buff[3] == 59 && buff[4] == 50 && buff[5] == 68)
+			buff[3] == 59 && buff[4] == 50 && buff[5] == 68)
 	{
 		s->on = 1;
 		if (s->new_line[s->curs_pos - 1] == ' ' &&
@@ -63,7 +63,7 @@ void	ft_left_word(t_shell *s, char *buff)
 void	ft_move_up(t_shell *s, char *buff)
 {
 	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 49 &&
-            buff[3] == 59 && buff[4] == 50 && buff[5] == 65)
+			buff[3] == 59 && buff[4] == 50 && buff[5] == 65)
 	{
 		if (s->curs_pos + 1 > s->width)
 		{
@@ -78,14 +78,13 @@ void	ft_move_down(t_shell *s, char *buff)
 	int		i;
 	int		j;
 
-	i = 0;
 	j = 0;
+	i = s->curs_pos;
 	ft_nbr_cols(s);
 	ft_curs_col(s);
 	if (buff[0] == 27 && buff[1] == 91 && buff[2] == 49 &&
-            buff[3] == 59 && buff[4] == 50 && buff[5] == 66)
+			buff[3] == 59 && buff[4] == 50 && buff[5] == 66)
 	{
-		i = s->curs_pos;
 		while (i - s->width > 0)
 			i = i - s->width;
 		j = s->str_len;
