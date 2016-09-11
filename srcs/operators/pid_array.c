@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/06 21:40:53 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/07 21:56:08 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 12:05:29 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,5 @@ int			get_child_pid_index(pid_t pid, t_shell *s)
 	str = ft_itoa((int)pid);
 	while (s->pipe.child_pid[c] && ft_strcmp(str, s->pipe.child_pid[c]) != 0)
 		++c;
-	return (c);	
+	return (c);
 }

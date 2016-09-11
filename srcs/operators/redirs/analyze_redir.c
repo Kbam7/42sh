@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/11 16:02:44 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/05 16:41:24 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 11:56:17 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,6 @@ int			get_pos(char *str, char ch)
 	return (-1);
 }
 
-/*
-** This function checks if there are chars before or after the redir symbol.
-*/
 char		*analyze_redir(char **str, char dir, char **cmd, t_shell *s)
 {
 	int		pos;
@@ -40,15 +37,14 @@ char		*analyze_redir(char **str, char dir, char **cmd, t_shell *s)
 		*str = check_prefix(str, pos, cmd, s);
 	if (*str == NULL || (pos = get_pos(*str, dir)) == -1)
 		return (NULL);
-	if ((*str)[pos + 1] && (*str)[pos + 1] == dir)			// ('>>' || '<<')
+	if ((*str)[pos + 1] && (*str)[pos + 1] == dir)
 		++pos;
-	if ((*str)[pos + 1] && (*str)[pos + 1] == '>')			// ('>>>')
+	if ((*str)[pos + 1] && (*str)[pos + 1] == '>')
 		return (err(ERR_BAD_TOKEN, ">") ? NULL : NULL);
-	if ((*str)[pos + 1] && (*str)[pos + 1] == '<')			// ('<<<')
+	if ((*str)[pos + 1] && (*str)[pos + 1] == '<')
 		++pos;
 	if (*str && (*str)[pos + 1] && (*str)[pos + 1] != '\0')
 		*str = check_postfix(str, pos, s);
-
 	if ((*str) == NULL)
 		return (NULL);
 	return (ft_strdup(*str));

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/10 20:21:22 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 12:23:16 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,6 +334,12 @@ int				get_child_pid_index(pid_t pid, t_shell *s);
 **	redirs.c
 */
 int				process_redir(char *cmd, t_shell *s);
+
+/*
+**	redirs_utils.c
+*/
+int				get_string_words(char *str, t_shell *s);
+void			redirs_reset_and_free_vars(t_shell *s);
 
 /*
 **	analyze_redir.c

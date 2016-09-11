@@ -16,6 +16,7 @@ SRCS		=	srcs/main.c								\
 				srcs/operators/pipes_wait.c				\
 				srcs/operators/pid_array.c				\
 				srcs/operators/redirs/redirs.c			\
+				srcs/operators/redirs/redirs_utils.c	\
 				srcs/operators/heredocs/heredocs.c		\
 				srcs/operators/heredocs/heredocs_utils.c\
 				srcs/operators/redirs/analyze_redir.c	\

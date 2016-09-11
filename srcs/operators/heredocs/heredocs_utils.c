@@ -6,7 +6,7 @@
 /*   By: rbromilo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/06 10:27:21 by rbromilo          #+#    #+#             */
-/*   Updated: 2016/09/10 20:21:01 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 11:57:22 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	ft_heredoc_enter(char *buff, t_shell *s)
 		s->new_line = NULL;
 		s->new_line = ft_strnew(1);
 		tputs(tgetstr("do", NULL), 1, ft_putchar_re);
-	}	
+	}
 }
 
 static void	ft_heredoc_move_cur(char *buff, t_shell *s)
@@ -64,7 +64,7 @@ static int	ft_heredoc_buffer(t_shell *s)
 	char	*temp;
 
 	s->width = tgetnum("co");
-    if ((temp = (char *)malloc(sizeof(char) * 4096)) == NULL)
+	if ((temp = (char *)malloc(sizeof(char) * 4096)) == NULL)
 		return (err(ERR_MALLOC, "ft_heredoc_buffer()"));
 	ft_bzero(temp, 4096);
 	read(0, temp, 4096);
@@ -74,7 +74,7 @@ static int	ft_heredoc_buffer(t_shell *s)
 	return (EXIT_SUCCESS);
 }
 
-void	ft_heredoc_write(int fd, char *end, t_shell *s)
+void		ft_heredoc_write(int fd, char *end, t_shell *s)
 {
 	while (ft_heredoc_buffer(s) == EXIT_SUCCESS)
 		if (s->hdoc_newstr != NULL && s->hdoc_strlen > 0)
