@@ -6,13 +6,13 @@
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/31 11:36:27 by kgani             #+#    #+#             */
-/*   Updated: 2016/08/31 11:36:49 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/11 10:42:27 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-int     ft_echo_isflag(char *arg, int *flag, int *new_line)
+int	ft_echo_isflag(char *arg, int *flag, int *new_line)
 {
 	if (arg[0] && arg[0] == '-')
 	{

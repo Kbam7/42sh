@@ -6,18 +6,18 @@
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/07 10:32:25 by kgani             #+#    #+#             */
-/*   Updated: 2016/09/07 11:30:18 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/11 10:31:45 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-void ft_signal_quit(void)
+void	ft_signal_quit(void)
 {
-	t_shell *s;
+	t_shell	*s;
 
 	s = ft_get_shell();
-	if(s->fork_pid != 0)
+	if (s->fork_pid != 0)
 	{
 		free_t_shell(s);
 		kill(s->fork_pid, SIGKILL);

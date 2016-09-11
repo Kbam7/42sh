@@ -55,3 +55,4 @@ void	ft_high_right(t_shell *s, char *buff)
 		tputs(tgetstr("rc", 0), 1, ft_putchar_re);
 	}
 }
+

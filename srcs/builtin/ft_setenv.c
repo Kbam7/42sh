@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:47 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/06 07:27:16 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/11 11:50:11 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	new_env_var(char *name, char *value, char ***env)
 	table = ft_tabdup(*env, len + 1);
 	free_tab((void ***)env, len);
 	tmp = ft_strjoin("=", value);
-    ft_strcap(name);
+	ft_strcap(name);
 	table[len] = ft_strjoin(name, tmp);
 	ft_strdel(&tmp);
 	*env = table;
@@ -43,7 +43,7 @@ static int	variable_exists(char *name, char *value, char ***env)
 		{
 			ft_strdel(&(*env)[i]);
 			tmp = ft_strjoin("=", value);
-            ft_strcap(name);
+			ft_strcap(name);
 			(*env)[i] = ft_strjoin(name, tmp);
 			ft_strdel(&tmp);
 			free_tab((void ***)&table.strings, table.words);
@@ -85,12 +85,10 @@ int			ft_set(int env_type, char *name, char *val, t_shell *s)
 	int				status;
 	char			***env;
 
-//dprintf(2, "ft_set() -- START\tname = '%s'\tvalue = '%s'\n", name, val); // debug
 	status = EXIT_FAILURE;
 	env = check_env_type(env_type, s);
 	if (!name && !val)
 	{
-//dprintf(2, "ft_set() -- NO name and NO value\n"); // debug
 		print_variables(*env);
 	}
 	else if (name && ft_strchr(name, '='))
@@ -107,6 +105,5 @@ int			ft_set(int env_type, char *name, char *val, t_shell *s)
 		return (err(ERR_INVALID_ARG, "set"));
 	if (env_type == 1)
 		status = ft_set(2, name, val, s);
-//dprintf(2, "ft_set() -- END\n"); // debug
 	return (status);
 }
