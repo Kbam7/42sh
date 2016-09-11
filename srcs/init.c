@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 02:28:26 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/11 14:56:07 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 16:54:16 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void		init_env(t_shell *s, int argc, char **argv, char **envp)
 	t_split_string	tmp;
 	char			*tmpstr;
 
+	s->history = NULL;
 	get_arg(argc, argv, s);
 	init_builtin_func_options(s);
 	s->env_var = ft_tabdup(envp, ft_tablen(envp));

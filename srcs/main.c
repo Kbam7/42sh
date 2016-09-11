@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/28 20:35:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/07 02:03:34 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/10 16:12:47 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int			main(int argc, char **argv, char **envp)
 	init_env(s, argc, argv, envp);
 	init_terminal_data(s);
 	ft_clear_screen();
+	set_prompt(s);
 	ft_prompt_print(s);
 	shell_loop(s);
 	free_t_shell(s);
