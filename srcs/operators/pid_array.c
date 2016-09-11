@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/06 21:40:53 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/11 14:46:53 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 16:04:43 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int			add_child_pid(pid_t pid, t_shell *s)
 	int		len;
 
 	pid_str = ft_itoa((int)pid);
-dprintf(2, "add_child_pid() -- adding '%s'\n", pid_str); // debug
 	if (s->pipe.child_pid == NULL)
 	{
 		if ((s->pipe.child_pid = ft_tabnew(pid_str, 1)) == NULL)
