@@ -6,15 +6,15 @@
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/31 13:08:21 by kgani             #+#    #+#             */
-/*   Updated: 2016/08/31 13:09:05 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/11 11:58:40 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int     ft_countarray(char **arr)
+int		ft_countarray(char **arr)
 {
-	int     i;
+	int		i;
 
 	i = 0;
 	while (arr[i])

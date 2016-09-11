@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoinstr.c                                      :+:      :+:    :+:   */
+/*   ft_strjoinstr.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/07/09 15:07:59 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/13 10:29:49 by kbamping         ###   ########.fr       */
+/*   Created: 2016/09/11 12:01:21 by tmack             #+#    #+#             */
+/*   Updated: 2016/09/11 12:02:04 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,4 @@ char	*ft_strjoinstr(char *s1, char *s2, char *s3)
 	new_str = ft_strcat(new_str, s3);
 	new_str[len] = '\0';
 	return (new_str);
-/*
-	char	*tmp;
-	char	*str;
-
-	tmp = ft_strjoin(s1, s2);
-	str = ft_strjoin(tmp, s3);
-	free(tmp);
-	return (str);
-*/
 }
-
-
-
-
