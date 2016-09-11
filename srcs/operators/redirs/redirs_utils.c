@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/11 12:10:59 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/11 12:18:51 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 14:45:54 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,12 @@ void	redirs_reset_and_free_vars(t_shell *s)
 int		get_string_words(char *str, t_shell *s)
 {
 	char			**tmp;
+	char			*tmp2;
 
-	s->redir.sp = ft_nstrsplit(str, ' ');
+	tmp2 = ft_strtrim(str);
+	s->redir.sp = ft_nstrsplit(tmp2, ' ');
 	tmp = s->redir.sp.strings;
+	free(tmp2);
 	s->redir.sp.strings = tab_trim(tmp, (int)s->redir.sp.words);
 	free_tab((void ***)&tmp, s->redir.sp.words);
 	return (0);

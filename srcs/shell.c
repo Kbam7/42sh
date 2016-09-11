@@ -6,41 +6,11 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/10 20:28:26 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 14:59:12 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
-
-void		shell_loop(t_shell *s)
-{
-	int			ret;
-	t_cmd_list	*cmd_list;
-
-	ret = 0;
-	while (ret != EXIT_SH)
-	{
-//		set_prompt(s);
-		while (s->commands == NULL)
-			buffer(s);
-		cmd_list = s->commands;
-		while (cmd_list != NULL)
-		{
-			tputs(tgetstr("cr", 0), 1, ft_putchar_re);
-			tputs(tgetstr("ce", 0), 1, ft_putchar_re);
-			ret = process_input(cmd_list->cmd, s);
-			if (ret == EXIT_SH || ret == EXIT_FAILURE)
-			{
-				ft_prompt_print(s);
-				break ;
-			}
-			ft_sleep(0, 10000000);
-			ft_prompt_print(s);
-			cmd_list = cmd_list->next;
-		}
-		free_cmd_list(&s->commands);
-	}
-}
 
 static void	ft_exit(t_shell *s)
 {
@@ -63,7 +33,48 @@ static void	ft_exit(t_shell *s)
 	}
 }
 
-void			free_t_shell(t_shell *s)
+void		shell_loop(t_shell *s)
+{
+	int			ret;
+	t_cmd_list	*cmd_list;
+
+	ret = 0;
+	while (ret != EXIT_SH)
+	{
+		while (s->commands == NULL)
+			buffer(s);
+		cmd_list = s->commands;
+		while (cmd_list != NULL)
+		{
+			tputs(tgetstr("cr", 0), 1, ft_putchar_re);
+			tputs(tgetstr("ce", 0), 1, ft_putchar_re);
+			ret = process_input(cmd_list->cmd, s);
+			if (ret == EXIT_SH || ret == EXIT_FAILURE)
+			{
+				ft_prompt_print(s);
+				break ;
+			}
+			ft_sleep(0, 10000000);
+			ft_prompt_print(s);
+			cmd_list = cmd_list->next;
+		}
+		free_cmd_list(&s->commands);
+	}
+}
+
+void		get_input(char *cmd, t_shell *s)
+{
+	char			*tmp;
+	t_split_string	data;
+
+	tmp = ft_strtrim(cmd);
+	data = ft_nstrsplit(tmp, ' ');
+	ft_strdel(&tmp);
+	s->input = ft_tabdup(data.strings, data.words);
+	free_tab((void ***)&data.strings, data.words);
+}
+
+void		free_t_shell(t_shell *s)
 {
     if (s->history != NULL)
         free_tab((void ***)&s->history, ft_tablen(s->history));

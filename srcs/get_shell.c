@@ -6,16 +6,15 @@
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/06 15:56:42 by kgani             #+#    #+#             */
-/*   Updated: 2016/09/06 16:03:38 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/11 14:55:00 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-t_shell *ft_get_shell(void)
+t_shell	*ft_get_shell(void)
 {
 	static t_shell	s;
 
 	return (&s);
 }
-

@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:50 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/07 17:25:11 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 14:55:54 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static void	check_errno(char **tmp, int errno, char *msg)
 		*tmp = *tmp;
 	else
 		*tmp = NULL;
-//		*tmp = ft_strdup("No further details");
 }
 
 int			err(int errno, char *msg)

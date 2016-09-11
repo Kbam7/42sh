@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 00:47:04 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/22 23:55:11 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 15:00:14 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	init_redir(char **rdr_str, char **cmd, t_shell *s)
 {
-	if (((s->redir.cmd = (char **)malloc(sizeof(char *) * 2)) == NULL) || 
+	if (((s->redir.cmd = (char **)malloc(sizeof(char *) * 2)) == NULL) ||
 				((s->redir.rdr = (char **)malloc(sizeof(char *) * 2)) == NULL))
 	{
 		ft_strdel(cmd);
