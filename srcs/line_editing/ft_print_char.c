@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 14:08:49 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/11 04:07:22 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/11 11:48:05 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	ft_print_char(char *buff, t_shell *s)
 	int	i;
 
 	i = 0;
-	while (buff[i] >= 32 && buff[i] <= 126/* && buff[1] == 0 && buff[2] == 0*/)
+	while (buff[i] >= 32 && buff[i] <= 126)
 	{
 		ft_nbr_cols(s);
 		ft_curs_col(s);

@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/06 09:29:32 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/09 23:07:48 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 11:42:06 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	ft_paste(t_shell *s, char *buff)
 	}
 }
 
-void    ft_cpy(t_shell *s, char *buff)
+void	ft_cpy(t_shell *s, char *buff)
 {
 	int		j;
 	int		k;

@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 14:12:20 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/09 13:10:27 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/11 11:42:42 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	ft_move_cur(char *buff, t_shell *s)
 	ft_paste(s, buff);
 }
 
-void ft_key_exit(char *buff, t_shell *s)
+void	ft_key_exit(char *buff, t_shell *s)
 {
 	if (buff[0] == 4 && buff[1] == 0 && buff[2] == 0)
 	{
