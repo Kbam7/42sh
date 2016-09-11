@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/11 16:45:37 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/11 17:00:24 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ typedef struct				s_echo_func
 
 typedef struct				s_cd_func
 {
-	int						li;
+	int						l;
 	int						p;
 }							t_cd_func;
 
@@ -86,6 +86,7 @@ typedef struct				s_func_opt
 	t_env_func				env;
 	t_echo_func				echo;
 	t_cd_func				cd;
+
 }							t_func_opt;
 
 /*
