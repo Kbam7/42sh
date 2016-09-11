@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/09 01:25:11 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/11 15:00:36 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 15:58:24 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,24 +29,27 @@ static char	*get_path(t_shell *s)
 	return (path);
 }
 
+static void	ft_get_user(t_shell *s, char **tmp)
+{
+	*tmp = get_path(s);
+	s->prompt = ft_strjoinstr(ft_getenv("USER", s), "@", *tmp);
+	ft_strdel(tmp);
+}
+
 void		set_prompt(t_shell *s)
 {
 	char		*tmp;
-	static	int	count = 1;
+	static int	count = 1;
 
 	if (s->prompt && (count == 1 || s->arg_p))
 	{
 		free(s->prompt);
 		if (s->arg_p && s->arg_u)
-		{
-			tmp = get_path(s);
-			s->prompt = ft_strjoinstr(ft_getenv("USER", s), "@",tmp);
-			ft_strdel(&tmp);
-		}
+			ft_get_user(s, &tmp);
 		else if (s->arg_p)
 		{
 			tmp = get_path(s);
-			s->prompt = ft_strjoin("@", tmp);;
+			s->prompt = ft_strjoin("@", tmp);
 			ft_strdel(&tmp);
 		}
 		else if (s->arg_u)
