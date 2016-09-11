@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/07 21:55:31 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/07 23:12:23 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 12:05:14 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	ft_remove_previous_pid(int i, int *curr, t_shell *s)
 	*curr = -1;
 }
 
-int	ft_wait_child_pipe(int wait, char **cmds, int *curr, t_shell *s)
+int			ft_wait_child_pipe(int wait, char **cmds, int *curr, t_shell *s)
 {
 	pid_t	pid;
 	int		status;
@@ -36,7 +36,7 @@ int	ft_wait_child_pipe(int wait, char **cmds, int *curr, t_shell *s)
 	{
 		i = get_child_pid_index(pid, s);
 		if (WIFEXITED(status) && (status = WEXITSTATUS(status) != EXIT_SUCCESS))
-				err(((status == 1) ? 1 : status + 900), cmds[i]);
+			err(((status == 1) ? 1 : status + 900), cmds[i]);
 		remove_child_pid(pid, s);
 		if (i > *curr)
 			ft_remove_previous_pid(i, curr, s);
@@ -46,7 +46,7 @@ int	ft_wait_child_pipe(int wait, char **cmds, int *curr, t_shell *s)
 	return (flag);
 }
 
-int	wait_for_children(char **cmds, t_shell *s)
+int			wait_for_children(char **cmds, t_shell *s)
 {
 	int		flag;
 	int		c;

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/11 12:01:40 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/11 12:32:57 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -339,6 +339,12 @@ int				get_child_pid_index(pid_t pid, t_shell *s);
 int				process_redir(char *cmd, t_shell *s);
 
 /*
+**	redirs_utils.c
+*/
+int				get_string_words(char *str, t_shell *s);
+void			redirs_reset_and_free_vars(t_shell *s);
+
+/*
 **	analyze_redir.c
 */
 int				get_pos(char *str, char ch);
@@ -392,7 +398,13 @@ int				child_input_redir(char *str, t_shell *s);
 /*
 **	heredocs.c
 */
-int				ft_heredocs(char *str, int pos, t_shell *s);
+int				ft_heredocs(t_shell *s);
+
+/*
+**	heredocs_utils.c
+*/
+void			ft_herestr_write(char *str);
+void			ft_heredoc_write(int fd, char *end, t_shell *s);
 
 /*
 **	execute_output_redir.c
@@ -458,15 +470,15 @@ void			cd_set_arg(char c, t_shell *s);
 **	ft_echo.c
 */
 int				ft_echo(char **args, t_shell *s);
-char				*ft_echo_scan(char **args, t_shell *s);
-void				ft_echo_string(char **new_str, char *arg, int *triggerer,  int *flag);
+char			*ft_echo_scan(char **args, t_shell *s);
+void			ft_echo_string(char **new_str, char *arg, int *triggerer,  int *flag);
 int				ft_echo_esc(char **new_str, char *arg, int pos, int trigger);
 int				ft_echo_esc_char(char **new_str, int esc_char);
 int				ft_echo_skip(char *str);
 int				ft_echo_isflag(char *arg, int *flag, int *new_line);
-void				ft_echo_env(char **new_str, char *str, int *flag, t_shell *s);
-void				ft_echo_clean(char *new_str);
-void				ft_echo_addstr(char **str, char c);
+void			ft_echo_env(char **new_str, char *str, int *flag, t_shell *s);
+void			ft_echo_clean(char *new_str);
+void			ft_echo_addstr(char **str, char c);
 
 
 /*

@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:24:24 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/07 23:20:25 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 12:03:28 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,38 +47,38 @@ static int	init_pipes(char *cmd, char ***cmds, int *n_cmds, t_shell *s)
 
 static void	process_pipes_two(char **cmds, pid_t pid, int *status, t_shell *s)
 {
-		add_child_pid(pid, s);
-		if (s->pipe.n_pipes)
-			parent_pipe(s);
-		ft_sleep(0, 2000000);
-		*status = 0;
-		ft_wait_child_pipe(0, cmds, status, s);
+	add_child_pid(pid, s);
+	if (s->pipe.n_pipes)
+		parent_pipe(s);
+	ft_sleep(0, 2000000);
+	*status = 0;
+	ft_wait_child_pipe(0, cmds, status, s);
 }
 
 int			process_pipes(char *cmd, t_shell *s)
 {
 	pid_t			pid;
 	int				n;
-	int				status;
+	int				st;
 	char			**cmds;
 
-	if ((status = init_pipes(cmd, &cmds, &n, s)) != EXIT_SUCCESS)
-		return (status);
+	if ((st = init_pipes(cmd, &cmds, &n, s)) != EXIT_SUCCESS)
+		return (st);
 	while (cmds[s->pipe.pipe_i] && (s->pipe.n_pipes = n - s->pipe.pipe_i) > 0)
 	{
 		if ((pid = fork()) < 0)
 			return (err(ERR_FORK_FAILED, ""));
 		if (pid == 0)
 		{
-			if ((status = process_input(cmds[s->pipe.pipe_i], s)) != EXIT_SUCCESS)
-				err(status , cmds[s->pipe.pipe_i]);
+			if ((st = process_input(cmds[s->pipe.pipe_i], s)) != EXIT_SUCCESS)
+				err(st, cmds[s->pipe.pipe_i]);
 			free_t_shell(s);
-			exit(status == 0 ? 0 : (status - 900));
+			exit(st == 0 ? 0 : (st - 900));
 		}
-		process_pipes_two(cmds, pid, &status, s);
+		process_pipes_two(cmds, pid, &st, s);
 		++s->pipe.pipe_i;
 	}
-	status = wait_for_children(cmds, s);
+	st = wait_for_children(cmds, s);
 	reset_and_free_vars(&cmds, n, s);
-	return ((status == EXIT_SUCCESS) ? EXIT_SUCCESS : EXIT_FAILURE);
+	return ((st == EXIT_SUCCESS) ? EXIT_SUCCESS : EXIT_FAILURE);
 }

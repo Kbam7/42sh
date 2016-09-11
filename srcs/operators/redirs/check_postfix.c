@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/12 22:08:50 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/20 13:15:29 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 12:04:57 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,38 +26,38 @@ static char	*saveto_nxt_cmd(char **cmd, char **str, int strt, int len)
 		*cmd = ft_strjoinstr(oldcmd, " ", tmp);
 		ft_strdel(&tmp);
 		ft_strdel(&oldcmd);
-	} 
+	}
 	tmp = ft_strsub(*str, 0, strt);
 	ft_strdel(str);
 	*str = tmp;
-	return(*str);
+	return (*str);
 }
 
 char		*check_postfix(char **str, int pos, t_shell *s)
 {
 	int		len;
 
-	if ( pos > 0 && (*str)[pos - 1] == s->redir.dir && (*str)[pos + 1] == '&')	// ('>>&' || '<<&')
-			return ((err(ERR_BAD_TOKEN, "&")) ? NULL : NULL);
-	if ((*str)[pos + 1] == '&') 						// ('>&' || '<&') -- 	<-- DUPLICATING FD's
+	if (pos > 0 && (*str)[pos - 1] == s->redir.dir && (*str)[pos + 1] == '&')
+		return ((err(ERR_BAD_TOKEN, "&")) ? NULL : NULL);
+	if ((*str)[pos + 1] == '&')
 	{
-		if ((*str)[0] == '&') 							// checking if theres already a '&'
+		if ((*str)[0] == '&')
 			return ((err(ERR_BAD_TOKEN, "&")) ? NULL : NULL);
-		if ((*str)[pos + 2] == '\0')		 			// error, nothing after '&'
+		if ((*str)[pos + 2] == '\0')
 			return ((err(ERR_BAD_TOKEN, "newline")) ? NULL : NULL);
-		if ((*str)[pos + 2] == '-')						//	('<&-' || '>&-')
+		if ((*str)[pos + 2] == '-')
 			pos = pos + 2;
 		else if (ft_isdigit((*str)[pos + 2]))
 		{
 			len = pos + 2;
-			while (ft_isdigit((*str)[len])) // cycle to end of int
+			while (ft_isdigit((*str)[len]))
 				++len;
-			pos = ((*str)[len] == '\0') ? len : (pos + 2);//	If the int isnt all the way to the end of the str, then use as cmd.
+			pos = ((*str)[len] == '\0') ? len : (pos + 2);
 		}
-		else	// No digits or '-' after '&'
+		else
 			pos = pos + 2;
 	}
-	if ((*str)[pos] != '\0' && (*str)[pos + 1] != '\0' && ++pos)// if the current pos isnt EOL and theres anything after the current pos, save to nxt_cmd
+	if ((*str)[pos] != '\0' && (*str)[pos + 1] != '\0' && ++pos)
 		saveto_nxt_cmd(&s->redir.nxt_cmd, str, pos, (ft_strlen(*str) - (pos)));
 	return (*str);
 }

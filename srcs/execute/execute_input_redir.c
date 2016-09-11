@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/19 13:05:19 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/01 14:31:00 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/10 20:23:23 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,12 @@ int		child_input_redir(char *str, t_shell *s)
 	int		path;
 	char	*tmp;
 
-//dprintf(2, "child_input_redir() -- \n");
 	pos = get_pos(str, '<');
 	if (str[pos] == '<')
 	{
 		s->redir.pre_fd = STDIN_FILENO; 
-
-//		if (s->pipe.n_pipes)
-//			dup2(s->pipe.pipes[s->pipe.pipe_i][0], STDIN_FILENO);
-
 		if (str[pos] == str[pos + 1])				// '<<'
-			ft_heredocs(str, pos, s);	
+			ft_heredocs(s);	
 		else
 		{
 			if (pos > 0 && ft_isdigit(str[pos - 1])) 	// ('2<' || '43<')
@@ -77,14 +72,7 @@ int		child_input_redir(char *str, t_shell *s)
 				tmp = ft_strsub(str, 0, pos);
 				s->redir.pre_fd = ft_atoi(tmp);
 				ft_strdel(&tmp);
-//dprintf(2, "child_input_redir() -- '5>' -- \n");
-/*			if (!check_duplicate(str, pos, s))
-				if ((path = open_input_file(s)) > -1)
-				{
-					dup2(path, s->redir.pre_fd);
-					close(path);
-				}
-*/			}
+			}
 			if (!check_duplicate(str, pos, s))
 				if ((path = open_input_file(s)) > -1)
 				{
