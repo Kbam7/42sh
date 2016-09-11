@@ -6,7 +6,7 @@
 /*   By: rbromilo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/06 10:27:21 by rbromilo          #+#    #+#             */
-/*   Updated: 2016/09/11 16:56:14 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 17:10:31 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,11 @@ static int	ft_heredoc_buffer(t_shell *s)
 
 void		ft_heredoc_write(int fd, char *end, t_shell *s)
 {
-	char	*end;
 	int		i;
 
 	ft_prompt_new("heredoc> ", s);
 	ft_prompt_print(s);
 	i = s->redir.rdr_i;
-	end = s->redir.cmd[i + 1];
 	while (ft_heredoc_buffer(s) == EXIT_SUCCESS)
 		if (s->hdoc_newstr != NULL && s->hdoc_strlen > 0)
 		{
