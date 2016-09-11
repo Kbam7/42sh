@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 12:14:15 by marvin            #+#    #+#             */
-/*   Updated: 2016/09/11 12:23:16 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 12:32:57 by kbamping         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@
 # define ERR_MALLOC				1015
 # define ERR_BAD_TOKEN			1016
 # define ERR_BADFD				1017
+# define ERR_OPENDIR			1018
 
 
 
@@ -198,6 +199,7 @@ typedef struct	s_shell
 	void		ft_signal_segv(void);
 	void		ft_signal_int(void);
 	void		ft_key_exit(char *buff, t_shell *s);
+	void		ft_resume(int sig);
 
 /*
 ** --[ FUNCTION PROTOTYPES -- GET-STATIC-SHELL]--
@@ -225,6 +227,7 @@ void			ft_complete_word(t_shell *s);
 int				ft_select_cmd(t_shell *s);
 int				ft_select_path(t_shell *s);
 void			ft_print_word(t_shell *s);
+char			*ft_getpath(char **str);
 
 
 /*

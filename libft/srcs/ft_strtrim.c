@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/15 11:23:58 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/15 12:07:46 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 12:00:53 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*ft_strtrim(char const *s)
 	end = ft_strlen(s) - 1;
 	while (s[start] != '\0' && ft_iswhtspc(s[start]))
 		start++;
-	while (end > start && s[end] != '\0' &&  ft_iswhtspc(s[end]))
+	while (end > start && s[end] != '\0' && ft_iswhtspc(s[end]))
 		end--;
 	if (start > end)
 		return (NULL);

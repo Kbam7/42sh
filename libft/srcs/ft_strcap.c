@@ -6,21 +6,21 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/06 10:32:22 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/06 10:37:26 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 12:06:29 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void    ft_strcap(char *str)
+void	ft_strcap(char *str)
 {
-    int             i;
+	int		i;
 
-    i = 0;
-    while (str[i])
-    {
-        if (str[i] >= 'a' && str[i] <= 'z')
-            str[i] = ft_toupper(str[i]);
-        i++;
-    }
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] >= 'a' && str[i] <= 'z')
+			str[i] = ft_toupper(str[i]);
+		i++;
+	}
 }

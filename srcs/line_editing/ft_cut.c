@@ -6,17 +6,17 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/09 12:54:34 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/09 12:59:28 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/11 11:43:33 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_shell.h"
 
-void    ft_cut_1(t_shell *s, char *new_line)
+void	ft_cut_1(t_shell *s, char *new_line)
 {
-	int     i;
-	int     j;
-	int     k;
+	int		i;
+	int		j;
+	int		k;
 
 	k = 0;
 	j = 0;
@@ -37,10 +37,10 @@ void    ft_cut_1(t_shell *s, char *new_line)
 	s->cpy_nbr = 0;
 }
 
-void    ft_cut(t_shell *s, char *buff)
+void	ft_cut(t_shell *s, char *buff)
 {
-	int     i;
-	char    *new_line;
+	int		i;
+	char	*new_line;
 
 	if (buff[0] == 24 && buff[1] == 0 && buff[2] == 0 && buff[3] == 0)
 	{

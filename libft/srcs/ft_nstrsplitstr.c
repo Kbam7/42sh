@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/29 23:33:54 by kbamping          #+#    #+#             */
-/*   Updated: 2016/08/30 01:20:36 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 11:58:16 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char		*next_word(const char *str, char *sp, size_t *len)
 		i += ft_strlen(sp);
 	str += i;
 	while (str[*len] && (ft_strncmp((str + *len), sp, ft_strlen(sp)) != 0))
-			(*len)++;
+		(*len)++;
 	return ((char *)(str));
 }
 

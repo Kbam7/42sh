@@ -6,7 +6,7 @@
 /*   By: kbamping <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/09 12:37:20 by kbamping          #+#    #+#             */
-/*   Updated: 2016/07/09 20:43:04 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 11:50:59 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static char	*get_next_percent(const char *format, char *str, size_t *offset)
 	return (new_temp);
 }
 
-int			ft_fprintf(int	fd, const char *format, ...)
+int			ft_fprintf(int fd, const char *format, ...)
 {
 	va_list ap;
 	char	*out;
