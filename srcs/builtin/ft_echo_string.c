@@ -6,7 +6,7 @@
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/31 11:17:09 by kgani             #+#    #+#             */
-/*   Updated: 2016/09/11 05:56:58 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/11 06:13:02 by kgani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void		ft_echo_string(char **new_str, char *arg, int *trigger, int *flag)
 
 	i = 0;
 	ret = 0;
-	if (ft_echo_skip(arg) && trigger == 0)
+	if (ft_echo_skip(arg) && *trigger != 39 && *trigger != 34)
 		return ;
 	if (*flag == 0)
 		*flag = -1;
