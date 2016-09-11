@@ -6,7 +6,7 @@
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/04 13:05:23 by kgani             #+#    #+#             */
-/*   Updated: 2016/09/06 09:54:04 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/11 18:28:58 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	ft_wait_enter(char *buff, int trigger, t_shell *s, int *f_line)
 		}
 		if (s->new_line && ft_wait_str(trigger, s))
 			return (1);
-		ft_prompt_print(s);
+		ft_putstr(s->prompt);
 		if (s->new_line)
 			ft_strdel(&s->new_line);
 		*f_line = 1;
@@ -109,20 +109,21 @@ void		ft_wait(int trigger, t_shell *s)
 		tmp = ft_strjoin(s->new_line, "\n");
 		s->wait_str = ft_strdup(tmp);
 		s->wait_strlen = ft_strlen(s->wait_str);
-		free(tmp);
-		tmp = NULL;
-		free(s->new_line);
-		s->new_line = NULL;
+		ft_strdel(&tmp);
+		ft_strdel(&s->new_line);
 		s->curs_pos = 0;
 		s->str_len = 0;
 	}
 	if (trigger == 34)
+	{
 		ft_prompt_new("dquote> ", s);
+		s->prompt_len += 4;
+	}
 	else if (trigger == 39)
 		ft_prompt_new("quote> ", s);
 	else if (trigger == 92)
 		ft_prompt_new("bslash> ", s);
-	ft_prompt_print(s);
+	ft_putstr(s->prompt);
 	ft_wait_loop(s, trigger);
-	ft_prompt_new("$> ", s);
+	ft_putstr(s->prompt);
 }

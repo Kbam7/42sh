@@ -6,7 +6,7 @@
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/04 09:14:43 by kgani             #+#    #+#             */
-/*   Updated: 2016/09/11 17:40:36 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/11 18:23:17 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static int	ft_get_prompt_len(t_shell *s)
 	return (EXIT_SUCCESS);
 }
 
-void	set_prompt(t_shell *s)
+void		set_prompt(t_shell *s)
 {
 	char		*tmp;
 	char		*temp2;
@@ -98,12 +98,7 @@ void	set_prompt(t_shell *s)
 	}
 }
 
-void	ft_prompt_print(t_shell *s)
-{
-	ft_putstr(s->prompt);
-}
-
-void	ft_prompt_new(char *new_prompt, t_shell *s)
+void		ft_prompt_new(char *new_prompt, t_shell *s)
 {
 	if (s->prompt)
 		ft_strdel(&s->prompt);

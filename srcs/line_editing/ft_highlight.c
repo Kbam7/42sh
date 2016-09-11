@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/09 12:57:30 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/11 11:48:17 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/11 18:16:45 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_put_string1(t_shell *s)
 		tputs(tgetstr("up", 0), 1, ft_putchar_re);
 	tputs(tgetstr("cr", 0), 1, ft_putchar_re);
 	tputs(tgetstr("cd", 0), 1, ft_putchar_re);
-	ft_prompt_print(s);
+	ft_putstr(s->prompt);
 	i = 0;
 	while (s->new_line[i])
 	{

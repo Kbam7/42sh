@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/11 09:33:16 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/11 11:41:24 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/11 18:08:04 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_history_up(t_shell *s, char *buff)
 		}
 		tputs(tgetstr("cr", 0), 1, ft_putchar_re);
 		tputs(tgetstr("cd", 0), 1, ft_putchar_re);
-		ft_prompt_print(s);
+		ft_putstr(s->prompt);
 		s->h_pos++;
 		i = s->h_index - s->h_pos;
 		if (s->new_line != NULL)
@@ -63,7 +63,7 @@ void	ft_history_down(t_shell *s, char *buff)
 		}
 		tputs(tgetstr("cr", 0), 1, ft_putchar_re);
 		tputs(tgetstr("cd", 0), 1, ft_putchar_re);
-		ft_prompt_print(s);
+		ft_putstr(s->prompt);
 		s->h_pos--;
 		i = s->h_index - s->h_pos;
 		if (s->new_line != NULL)

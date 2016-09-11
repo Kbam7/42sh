@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/11 12:31:10 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/11 16:45:11 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/11 18:01:29 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	ft_put_curs_back(t_shell *s)
 	if (s->cols == 0)
 		i = ft_curs_pos(s) + s->prompt_len - 1;
 	else
-		i = ft_curs_pos(s) - 2 ;
+		i = ft_curs_pos(s) - 2;
 	while (i-- > 0)
 		tputs(tgetstr("nd", 0), 1, ft_putchar_re);
 	i = s->cols - s->curs_col;

@@ -6,7 +6,7 @@
 /*   By: kgani <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/07 11:02:18 by kgani             #+#    #+#             */
-/*   Updated: 2016/09/11 10:28:53 by kgani            ###   ########.fr       */
+/*   Updated: 2016/09/11 18:15:54 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_signal_int(void)
 		ft_strdel(&s->new_line);
 		s->new_line = (char *)malloc(sizeof(char) + 1);
 		s->new_line[0] = '\0';
-		ft_prompt_print(s);
+		ft_putstr(s->prompt);
 	}
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: tmack <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/06 14:08:49 by tmack             #+#    #+#             */
-/*   Updated: 2016/09/11 16:55:31 by kbamping         ###   ########.fr       */
+/*   Updated: 2016/09/11 18:18:38 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_put_string(t_shell *s)
 	}
 	tputs(tgetstr("cr", 0), 1, ft_putchar_re);
 	tputs(tgetstr("cd", 0), 1, ft_putchar_re);
-	ft_prompt_print(s);
+	ft_putstr(s->prompt);
 	ft_putstr(s->new_line);
 }
 
@@ -107,7 +107,7 @@ void	ft_enter(char *buff, t_shell *s)
 		s->str_len = 0;
 		s->h_pos = 0;
 		if (!get_commands(s))
-			ft_prompt_print(s);
+			ft_putstr(s->prompt);
 		if (s->new_line != NULL || s->new_line[0] != '\0')
 			free(s->new_line);
 		s->new_line = NULL;

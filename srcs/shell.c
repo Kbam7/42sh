@@ -6,7 +6,7 @@
 /*   By: kbamping <kbamping@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/26 17:29:52 by kbamping          #+#    #+#             */
-/*   Updated: 2016/09/11 17:38:14 by tmack            ###   ########.fr       */
+/*   Updated: 2016/09/11 18:19:54 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,14 @@ static void	ft_exit(t_shell *s)
 	}
 }
 
+void		shorter(t_shell *s, t_cmd_list *cmd_list)
+{
+	set_prompt(s);
+	while (s->commands == NULL)
+		buffer(s);
+	cmd_list = s->commands;
+}
+
 void		shell_loop(t_shell *s)
 {
 	int			ret;
@@ -41,9 +49,7 @@ void		shell_loop(t_shell *s)
 	ret = 0;
 	while (ret != EXIT_SH)
 	{
-		set_prompt(s);
-		while (s->commands == NULL)
-			buffer(s);
+		shorter(s, cmd_list);
 		cmd_list = s->commands;
 		while (cmd_list != NULL)
 		{
@@ -52,11 +58,11 @@ void		shell_loop(t_shell *s)
 			ret = process_input(cmd_list->cmd, s);
 			if (ret == EXIT_SH || ret == EXIT_FAILURE)
 			{
-				ft_prompt_print(s);
+				ft_putstr(s->prompt);
 				break ;
 			}
 			ft_sleep(0, 10000000);
-			ft_prompt_print(s);
+			ft_putstr(s->prompt);
 			cmd_list = cmd_list->next;
 		}
 		free_cmd_list(&s->commands);

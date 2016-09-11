@@ -6,7 +6,7 @@
 /*   By: rbromilo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/11 10:36:18 by rbromilo          #+#    #+#             */
-/*   Updated: 2016/09/11 10:51:29 by rbromilo         ###   ########.fr       */
+/*   Updated: 2016/09/11 18:12:44 by tmack            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void		ft_print_options(t_shell *s)
 		ft_putendl(s->tab_options[i]);
 		i++;
 	}
-	ft_prompt_print(s);
+	ft_putstr(s->prompt);
 	ft_putstr(s->curr);
 }
 
